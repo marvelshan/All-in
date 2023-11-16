@@ -8,11 +8,16 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.3.1",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "http-errors": "~1.6.3"
+    "http-errors": "~1.6.3",
+    "mysql2": "^3.6.3",
+    "puppeteer": "^21.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
