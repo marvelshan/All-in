@@ -5,19 +5,22 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
+    "start-game": "nodemon ./utils/automaticGame.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "argon2": "^0.31.2",
     "axios": "^1.6.2",
-    "cheerio": "^1.0.0-rc.3",
-    "cookie-parser": "~1.4.4",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "http-errors": "~1.6.3",
+    "ioredis": "^5.3.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.3",
-    "puppeteer": "^21.5.1"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
@@ -28,9 +31,11 @@
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.1.0"
   }
 }
