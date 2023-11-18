@@ -47,7 +47,6 @@ export const signIn = async (req, res, next) => {
     if (checkPassword !== true) {
       return res.status(400).send('password is incorrect');
     }
-    res.status(200).send('success sign in');
     next();
   } catch (error) {
     console.log(`controller signIn error on ${error}`);
