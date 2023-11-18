@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import oddsRouter from './routes/odds.js';
 import gameRouter from './routes/game.js';
 import userRouter from './routes/user.js';
+import chargeRouter from './routes/charge.js';
 // import client from './utils/cache.js';
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.static('public'));
 app.use('/odds', oddsRouter);
 app.use('/game', gameRouter);
 app.use('/user', userRouter);
+app.use('/topUp', chargeRouter);
 
 const io = new Server(httpServer, {});
 let likes = 0;
