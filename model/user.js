@@ -1,4 +1,4 @@
-import pool from './databasePool.js';
+import pool from '../utils/databasePool.js';
 
 export const createUser = async (name, email, password) => {
   try {

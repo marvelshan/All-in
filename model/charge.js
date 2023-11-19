@@ -1,4 +1,4 @@
-import pool from './databasePool.js';
+import pool from '../utils/databasePool.js';
 
 const topUpPoint = async (point, id) => {
   try {
