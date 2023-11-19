@@ -19,20 +19,16 @@
   </script>
   <script type="module">
     const likes = document.getElementById("event-list");
-    const btn = document.querySelector("button");
     import { io } from "socket.io-client";
 
     const socket = io();
     socket.on("connection", () => {
       console.log("connected");
     });
+    socket.emit("liked");
 
-    btn.addEventListener("click", () => {
-      socket.emit("liked");
-    });
-
-    socket.on("likeupdated", (count) => {
-      likes.textContent = count;
+    socket.on("likeupdated", (game) => {
+      likes.textContent = JSON.stringify(game);
     });
   </script>
 </html>
