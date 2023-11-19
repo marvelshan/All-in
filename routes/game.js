@@ -3,6 +3,10 @@ import getGameEvent from '../controller/game.js';
 
 const router = express.Router();
 
-router.post('/', getGameEvent);
+router.post(
+  '/',
+  // #swagger.ignore = true
+  getGameEvent,
+);
 
 export default router;

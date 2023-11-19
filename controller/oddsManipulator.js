@@ -32,7 +32,7 @@ const oddsManipulator = async (req, res) => {
     );
     res.status(200).send('successful insertion');
   } catch (error) {
-    console.log(`oddsManipulator utils is error on ${error}`);
+    console.log(`oddsManipulator controller is error on ${error}`);
   }
 };
 

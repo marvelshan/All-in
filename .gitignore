@@ -6,3 +6,4 @@ yarn.lock
 .prettierrc
 crawdler/
 model/crawdler.js
+swagger-output.json

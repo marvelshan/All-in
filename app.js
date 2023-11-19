@@ -1,7 +1,9 @@
 import express from 'express';
 import { createServer } from 'http';
-
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+
+import swaggerDocument from './swagger-output.json' assert { type: 'json' };
 import oddsRouter from './routes/odds.js';
 import gameRouter from './routes/game.js';
 import userRouter from './routes/user.js';
@@ -21,6 +23,7 @@ app.use('/game', gameRouter);
 app.use('/user', userRouter);
 app.use('/topUp', chargeRouter);
 app.use('/rank', rankRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 initializeWebSocket(httpServer);
 
