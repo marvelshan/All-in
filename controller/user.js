@@ -20,7 +20,7 @@ export const signUp = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const checkUser = await model.findUser(email);
-    if (checkUser.length >= 1) {
+    if (checkUser !== undefined) {
       return res.status(404).send('User already sign up');
     }
 
@@ -38,7 +38,7 @@ export const signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const checkUser = await model.findUser(email);
-    if (checkUser.length === 0) {
+    if (checkUser === undefined) {
       res.status(404).send('User does not sign up');
     }
     req.body.id = checkUser.id;
