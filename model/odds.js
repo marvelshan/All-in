@@ -23,11 +23,11 @@ export const getNBAStandings = async (id) => {
   }
 };
 
-export const insertOdds = async (id, home_odds, away_odds, moneyBuffer) => {
+export const insertOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
   try {
     const result = await pool.query(
       'INSERT INTO odds (id, home_odds, away_odds, moneyBuffer) VALUES (?,?,?,?)',
-      [id, home_odds, away_odds, moneyBuffer],
+      [id, homeOdds, awayOdds, moneyBuffer],
     );
     return result[0];
   } catch (error) {
@@ -35,11 +35,11 @@ export const insertOdds = async (id, home_odds, away_odds, moneyBuffer) => {
   }
 };
 
-export const updateOdds = async (id, home_odds, away_odds, moneyBuffer) => {
+export const updateOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
   try {
     const result = await pool.query(
       'UPDATE odds SET home_odds = ?, away_odds = ?, moneyBuffer = ? WHERE id = ?',
-      [home_odds, away_odds, moneyBuffer, id],
+      [homeOdds, awayOdds, moneyBuffer, id],
     );
     return result[0];
   } catch (error) {
@@ -53,5 +53,16 @@ export const getOdds = async (id) => {
     return result[0][0];
   } catch (error) {
     console.log(`getOdds model is ${error}`);
+  }
+};
+
+export const getGameId = async () => {
+  try {
+    const result = await pool.query(
+      'SELECT DISTINCT GAME_ID FROM NBA_game_log',
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`getGameId model is error on ${error}`);
   }
 };
