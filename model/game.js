@@ -24,13 +24,3 @@ export const insertRealtimeEvent = async (event) => {
     return error;
   }
 };
-
-export const getRealtimeEvent = async () => {
-  try {
-    const result = await pool.query('SELECT * FROM NBA_game_event');
-    return result[0][0];
-  } catch (error) {
-    console.log(`getRealtimeEvent model is ${error}`);
-    return error;
-  }
-};

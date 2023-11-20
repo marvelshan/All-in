@@ -1,18 +1,21 @@
 import { Server } from 'socket.io';
-import { getRealtimeEvent } from '../model/game.js';
+import client from './cache.js';
 
 async function initializeWebSocket(httpServer) {
   const io = new Server(httpServer, {});
-  const initialGame = await getRealtimeEvent();
   io.on('connection', (socket) => {
-    console.log('connect');
+    console.log('websocket connect');
 
-    socket.on('liked', () => {
-      setInterval(async () => {
-        const game = await getRealtimeEvent();
-        socket.emit('likeupdated', game);
-      }, 1000);
-      socket.emit('likeupdated', initialGame);
+    socket.on('event', async () => {
+      await client.subscribe('dataUpdated', (error) => {
+        if (error) {
+          console.log(`socket redis error on ${error}`);
+        }
+      });
+      client.on('message', async (channel, message) => {
+        const gameData = JSON.parse(message);
+        socket.emit('likeupdated', gameData);
+      });
     });
   });
 }

@@ -1,49 +1,45 @@
 import express from 'express';
 import axios from 'axios';
-// import client from './cache.js';
+
+import client from './cache.js';
 import * as game from '../model/game.js';
 
 const app = express();
 app.use(express.json());
-// function handleEvent(event) {
-//   console.log(`Time: ${event.wallclk} - Event: ${event.cl} - ${event.de}`);
-// }
 
 const id = 22200001;
-const gameData = await game.getNBAGameLog(id);
 let currentTime = 0;
+
+const gameCacheData = JSON.parse(await client.get('gameDate'));
+try {
+  if (gameCacheData === null) {
+    const gameData = await game.getNBAGameLog(id);
+    await client.set('gameDate', JSON.stringify(gameData));
+    axios.post('/');
+  }
+} catch (error) {
+  console.log(`automaticGame store game in redis error on ${error}`);
+}
 
 async function processEvent(index) {
   // When game is over and repeat it again
   if (
-    gameData.cl === 0 &&
-    gameData.hs !== gameData.vs &&
-    gameData.period === 4
+    gameCacheData[index].de === 'Game End' &&
+    gameCacheData[index].hs !== gameCacheData[index].vs &&
+    gameCacheData[index].period === 4
   ) {
-    axios.post('/', { id });
+    axios.post('/');
   }
-  if (index < gameData.length) {
-    const event = gameData[index];
+  if (index < gameCacheData.length) {
+    const event = gameCacheData[index];
     const timeDiff = (new Date(event.wallclk) - currentTime) / 10;
     currentTime = new Date(event.wallclk);
     const asyncCallback = async () => {
-      // handleEvent(event);
       processEvent(index + 1);
-      try {
-        const gameEvent = `Time: ${event.wallclk} - Event: ${event.cl} - ${event.de}`;
-        await game.insertRealtimeEvent(gameEvent);
-      } catch (error) {
-        console.log(`${error}`);
-      }
-
-      // const gameRedis = await client.set(
-      //   'realtimeGameInformation',
-      //   JSON.stringify(
-      //     `Time: ${event.wallclk} - Event: ${event.cl} - ${event.de}`,
-      //   ),
-      // );
-      // console.log(gameRedis);
-      // await client.publish('dataUpdated', JSON.stringify('updated'));
+      const gameData = {
+        data: gameCacheData[index],
+      };
+      await client.publish('dataUpdated', JSON.stringify(gameData));
     };
     setTimeout(asyncCallback, timeDiff);
   }

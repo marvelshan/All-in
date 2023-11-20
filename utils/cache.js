@@ -1,4 +1,7 @@
 import Redis from 'ioredis';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const client = new Redis({
   tls: {},
@@ -7,7 +10,6 @@ const client = new Redis({
   // username: process.env.REDIS_USER,
   password: process.env.REDIS_PASSWORD,
 });
-
 client.on('connect', () => {
   console.log('Connected to Redis');
 });

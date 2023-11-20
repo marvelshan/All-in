@@ -2,6 +2,7 @@ node_modules
 .eslintrc.json
 .eslintignore
 .env
+.envRDS
 yarn.lock
 .prettierrc
 crawdler/
