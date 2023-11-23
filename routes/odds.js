@@ -1,11 +1,12 @@
 import express from 'express';
-import oddsManipulator from '../controller/oddsManipulator.js';
+import * as odds from '../controller/odds.js';
+import { checkUserPoint } from '../controller/user.js';
 import authenticate from '../middleware/authenticate.js';
 
 const router = express.Router();
 
 router.post(
-  '/',
+  '/bet',
   /* #swagger.tags = ['Odds']
     #swagger.description = 'Endpoint to Odds'
       #swagger.security = [{
@@ -26,8 +27,13 @@ router.post(
     schema:{
       "data": "successful insertion"
     }} */
+
   authenticate,
-  oddsManipulator,
+  checkUserPoint,
+  odds.oddsManipulator,
+  odds.changeUserPoint,
 );
+
+router.post('/getOdds', odds.getOdds);
 
 export default router;
