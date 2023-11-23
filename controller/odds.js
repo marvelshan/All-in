@@ -14,6 +14,7 @@ export const oddsManipulator = async (req, res, next) => {
     let homeOdds = parseFloat(oddsInformation.home_odds);
     let awayOdds = parseFloat(oddsInformation.away_odds);
     if (hosting === 'home') {
+      req.body.odds = homeOdds;
       oddsInformation.moneyBuffer -= point;
       if (oddsInformation.moneyBuffer <= 0) {
         oddsInformation.moneyBuffer += 1000;
@@ -21,6 +22,7 @@ export const oddsManipulator = async (req, res, next) => {
         awayOdds += 0.01;
       }
     } else {
+      req.body.odds = awayOdds;
       oddsInformation.moneyBuffer += point;
       if (oddsInformation.moneyBuffer >= 1000) {
         oddsInformation.moneyBuffer -= 1000;
@@ -53,13 +55,11 @@ export const getOdds = async (req, res) => {
   }
 };
 
-export const changeUserPoint = async (req, res) => {
+export const changeUserPoint = async (req, res, next) => {
   try {
     const { userId, betPoint } = req.body;
     await userModel.changeUserPoint(betPoint, userId);
-    res
-      .status(200)
-      .send({ success: true, message: 'User betted successfully' });
+    next();
   } catch (error) {
     console.log(`controller changeUserPoint error on ${error}`);
   }

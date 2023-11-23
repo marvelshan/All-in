@@ -41,6 +41,7 @@
     <h2 class="userName"></h2>
     point:
     <h2 class="userPoint"></h2>
+    <div class="container"></div>
 
     <br />
     Game:22200001
@@ -165,6 +166,8 @@
         .then((response) => {
           if (response.status === 404) {
             alert("You dont have any point");
+          } else if (response.status === 200) {
+            alert("User betted successfully");
           }
           return response.json();
         })
@@ -193,6 +196,8 @@
         .then((response) => {
           if (response.status === 404) {
             alert("You dont have any point");
+          } else if (response.status === 200) {
+            alert("User betted successfully");
           }
           return response.json();
         })
@@ -246,6 +251,8 @@
       const userEmail = document.querySelector(".userEmail");
       const userName = document.querySelector(".userName");
       const userPoint = document.querySelector(".userPoint");
+      const container = document.querySelector(".container");
+
       fetch("/user/getUserInfor", {
         method: "POST",
         headers: {
@@ -256,9 +263,20 @@
           return response.json();
         })
         .then((data) => {
-          userEmail.textContent = data.email;
-          userName.textContent = data.name;
-          userPoint.textContent = data.point;
+          userEmail.textContent = data.userInfor[0].email;
+          userName.textContent = data.userInfor[0].name;
+          userPoint.textContent = data.userInfor[0].point;
+
+          container.innerHTML = "";
+          data.betInfor.forEach((betData) => {
+            const element = document.createElement("div");
+            element.innerHTML = `<h3>betting record</h3>
+            GAME ID: ${betData.GAME_ID} <br>
+            bet point: ${betData.betting_point} <br>
+            betting odds: ${betData.betting_odds} <br>
+            host: ${betData.host} <br>`;
+            container.appendChild(element);
+          });
         });
     }
     getUserInfor();

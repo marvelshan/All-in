@@ -70,8 +70,22 @@ export const getUserInfor = async (req, res) => {
   try {
     const { userId } = req.body;
     const userInfor = await model.getUserInformation(userId);
-    res.status(200).json(userInfor);
+    const betInfor = await model.getUserBetInformation(userId);
+    const data = { userInfor, betInfor };
+    res.status(200).json(data);
   } catch (error) {
     console.log(`controller signIn error on ${error}`);
+  }
+};
+
+export const recordPerBet = async (req, res) => {
+  try {
+    const { id, betPoint, userId, odds, hosting } = req.body;
+    await model.insertUserPerBet(userId, id, betPoint, odds, hosting);
+    res
+      .status(200)
+      .send({ success: true, message: 'User betted successfully' });
+  } catch (error) {
+    console.log(`controller recordPerBet error on ${error}`);
   }
 };
