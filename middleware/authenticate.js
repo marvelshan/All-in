@@ -13,10 +13,10 @@ const authenticate = async (req, res, next) => {
     const privateKey = process.env.JWT_KEY;
     try {
       const userInformation = jwt.verify(token, privateKey);
-      const { id, name, email } = userInformation.user;
+      const { userId, name, email } = userInformation.user;
       req.body = {
         ...req.body,
-        id,
+        userId,
         name,
         email,
       };
