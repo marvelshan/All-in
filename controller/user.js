@@ -27,7 +27,7 @@ export const signUp = async (req, res, next) => {
     const saltRounds = 10;
     const hashPassword = await bcrypt.hash(password, saltRounds);
     const userId = await model.createUser(name, email, hashPassword);
-    res.status(200).send(`new user Id is ${userId}`);
+    req.body.userId = userId;
     next();
   } catch (error) {
     console.log(`controller signUp error on ${error}`);
@@ -41,13 +41,36 @@ export const signIn = async (req, res, next) => {
     if (checkUser === undefined) {
       res.status(404).send('User does not sign up');
     }
-    req.body.id = checkUser.id;
+    req.body.userId = checkUser.id;
     req.body.name = checkUser.name;
     const checkPassword = bcrypt.compareSync(password, checkUser.password);
     if (checkPassword !== true) {
       return res.status(400).send('password is incorrect');
     }
     next();
+  } catch (error) {
+    console.log(`controller signIn error on ${error}`);
+  }
+};
+
+export const checkUserPoint = async (req, res, next) => {
+  try {
+    const { userId, betPoint } = req.body;
+    const userPoint = await model.getUserInformation(userId);
+    if (betPoint > userPoint.point) {
+      return res.status(404).send('User do not have enough point');
+    }
+    next();
+  } catch (error) {
+    console.log(`controller signIn error on ${error}`);
+  }
+};
+
+export const getUserInfor = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userInfor = await model.getUserInformation(userId);
+    res.status(200).json(userInfor);
   } catch (error) {
     console.log(`controller signIn error on ${error}`);
   }

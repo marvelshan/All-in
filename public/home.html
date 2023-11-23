@@ -5,10 +5,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+  <style>
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
   <body>
     <h1>Live Event Update</h1>
-    <div id="event-list"></div>
+    <div class="gameId"></div>
+    <div class="eventList"></div>
+
+    homeRate:
+    <span class="homeOdds"></span>
+    <br />
+    homeBet: <input type="number" name="homeBet" max="1000" />
+    <button class="homeButton" type="submit" onclick="betHomeGame()">
+      bet
+    </button>
+    <br />
+    <h1 class="homeMainScore"></h1>
+    awayRate:
+    <span class="awayOdds"></span>
+    <br />
+    awayBet: <input type="text" name="awayBet" />
+    <button class="awayButton" type="submit" onclick="betAwayGame()">
+      bet
+    </button>
+    <br />
+    <h1 class="awayMainScore"></h1>
+    <h1>user information:</h1>
+    email:
+    <h2 class="userEmail"></h2>
+    name:
+    <h2 class="userName"></h2>
+    point:
+    <h2 class="userPoint"></h2>
+
+    <br />
+    Game:22200001
+    <a href="/home.html?game=22200001">
+      <h1 class="homeScore"></h1>
+      <h1 class="awayScore"></h1
+    ></a>
+
+    Game:22200002
+    <a href="/home.html?game=22200002"
+      ><h1 class="homeScore"></h1>
+      <h1 class="awayScore"></h1
+    ></a>
+
+    Game:22200003
+    <a href="/home.html?game=22200003"
+      ><h1 class="homeScore"></h1>
+      <h1 class="awayScore"></h1
+    ></a>
+
+    Game:22200004
+    <a href="/home.html?game=22200004">
+      <h1 class="homeScore"></h1>
+      <h1 class="awayScore"></h1
+    ></a>
+
+    Game:22200005
+    <a href="/home.html?game=22200005">
+      <h1 class="homeScore"></h1>
+      <h1 class="awayScore"></h1
+    ></a>
   </body>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameValue = urlParams.get("game");
+
+    document.querySelector(".gameId").textContent = gameValue;
+    const homeOdds = document.querySelector(".homeOdds");
+    const homeButton = document.querySelector(".homeButton");
+
+    const awayOdds = document.querySelector(".awayOdds");
+    const awayButton = document.querySelector(".awayButton");
+
+    const event = document.querySelector(".eventList");
+    const homeScoreElements = document.querySelectorAll(".homeScore");
+    const awayScoreElements = document.querySelectorAll(".awayScore");
+    const homeMainScore = document.querySelector(".homeMainScore");
+    const awayMainScore = document.querySelector(".awayMainScore");
+
+    function getOdds() {
+      fetch("/odds/getOdds", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: gameValue,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const gameEvent = JSON.parse(data);
+          homeOdds.textContent = gameEvent.home_odds;
+          awayOdds.textContent = gameEvent.away_odds;
+        });
+    }
+    getOdds();
+    // first get game information
+    function getGameEvent(gameId) {
+      fetch("/game/getGameEvent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: gameId,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const game = JSON.parse(data);
+          if (game.GAME_ID) {
+            homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
+              `home score: ${game.hs}`;
+            awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
+              `away score: ${game.vs}`;
+          }
+          if (game.GAME_ID == gameValue) {
+            event.textContent = `event: ${game.de}`;
+            homeMainScore.textContent = `home score: ${game.hs}`;
+            awayMainScore.textContent = `away score: ${game.vs}`;
+          }
+        });
+    }
+    getGameEvent(gameValue);
+    getGameEvent("22200001");
+    getGameEvent("22200002");
+    getGameEvent("22200003");
+    getGameEvent("22200004");
+    getGameEvent("22200005");
+
+    function betHomeGame() {
+      if (event.textContent === "event: Game End") {
+        return alert(
+          "The competition has concluded, and betting is no longer available.",
+        );
+      }
+      const betPoint = document.querySelector('input[name="homeBet"]').value;
+      const id = gameValue;
+      const hosting = "home";
+      fetch("/odds/bet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, betPoint, hosting }),
+      })
+        .then((response) => {
+          if (response.status === 404) {
+            alert("You dont have any point");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          getOdds();
+          getUserInfor();
+        });
+    }
+
+    function betAwayGame() {
+      if (event.textContent === "event: End Period") {
+        return alert(
+          "The competition has concluded, and betting is no longer available.",
+        );
+      }
+      const betPoint = document.querySelector('input[name="awayBet"]').value;
+      const id = gameValue;
+      const hosting = "away";
+      fetch("/odds/bet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, betPoint, hosting }),
+      })
+        .then((response) => {
+          if (response.status === 404) {
+            alert("You dont have any point");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          getOdds();
+          getUserInfor();
+        });
+    }
+  </script>
   <script type="importmap">
     {
       "imports": {
@@ -17,17 +210,57 @@
     }
   </script>
   <script type="module">
-    const event = document.getElementById("event-list");
     import { io } from "socket.io-client";
-
     const socket = io();
     socket.on("connection", () => {
       console.log("connected");
     });
     socket.emit("event");
 
-    socket.on("likeupdated", (game) => {
-      event.textContent = JSON.stringify(game);
+    socket.on("gameEvent", (gamePerEvent) => {
+      const game = JSON.parse(gamePerEvent);
+      if (game.GAME_ID) {
+        homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
+          `home score: ${game.hs}`;
+        awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
+          `away score: ${game.vs}`;
+      }
+      if (game.GAME_ID == gameValue) {
+        event.textContent = `event: ${game.de}`;
+        homeMainScore.textContent = `home score: ${game.hs}`;
+        awayMainScore.textContent = `away score: ${game.vs}`;
+      }
     });
+
+    socket.on("odds", (oddsFromRedis) => {
+      const odds = JSON.parse(oddsFromRedis);
+      if (odds.id == gameValue) {
+        homeOdds.textContent = odds.home_odds;
+        awayOdds.textContent = odds.away_odds;
+      }
+    });
+  </script>
+  <script>
+    // member information
+    function getUserInfor() {
+      const userEmail = document.querySelector(".userEmail");
+      const userName = document.querySelector(".userName");
+      const userPoint = document.querySelector(".userPoint");
+      fetch("/user/getUserInfor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          userEmail.textContent = data.email;
+          userName.textContent = data.name;
+          userPoint.textContent = data.point;
+        });
+    }
+    getUserInfor();
   </script>
 </html>

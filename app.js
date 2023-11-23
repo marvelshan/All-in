@@ -10,7 +10,6 @@ import userRouter from './routes/user.js';
 import chargeRouter from './routes/charge.js';
 import rankRouter from './routes/rank.js';
 import initializeWebSocket from './utils/socket.js';
-// import client from './utils/cache.js';
 
 const app = express();
 const httpServer = createServer(app);

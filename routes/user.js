@@ -1,6 +1,7 @@
 import express from 'express';
 import * as user from '../controller/user.js';
 import jwtoperator from '../middleware/signJWT.js';
+import authenticate from '../middleware/authenticate.js';
 
 const router = express.Router();
 
@@ -58,5 +59,7 @@ router.post(
   user.signUp,
   jwtoperator,
 );
+
+router.post('/getUserInfor', authenticate, user.getUserInfor);
 
 export default router;

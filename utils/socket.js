@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import client from './cache.js';
+import { client, clientSubscriber } from './cache.js';
 
 async function initializeWebSocket(httpServer) {
   const io = new Server(httpServer, {});
@@ -7,14 +7,25 @@ async function initializeWebSocket(httpServer) {
     console.log('websocket connect');
 
     socket.on('event', async () => {
-      await client.subscribe('dataUpdated', (error) => {
+      await clientSubscriber.subscribe('game', (error) => {
         if (error) {
           console.log(`socket redis error on ${error}`);
         }
       });
-      client.on('message', async (channel, message) => {
-        const gameData = JSON.parse(message);
-        socket.emit('likeupdated', gameData);
+      await clientSubscriber.subscribe('odds', (error) => {
+        if (error) {
+          console.log(`socket redis error on ${error}`);
+        }
+      });
+
+      clientSubscriber.on('message', async (channel, message) => {
+        if (channel === 'odds') {
+          const gameOdds = await client.get(`odds${message}`);
+          socket.emit('odds', gameOdds);
+        } else if (channel === 'game') {
+          const gameData = await client.get(`game${message}`);
+          socket.emit('gameEvent', gameData);
+        }
       });
     });
   });

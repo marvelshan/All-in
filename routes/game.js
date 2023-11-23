@@ -1,12 +1,11 @@
 import express from 'express';
-import getGameEvent from '../controller/game.js';
+import * as model from '../controller/game.js';
+import oddCalculator from '../controller/oddsCalculator.js';
 
 const router = express.Router();
 
-router.post(
-  '/',
-  // #swagger.ignore = true
-  getGameEvent,
-);
+router.post('/start', oddCalculator, model.startGameEventInRedis);
+
+router.post('/getGameEvent', model.putGameEventInRedis);
 
 export default router;
