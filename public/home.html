@@ -15,6 +15,9 @@
     <h1>Live Event Update</h1>
     <div class="gameId"></div>
     <div class="eventList"></div>
+    <a href="/rank.html"><button>rank</button></a>
+    <a href="/charge.html"><button>Top Up</button></a>
+    <br />
 
     homeRate:
     <span class="homeOdds"></span>
@@ -154,6 +157,12 @@
         );
       }
       const betPoint = document.querySelector('input[name="homeBet"]').value;
+      const userPoint = document.querySelector(".userPoint");
+      if (betPoint > userPoint.textContent) {
+        alert("有錢不賭，愧對父母");
+        window.location.href = `/charge.html`;
+        return;
+      }
       const id = gameValue;
       const hosting = "home";
       fetch("/odds/bet", {
@@ -263,6 +272,10 @@
           return response.json();
         })
         .then((data) => {
+          if (data.errors) {
+            alert("You should sign in first");
+            window.location.href = "/profile.html";
+          }
           userEmail.textContent = data.userInfor[0].email;
           userName.textContent = data.userInfor[0].name;
           userPoint.textContent = data.userInfor[0].point;

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script>
+    const container = document.querySelector(".container");
+    fetch("/rank/pointRank", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((rankInfor, i) => {
+          const element = document.createElement("div");
+          element.innerHTML = `rank:${i + 1}<br>
+          <span>name:</span>${rankInfor.name} 
+            <br>point: ${rankInfor.point} <br><br>`;
+          container.appendChild(element);
+        });
+      });
+  </script>
+</html>

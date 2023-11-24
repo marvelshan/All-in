@@ -5,26 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>topUp</title>
   </head>
+  <style>
+    .tpfield {
+      height: 40px;
+      width: 300px;
+      border: 1px solid gray;
+      margin: 5px 0;
+      padding: 5px;
+    }
+  </style>
   <body>
-    <div class="pay-information">付款資料</div>
-    <div class="order-box">
-      <div class="order-word">信用卡卡號</div>
-      <div class="tpfield" id="card-number"></div>
-    </div>
-    <div class="order-box">
-      <div class="order-word">有效期限</div>
-      <div class="tpfield" id="card-expiration-date"></div>
-    </div>
-    <div class="order-box">
-      <div class="order-word">安全碼</div>
-      <div class="tpfield" id="card-ccv"></div>
-    </div>
+    <h1>All-In</h1>
+    <span>儲值金額:</span>
+    <input type="number" name="chargeMoney" />
+    點數與現金為1:1
+    <div>付款資料</div>
+    <div class="order-word">信用卡卡號</div>
+    <div class="tpfield" id="card-number"></div>
+    <div class="order-word">有效期限</div>
+    <div class="tpfield" id="card-expiration-date"></div>
+    <div class="order-word">安全碼</div>
+    <div class="tpfield" id="card-ccv"></div>
     <button class="pay" onclick="onSubmit()">確認付款</button>
     <div id="orderNumber"></div>
   </body>
   <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
   <script>
-    const productURL = window.location.search;
     TPDirect.setupSDK(
       12348,
       "app_pa1pQcKoY22IlnSXq5m5WP5jFKzoRG58VEXpT7wU62ud7mMbDOGzCYIlzzLF",
@@ -136,11 +142,6 @@
       }
     });
     function onSubmit(event) {
-      //   if (localStorage.access_token === "undefined") {
-      //     alert("你尚未登入");
-      //     window.location.href = "/profile.html";
-      //     return;
-      //   }
       // 取得 TapPay Fields 的 status
       const tappayStatus = TPDirect.card.getTappayFieldsStatus();
 
@@ -156,21 +157,27 @@
           alert("get prime error " + result.msg);
           return;
         }
-        console.log(localStorage.access_token);
         const prime = result.card.prime;
-        console.log(prime);
-        const total = localStorage.price;
+        const chargeMoney = document.querySelector(
+          'input[name="chargeMoney"]',
+        ).value;
+        if (chargeMoney > 100000000) {
+          alert("小賭怡情，大賭要命");
+        }
+
         fetch("/topUp", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.access_token}`,
           },
-          body: JSON.stringify({ total, prime }),
+          body: JSON.stringify({ chargeMoney, prime }),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            return response.json();
+          })
           .then((data) => {
-            console.log(data.data);
+            alert(data.message);
+            window.location.href = `/home.html?game=22200001`;
           });
 
         // send prime to your server, to pay with Pay by Prime API .
