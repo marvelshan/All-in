@@ -52,7 +52,7 @@ export const getUserBetInformation = async (userId) => {
 
 export const getUserInformation = async (userId) => {
   try {
-    const result = await pool.query('SELECT * FROM member WHERE id = ?;', [
+    const result = await pool.query('SELECT * FROM member WHERE id = ?', [
       userId,
     ]);
     return result[0];
@@ -70,5 +70,38 @@ export const insertUserPerBet = async (userId, id, betPoint, odds, host) => {
     return result[0][0];
   } catch (error) {
     console.log(`model insertUserPerBet is error on ${error}`);
+  }
+};
+
+export const updateUserPerBetResult = async (id, host) => {
+  try {
+    const result = await pool.query(
+      'UPDATE bet SET result = true WHERE GAME_ID = ? AND host = ?',
+      [id, host],
+    );
+    return result[0][0];
+  } catch (error) {
+    console.log(`model updateUserPerBetResult is error on ${error}`);
+  }
+};
+
+export const selectWinUser = async (id) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM bet WHERE GAME_ID = ? AND result = 1',
+      [id],
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`model selectWinUser is error on ${error}`);
+  }
+};
+
+export const deleteBetInfor = async (id) => {
+  try {
+    const result = await pool.query('DELETE FROM bet WHERE GAME_ID = ?', [id]);
+    return result[0];
+  } catch (error) {
+    console.log(`model deleteBetInfor is error on ${error}`);
   }
 };
