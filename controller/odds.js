@@ -7,8 +7,8 @@ export const oddsManipulator = async (req, res, next) => {
     const { id, betPoint, hosting } = req.body;
     const point = parseInt(betPoint, 10);
     req.body.betPoint = point;
-    if (point === 0 || point > 1000) {
-      res.status(404).send('Cant bet over $1000 or below 1');
+    if (point === 0 || point < 0) {
+      return res.status(404).send('Can not bet below 1');
     }
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
     let homeOdds = parseFloat(oddsInformation.home_odds);

@@ -57,7 +57,7 @@ export const checkUserPoint = async (req, res, next) => {
   try {
     const { userId, betPoint } = req.body;
     const userPoint = await model.getUserInformation(userId);
-    if (betPoint > userPoint.point) {
+    if (betPoint > userPoint[0].point) {
       return res.status(404).send('User do not have enough point');
     }
     next();

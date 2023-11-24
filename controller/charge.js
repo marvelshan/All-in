@@ -3,12 +3,11 @@ import topUpPoint from '../model/charge.js';
 
 export const sendTappay = async (req, res) => {
   try {
-    const { id, prime, name, email, point } = req.body;
+    const { userId, prime, name, email, chargeMoney } = req.body;
 
     const partnerKey = process.env.TAPPAY_PARTNER_KEY;
     const merchantId = process.env.TAPPAY_MERCHANT_ID;
     const details = 'TapPay Test';
-    const amount = point;
     const cardholder = {
       phone_number: '0912345678',
       name,
@@ -21,7 +20,7 @@ export const sendTappay = async (req, res) => {
       partnerKey,
       merchantId,
       details,
-      amount,
+      amount: chargeMoney,
       cardholder,
       remember: true,
     };
@@ -33,10 +32,11 @@ export const sendTappay = async (req, res) => {
           'partner_PHgswvYEk4QY6oy3n8X3CwiQCVQmv91ZcFoD5VrkGFXo8N7BFiLUxzeG',
       },
     });
-    console.log(TapPayInformation.data.status);
-    if (TapPayInformation.data.status === 0) {
-      await topUpPoint(point, id);
-      res.status(200).send('success top up');
+    // console.log(TapPayInformation.data.status);
+    // if (TapPayInformation.data.status === 0) {
+    if (TapPayInformation.data.status) {
+      await topUpPoint(chargeMoney, userId);
+      res.status(200).json({ success: true, message: 'Successfully top up' });
     } else {
       res.status(404).send('Your payment is error');
     }
