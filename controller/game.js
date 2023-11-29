@@ -16,6 +16,27 @@ function childProcess(address) {
   });
 }
 
+let isChildProcessRunning = false;
+
+function startChildProcess() {
+  if (!isChildProcessRunning) {
+    isChildProcessRunning = true;
+    childProcess('./utils/gameWorker.js')
+      .then(() => {
+        console.log('Success');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        isChildProcessRunning = false;
+      });
+  } else {
+    console.log('Child process is already running.');
+  }
+}
+// child process
+
 export const startGameEventInRedis = async (req, res) => {
   try {
     const { id } = req.body;
@@ -27,13 +48,7 @@ export const startGameEventInRedis = async (req, res) => {
       await client.rpush(`gameRedis${id}`, JSON.stringify(gameData[i]));
     });
 
-    childProcess('./utils/gameWorker.js')
-      .then(() => {
-        console.log('Success');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    startChildProcess();
 
     res
       .status(200)
@@ -46,8 +61,10 @@ export const startGameEventInRedis = async (req, res) => {
 export const putGameEventInRedis = async (req, res) => {
   try {
     const { id } = req.body;
-    const gameData = await client.get(`game${id}`);
-    res.status(200).json(gameData);
+    const gameDataFromRedis = await client.get(`game${id}`);
+    const gameData = JSON.parse(gameDataFromRedis);
+    const gameTeamName = await model.getGameTeamName(id);
+    res.status(200).json({ gameData, gameTeamName });
   } catch (error) {
     console.log(`putGameEventInRedis controller error on ${error}`);
   }
