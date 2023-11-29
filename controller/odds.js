@@ -3,20 +3,37 @@ import * as userModel from '../model/user.js';
 import { client } from '../utils/cache.js';
 
 export const oddsManipulator = async (req, res, next) => {
+  const { id, betPoint, hosting } = req.body;
+  const point = parseInt(betPoint, 10);
+  req.body.betPoint = point;
   try {
-    const { id, betPoint, hosting } = req.body;
-    const point = parseInt(betPoint, 10);
-    req.body.betPoint = point;
+    console.time('oddsManipulator');
+
     if (point === 0 || point < 0) {
-      return res.status(404).send('Can not bet below 1');
+      return res.status(404).json({
+        success: false,
+        message: 'Can not bet below 1',
+      });
     }
+
+    const lockKey = `lock:${id}`;
+    await client.watch(lockKey);
+    console.time('redisGet');
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
+    console.timeEnd('redisGet');
+
     let homeOdds = parseFloat(oddsInformation.home_odds);
     let awayOdds = parseFloat(oddsInformation.away_odds);
     if (hosting === 'home') {
       req.body.odds = homeOdds;
       oddsInformation.moneyBuffer -= point;
-      if (oddsInformation.moneyBuffer <= 0) {
+      if (
+        oddsInformation.moneyBuffer <= 0 &&
+        homeOdds <= 4 &&
+        homeOdds > 0 &&
+        awayOdds <= 4 &&
+        awayOdds > 0
+      ) {
         oddsInformation.moneyBuffer += 1000;
         homeOdds -= 0.01;
         awayOdds += 0.01;
@@ -24,7 +41,13 @@ export const oddsManipulator = async (req, res, next) => {
     } else {
       req.body.odds = awayOdds;
       oddsInformation.moneyBuffer += point;
-      if (oddsInformation.moneyBuffer >= 1000) {
+      if (
+        oddsInformation.moneyBuffer >= 1000 &&
+        homeOdds <= 4 &&
+        homeOdds > 0 &&
+        awayOdds <= 4 &&
+        awayOdds > 0
+      ) {
         oddsInformation.moneyBuffer -= 1000;
         homeOdds += 0.01;
         awayOdds -= 0.01;
@@ -36,12 +59,25 @@ export const oddsManipulator = async (req, res, next) => {
       away_odds: awayOdds.toFixed(2),
       moneyBuffer: oddsInformation.moneyBuffer,
     };
+    console.time('redisMulti');
+    const multi = await client.multi();
+    multi.publish('odds', id);
+    multi.set(`odds${id}`, JSON.stringify(data));
+    console.timeEnd('redisMulti');
 
-    await client.publish('odds', id);
-    await client.set(`odds${id}`, JSON.stringify(data));
+    const execResult = await multi.exec();
+    if (!execResult) {
+      return res.status(403).json({
+        success: false,
+        message: 'Transaction failed. Try again later.',
+      });
+    }
+    console.timeEnd('oddsManipulator');
     next();
   } catch (error) {
     console.log(`oddsManipulator controller is error on ${error}`);
+  } finally {
+    await client.unwatch();
   }
 };
 
@@ -57,8 +93,10 @@ export const getOdds = async (req, res) => {
 
 export const changeUserPoint = async (req, res, next) => {
   try {
+    console.time('changeUserPoint');
     const { userId, betPoint } = req.body;
     await userModel.changeUserPoint(betPoint, userId);
+    console.timeEnd('changeUserPoint');
     next();
   } catch (error) {
     console.log(`controller changeUserPoint error on ${error}`);

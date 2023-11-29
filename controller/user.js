@@ -7,7 +7,10 @@ export const checkEmailType = async (req, res, next) => {
     const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const mailFormat = /\S+@\S+\.\S+/;
     if (!email.match(mailFormat) || !pattern.test(email)) {
-      return res.status(404).send('User type error email');
+      return res.status(404).json({
+        success: false,
+        message: 'User type error email',
+      });
     }
     next();
   } catch (error) {
@@ -21,7 +24,10 @@ export const signUp = async (req, res, next) => {
     const { name, email, password } = req.body;
     const checkUser = await model.findUser(email);
     if (checkUser !== undefined) {
-      return res.status(404).send('User already sign up');
+      return res.status(404).json({
+        success: false,
+        message: 'This account already sign up before',
+      });
     }
 
     const saltRounds = 10;
@@ -39,13 +45,19 @@ export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     const checkUser = await model.findUser(email);
     if (checkUser === undefined) {
-      res.status(404).send('User does not sign up');
+      return res.status(404).json({
+        success: false,
+        message: 'User does not sign up',
+      });
     }
     req.body.userId = checkUser.id;
     req.body.name = checkUser.name;
     const checkPassword = bcrypt.compareSync(password, checkUser.password);
     if (checkPassword !== true) {
-      return res.status(400).send('password is incorrect');
+      return res.status(400).json({
+        success: false,
+        message: 'password is incorrect',
+      });
     }
     next();
   } catch (error) {
@@ -55,11 +67,16 @@ export const signIn = async (req, res, next) => {
 
 export const checkUserPoint = async (req, res, next) => {
   try {
+    console.time('checkUserPoint');
     const { userId, betPoint } = req.body;
     const userPoint = await model.getUserInformation(userId);
     if (betPoint > userPoint[0].point) {
-      return res.status(404).send('User do not have enough point');
+      return res.status(404).json({
+        success: false,
+        message: 'User do not have enough point',
+      });
     }
+    console.timeEnd('checkUserPoint');
     next();
   } catch (error) {
     console.log(`controller signIn error on ${error}`);
@@ -80,8 +97,10 @@ export const getUserInfor = async (req, res) => {
 
 export const recordPerBet = async (req, res) => {
   try {
+    console.time('recordPerBet');
     const { id, betPoint, userId, odds, hosting } = req.body;
-    await model.insertUserPerBet(userId, id, betPoint, odds, hosting);
+    model.insertUserPerBet(userId, id, betPoint, odds, hosting);
+    console.timeEnd('recordPerBet');
     res
       .status(200)
       .send({ success: true, message: 'User betted successfully' });
