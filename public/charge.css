@@ -1,0 +1,73 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  background-image: url("./image/background.png");
+}
+
+.wrapper {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+h1 {
+  color: #333;
+}
+
+span {
+  font-weight: bold;
+}
+
+input[type="number"] {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.order-word {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.tpfield {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.pay {
+  background-color: #ea7500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#orderNumber {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #4caf50;
+}

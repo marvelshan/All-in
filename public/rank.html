@@ -4,29 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="rank.css" />
   </head>
   <body>
-    <div class="container"></div>
-  </body>
-  <script>
-    const container = document.querySelector(".container");
-    fetch("/rank/pointRank", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        data.forEach((rankInfor, i) => {
+    <div class="container" id="rankContainer"></div>
+    <script>
+      const container = document.getElementById("rankContainer");
+
+      const fetchAndDisplayRanks = async (start, end) => {
+        const response = await fetch("/rank/pointRank", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.success === false) {
+          return alert(data.message);
+        }
+
+        data.slice(start, end).forEach((rankInfor, i) => {
           const element = document.createElement("div");
-          element.innerHTML = `rank:${i + 1}<br>
-          <span>name:</span>${rankInfor.name} 
-            <br>point: ${rankInfor.point} <br><br>`;
+          element.classList.add("rankcontainer");
+          element.innerHTML = `
+            <div class="rank-number">Rank: ${i + start + 1}</div>
+            <div class="rank-details">
+              <span>Name:</span> ${rankInfor.name}<br>
+              <span>Points:</span> ${rankInfor.point}
+            </div>`;
           container.appendChild(element);
         });
-      });
-  </script>
+      };
+
+      const showMoreRanks = () => {
+        const scrolledToBottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight;
+
+        if (scrolledToBottom) {
+          const visibleRanks = document.querySelectorAll(
+            ".rankcontainer:not([style*='display: none'])",
+          );
+          const nextIndex = visibleRanks.length;
+          const endIndex = nextIndex + 20;
+
+          fetchAndDisplayRanks(nextIndex, endIndex);
+        }
+      };
+
+      window.addEventListener("scroll", showMoreRanks);
+
+      fetchAndDisplayRanks(0, 10);
+    </script>
+  </body>
 </html>

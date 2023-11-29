@@ -4,33 +4,93 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>profile</title>
+    <link rel="stylesheet" type="text/css" href="profile.css" />
   </head>
   <body>
-    <h1>Sign up</h1>
-    <form id="signup-form">
-      name:
-      <input type="text" name="name" class="form-control" required />
-      <br />
-      email:
-      <input type="text" name="email" class="form-control" required />
-      <br />
-      Password:<input type="password" name="password" class="form-control" />
-      <br />
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-    </form>
-    <br />
-    <h1>Sign in</h1>
-    <form id="signin-form">
-      email:
-      <input type="text" name="signInName" class="form-control" required />
-      <br />
-      Password:<input type="text" name="signInPassword" class="form-control" />
-      <br />
-      <button type="submit" class="btn btn-primary">Sign In</button>
-    </form>
+    <div class="container">
+      <form id="signin-form">
+        <div class="form-header"><h1>Sign In</h1></div>
+        <div class="form-group">
+          <label for="signInName">Email:</label>
+          <input
+            type="text"
+            id="signInName"
+            name="signInName"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="signInPassword">Password:</label>
+          <input
+            type="password"
+            id="signInPassword"
+            name="signInPassword"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+        <p id="noAccount">
+          Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
+        </p>
+      </form>
+
+      <form id="signup-form" style="display: none">
+        <div class="form-header"><h1>Sign Up</h1></div>
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <p id="haveAccount">
+          Already have an account? <a href="#" id="showSignIn">Sign In</a>
+        </p>
+      </form>
+    </div>
   </body>
 
   <script>
+    document
+      .getElementById("showSignUp")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("signin-form").style.display = "none";
+        document.getElementById("signup-form").style.display = "block";
+      });
+
+    document
+      .getElementById("showSignIn")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("signup-form").style.display = "none";
+        document.getElementById("signin-form").style.display = "block";
+      });
+
     document
       .getElementById("signup-form")
       .addEventListener("submit", function (event) {
@@ -54,7 +114,9 @@
             return response.json();
           })
           .then((data) => {
-            console.log(data);
+            if (data.success === false) {
+              return alert(data.message);
+            }
             alert("Welcome to use All-In");
             window.location.href = `/home.html?game=22200001`;
           });
@@ -83,7 +145,9 @@
             return response.json();
           })
           .then((data) => {
-            console.log(data);
+            if (data.success === false) {
+              return alert(data.message);
+            }
             alert("Successfully sign in");
             window.location.href = `/home.html?game=22200001`;
           });

@@ -4,218 +4,103 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="home.css" />
   </head>
-  <style>
-    a {
-      text-decoration: none;
-      color: black;
-    }
-  </style>
   <body>
-    <h1>Live Event Update</h1>
+    <div class="header">
+      <a href="" class="home">Home</a>
+      <a href="/rank.html" class="rank">Rank</a>
+      <a href="/charge.html" class="charge">Top Up</a>
+    </div>
+
+    <div class="left-column">
+      <div class="teamGame">
+        <a href="/home.html?game=22200001">
+          <div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div>
+          </div>
+        </a>
+      </div>
+
+      <div class="teamGame">
+        <a href="/home.html?game=22200002"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/home.html?game=22200003"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/home.html?game=22200004"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/home.html?game=22200005"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+    </div>
+
+    <div class="main-column">
+      <div class="mainInformation">
+        <div class="courtFrame">
+          <div class="basketballcourt"></div>
+        </div>
+        <div class="eventList"></div>
+        <div class="scoreBox">
+          <div class="score">
+            <div class="homeMainTeam"></div>
+            <div class="homeMainScore"></div>
+            <div class="homeOdds"></div>
+            <input type="number" name="homeBet" max="1000" />
+            <button class="homeButton" type="submit" onclick="betHomeGame()">
+              bet
+            </button>
+          </div>
+          <img class="vs" src="./image/vs.png" />
+          <div class="score">
+            <div class="awayMainTeam"></div>
+            <div class="awayMainScore"></div>
+            <span class="awayOdds"></span>
+            <input type="number" name="awayBet" />
+            <button class="awayButton" type="submit" onclick="betAwayGame()">
+              bet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="gameId"></div>
-    <div class="eventList"></div>
-    <a href="/rank.html"><button>rank</button></a>
-    <a href="/charge.html"><button>Top Up</button></a>
-    <br />
-
-    homeRate:
-    <span class="homeOdds"></span>
-    <br />
-    homeBet: <input type="number" name="homeBet" max="1000" />
-    <button class="homeButton" type="submit" onclick="betHomeGame()">
-      bet
-    </button>
-    <br />
-    <h1 class="homeMainScore"></h1>
-    awayRate:
-    <span class="awayOdds"></span>
-    <br />
-    awayBet: <input type="text" name="awayBet" />
-    <button class="awayButton" type="submit" onclick="betAwayGame()">
-      bet
-    </button>
-    <br />
-    <h1 class="awayMainScore"></h1>
-    <h1>user information:</h1>
-    email:
-    <h2 class="userEmail"></h2>
-    name:
-    <h2 class="userName"></h2>
-    point:
-    <h2 class="userPoint"></h2>
-    <div class="container"></div>
-
-    <br />
-    Game:22200001
-    <a href="/home.html?game=22200001">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200002
-    <a href="/home.html?game=22200002"
-      ><h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200003
-    <a href="/home.html?game=22200003"
-      ><h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200004
-    <a href="/home.html?game=22200004">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200005
-    <a href="/home.html?game=22200005">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
+    <div class="right-column">
+      <div>user information:</div>
+      email:
+      <div class="userEmail"></div>
+      name:
+      <div class="userName"></div>
+      point:
+      <div class="userPoint"></div>
+      <div class="container"></div>
+    </div>
   </body>
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const gameValue = urlParams.get("game");
-
-    document.querySelector(".gameId").textContent = gameValue;
-    const homeOdds = document.querySelector(".homeOdds");
-    const homeButton = document.querySelector(".homeButton");
-
-    const awayOdds = document.querySelector(".awayOdds");
-    const awayButton = document.querySelector(".awayButton");
-
-    const event = document.querySelector(".eventList");
-    const homeScoreElements = document.querySelectorAll(".homeScore");
-    const awayScoreElements = document.querySelectorAll(".awayScore");
-    const homeMainScore = document.querySelector(".homeMainScore");
-    const awayMainScore = document.querySelector(".awayMainScore");
-
-    function getOdds() {
-      fetch("/odds/getOdds", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: gameValue,
-        }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          const gameEvent = JSON.parse(data);
-          homeOdds.textContent = gameEvent.home_odds;
-          awayOdds.textContent = gameEvent.away_odds;
-        });
-    }
-    getOdds();
-    // first get game information
-    function getGameEvent(gameId) {
-      fetch("/game/getGameEvent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: gameId,
-        }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          const game = JSON.parse(data);
-          if (game.GAME_ID) {
-            homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
-              `home score: ${game.hs}`;
-            awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
-              `away score: ${game.vs}`;
-          }
-          if (game.GAME_ID == gameValue) {
-            event.textContent = `event: ${game.de}`;
-            homeMainScore.textContent = `home score: ${game.hs}`;
-            awayMainScore.textContent = `away score: ${game.vs}`;
-          }
-        });
-    }
-    getGameEvent(gameValue);
-    getGameEvent("22200001");
-    getGameEvent("22200002");
-    getGameEvent("22200003");
-    getGameEvent("22200004");
-    getGameEvent("22200005");
-
-    function betHomeGame() {
-      if (event.textContent === "event: Game End") {
-        return alert(
-          "The competition has concluded, and betting is no longer available.",
-        );
-      }
-      const betPoint = document.querySelector('input[name="homeBet"]').value;
-      const userPoint = document.querySelector(".userPoint");
-      if (betPoint > userPoint.textContent) {
-        alert("有錢不賭，愧對父母");
-        window.location.href = `/charge.html`;
-        return;
-      }
-      const id = gameValue;
-      const hosting = "home";
-      fetch("/odds/bet", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, betPoint, hosting }),
-      })
-        .then((response) => {
-          if (response.status === 404) {
-            alert("You dont have any point");
-          } else if (response.status === 200) {
-            alert("User betted successfully");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          getOdds();
-          getUserInfor();
-        });
-    }
-
-    function betAwayGame() {
-      if (event.textContent === "event: End Period") {
-        return alert(
-          "The competition has concluded, and betting is no longer available.",
-        );
-      }
-      const betPoint = document.querySelector('input[name="awayBet"]').value;
-      const id = gameValue;
-      const hosting = "away";
-      fetch("/odds/bet", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, betPoint, hosting }),
-      })
-        .then((response) => {
-          if (response.status === 404) {
-            alert("You dont have any point");
-          } else if (response.status === 200) {
-            alert("User betted successfully");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          getOdds();
-          getUserInfor();
-        });
-    }
-  </script>
+  <script src="javascript/home.js"></script>
   <script type="importmap">
     {
       "imports": {
@@ -234,15 +119,13 @@
     socket.on("gameEvent", (gamePerEvent) => {
       const game = JSON.parse(gamePerEvent);
       if (game.GAME_ID) {
-        homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
-          `home score: ${game.hs}`;
-        awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
-          `away score: ${game.vs}`;
+        homeScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.hs}`;
+        awayScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.vs}`;
       }
       if (game.GAME_ID == gameValue) {
         event.textContent = `event: ${game.de}`;
-        homeMainScore.textContent = `home score: ${game.hs}`;
-        awayMainScore.textContent = `away score: ${game.vs}`;
+        homeMainScore.textContent = `${game.hs}`;
+        awayMainScore.textContent = `${game.vs}`;
       }
     });
 
@@ -253,45 +136,5 @@
         awayOdds.textContent = odds.away_odds;
       }
     });
-  </script>
-  <script>
-    // member information
-    function getUserInfor() {
-      const userEmail = document.querySelector(".userEmail");
-      const userName = document.querySelector(".userName");
-      const userPoint = document.querySelector(".userPoint");
-      const container = document.querySelector(".container");
-
-      fetch("/user/getUserInfor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.errors) {
-            alert("You should sign in first");
-            window.location.href = "/profile.html";
-          }
-          userEmail.textContent = data.userInfor[0].email;
-          userName.textContent = data.userInfor[0].name;
-          userPoint.textContent = data.userInfor[0].point;
-
-          container.innerHTML = "";
-          data.betInfor.forEach((betData) => {
-            const element = document.createElement("div");
-            element.innerHTML = `<h3>betting record</h3>
-            GAME ID: ${betData.GAME_ID} <br>
-            bet point: ${betData.betting_point} <br>
-            betting odds: ${betData.betting_odds} <br>
-            host: ${betData.host} <br>`;
-            container.appendChild(element);
-          });
-        });
-    }
-    getUserInfor();
   </script>
 </html>

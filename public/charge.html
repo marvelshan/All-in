@@ -4,30 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>topUp</title>
+    <link rel="stylesheet" type="text/css" href="charge.css" />
   </head>
-  <style>
-    .tpfield {
-      height: 40px;
-      width: 300px;
-      border: 1px solid gray;
-      margin: 5px 0;
-      padding: 5px;
-    }
-  </style>
   <body>
-    <h1>All-In</h1>
-    <span>儲值金額:</span>
-    <input type="number" name="chargeMoney" />
-    點數與現金為1:1
-    <div>付款資料</div>
-    <div class="order-word">信用卡卡號</div>
-    <div class="tpfield" id="card-number"></div>
-    <div class="order-word">有效期限</div>
-    <div class="tpfield" id="card-expiration-date"></div>
-    <div class="order-word">安全碼</div>
-    <div class="tpfield" id="card-ccv"></div>
-    <button class="pay" onclick="onSubmit()">確認付款</button>
-    <div id="orderNumber"></div>
+    <div class="wrapper">
+      <h1>All-In</h1>
+      <span>儲值金額:</span>
+      <input type="number" name="chargeMoney" />
+      點數與現金為1:1
+      <div class="order-container">
+        <div class="order-word">信用卡卡號</div>
+        <div class="tpfield" id="card-number"></div>
+      </div>
+      <div class="order-container">
+        <div class="order-word">有效期限</div>
+        <div class="tpfield" id="card-expiration-date"></div>
+      </div>
+      <div class="order-container">
+        <div class="order-word">安全碼</div>
+        <div class="tpfield" id="card-ccv"></div>
+      </div>
+      <button class="pay" onclick="onSubmit()">確認付款</button>
+      <div id="orderNumber"></div>
+    </div>
   </body>
   <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
   <script>
@@ -176,6 +175,9 @@
             return response.json();
           })
           .then((data) => {
+            if (data.success === false) {
+              return alert(data.message);
+            }
             alert(data.message);
             window.location.href = `/home.html?game=22200001`;
           });
