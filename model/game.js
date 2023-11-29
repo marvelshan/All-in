@@ -24,3 +24,19 @@ export const insertRealtimeEvent = async (event) => {
     return error;
   }
 };
+
+export const getGameTeamName = async (id) => {
+  try {
+    const result = await pool.query(
+      `SELECT DISTINCT NBA_game_log.tid, NBA_TEAM.TEAM_ABBR
+      FROM NBA_game_log 
+      JOIN NBA_TEAM ON NBA_game_log.tid = NBA_TEAM.TEAM_ID
+      WHERE NBA_game_log.GAME_ID = ?;`,
+      [id],
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`getGameTeamName model is ${error}`);
+    return error;
+  }
+};
