@@ -67,6 +67,11 @@ export const insertUserPerBet = async (userId, id, betPoint, odds, host) => {
       'INSERT INTO bet (member_id, GAME_ID, betting_point, betting_odds, host) VALUES (?,?,?,?,?)',
       [userId, id, betPoint, odds, host],
     );
+    const betResult = await pool.query(
+      'INSERT INTO bet_for_admin (member_id, GAME_ID, betting_point, betting_odds, host) VALUES (?,?,?,?,?)',
+      [userId, id, betPoint, odds, host],
+    );
+    console.log(betResult);
     return result[0][0];
   } catch (error) {
     console.log(`model insertUserPerBet is error on ${error}`);
