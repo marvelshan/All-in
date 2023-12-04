@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { client } from './cache.js';
 import * as userModel from '../model/user.js';
 
@@ -21,22 +20,7 @@ async function gameEnd(event, id) {
         data.betting_point * parseFloat(data.betting_odds) * -1;
       await userModel.changeUserPoint(winningPoint, data.member_id);
     });
-    setTimeout(() => {
-      const nextId = parseInt(id, 10);
-      axios
-        .post('https://ygolonhcet.online/game/start', {
-          id: nextId,
-        })
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error('Error making HTTP request:', error);
-        });
-      // Cuz game emulator will repeat so web need to
-      // delete bet information to make last game bet information will not influence next game
-      userModel.deleteBetInfor(id);
-    }, 1000);
+    await userModel.deleteBetInfor(id);
   }
 }
 

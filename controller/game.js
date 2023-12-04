@@ -16,26 +16,16 @@ function childProcess(address) {
   });
 }
 
-let isChildProcessRunning = false;
-
-function startChildProcess() {
-  if (!isChildProcessRunning) {
-    isChildProcessRunning = true;
-    childProcess('./utils/gameWorker.js')
-      .then(() => {
-        console.log('Success');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      })
-      .finally(() => {
-        isChildProcessRunning = false;
-      });
-  } else {
-    console.log('Child process is already running.');
-  }
-}
 // child process
+function startChildProcess() {
+  childProcess('./utils/gameWorker.js')
+    .then(() => {
+      console.log('Success');
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
 
 export const startGameEventInRedis = async (req, res) => {
   try {
@@ -47,7 +37,6 @@ export const startGameEventInRedis = async (req, res) => {
     gameData.forEach(async (element, i) => {
       await client.rpush(`gameRedis${id}`, JSON.stringify(gameData[i]));
     });
-
     startChildProcess();
 
     res
