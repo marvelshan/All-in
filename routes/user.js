@@ -62,4 +62,6 @@ router.post(
 
 router.post('/getUserInfor', authenticate, user.getUserInfor);
 
+router.post('/record', authenticate, user.getUserBetGameEnd);
+
 export default router;

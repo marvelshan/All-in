@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>admin</title>
+  </head>
+  <body>
+    <div class="barChart">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class="pieFrame">
+      <div class="pie">
+        <canvas id="pieChart1"></canvas>
+      </div>
+      <div class="pie">
+        <canvas id="pieChart2"></canvas>
+      </div>
+      <div class="pie">
+        <canvas id="pieChart3"></canvas>
+      </div>
+      <div class="pie">
+        <canvas id="pieChart4"></canvas>
+      </div>
+      <div class="pie">
+        <canvas id="pieChart5"></canvas>
+      </div>
+    </div>
+    <h1>Start game</h1>
+    <button onclick="startGame(22200001)" class="button">PHI vs BOS</button>
+    <button onclick="startGame(22200002)" class="button">LAL vs GSW</button>
+    <button onclick="startGame(22200003)" class="button">ORL vs DET</button>
+    <button onclick="startGame(22200004)" class="button">WAS vs IND</button>
+    <button onclick="startGame(22200005)" class="button">ATL vs HOU</button>
+  </body>
+  <script src="javascript/admin.js"></script>
+  <script>
+    function startGame(gameId) {
+      fetch("/game/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: gameId,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success === false) {
+            return alert(data.message);
+          } else if (data.success === true) {
+            return alert(data.message);
+          }
+        });
+    }
+  </script>
+</html>

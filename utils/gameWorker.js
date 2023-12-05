@@ -10,9 +10,11 @@ async function gameEnd(event, id) {
     if (event.hs > event.vs) {
       const host = 'home';
       await userModel.updateUserPerBetResult(id, host);
+      await userModel.updateLoseBetResult(id, 'away');
     } else if (event.hs < event.vs) {
       const host = 'away';
       await userModel.updateUserPerBetResult(id, host);
+      await userModel.updateLoseBetResult(id, 'home');
     }
     const winUserInfor = await userModel.selectWinUser(id);
     winUserInfor.forEach(async (data) => {
@@ -47,7 +49,7 @@ async function putGameEventIntoRedis(id) {
   const event = JSON.parse(gameEvent);
   if (event !== null) {
     const timeDiff =
-      (new Date(event.wallclk) - new Date(startTime[games.indexOf(id)])) / 10;
+      (new Date(event.wallclk) - new Date(startTime[games.indexOf(id)])) / 100;
     setTimeout(async () => {
       await client.publish('game', id);
       await client.set(`game${id}`, JSON.stringify(event));

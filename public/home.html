@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Home Page</title>
     <link rel="stylesheet" type="text/css" href="home.css" />
   </head>
   <body>
     <div class="header">
-      <a href="" class="home">Home</a>
-      <a href="/rank.html" class="rank">Rank</a>
-      <a href="/charge.html" class="charge">Top Up</a>
+      <a href="" class="navbar">Home</a>
+      <a href="/rank.html" class="navbar">Rank</a>
+      <a href="/charge.html" class="navbar">Top Up</a>
+      <a href="/record.html" class="navbar">Record</a>
     </div>
 
     <div class="left-column">
@@ -60,10 +61,13 @@
 
     <div class="main-column">
       <div class="mainInformation">
-        <div class="courtFrame">
-          <div class="basketballcourt"></div>
+        <div class="eventFrame">
+          <div class="courtFrame">
+            <div class="homeTeamMark" id="homeTeamMark"></div>
+            <div class="awayTeamMark" id="awayTeamMark"></div>
+          </div>
+          <div class="eventList"></div>
         </div>
-        <div class="eventList"></div>
         <div class="scoreBox">
           <div class="score">
             <div class="homeMainTeam"></div>
@@ -108,33 +112,5 @@
       }
     }
   </script>
-  <script type="module">
-    import { io } from "socket.io-client";
-    const socket = io();
-    socket.on("connection", () => {
-      console.log("connected");
-    });
-    socket.emit("event");
-
-    socket.on("gameEvent", (gamePerEvent) => {
-      const game = JSON.parse(gamePerEvent);
-      if (game.GAME_ID) {
-        homeScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.hs}`;
-        awayScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.vs}`;
-      }
-      if (game.GAME_ID == gameValue) {
-        event.textContent = `event: ${game.de}`;
-        homeMainScore.textContent = `${game.hs}`;
-        awayMainScore.textContent = `${game.vs}`;
-      }
-    });
-
-    socket.on("odds", (oddsFromRedis) => {
-      const odds = JSON.parse(oddsFromRedis);
-      if (odds.id == gameValue) {
-        homeOdds.textContent = odds.home_odds;
-        awayOdds.textContent = odds.away_odds;
-      }
-    });
-  </script>
+  <script type="module" src="javascript/homescoket.js"></script>
 </html>

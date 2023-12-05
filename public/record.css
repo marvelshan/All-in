@@ -1,0 +1,81 @@
+html {
+  height: 100%;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("./image/adminbackground.png");
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 0 30px 0;
+}
+.navbar {
+  padding: 0 40px 0 40px;
+  font-size: 18px;
+}
+.navbar:hover {
+  color: #ea7500;
+}
+.frame {
+  display: flex;
+  justify-content: center;
+}
+.memberInformation {
+  background-color: #f4f4f4;
+  height: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 1%;
+  float: left;
+  width: 18%;
+  box-sizing: border-box;
+}
+.memberInformation > div {
+  font-size: 18px;
+  font-weight: bold;
+}
+.gamecontainer {
+  background-color: #fff;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.container {
+  font-weight: bold;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 1%;
+  float: left;
+  width: 40%;
+  box-sizing: border-box;
+}
+.record-item {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.title,
+.userName,
+.userEmail,
+.userPoint {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+.winningPoint {
+  color: #ea7500;
+}
+.lose {
+  color: #8a2be2;
+}

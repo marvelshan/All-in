@@ -5,7 +5,23 @@ body {
   background-color: #f8f8f8;
   background-image: url("./image/background.png");
 }
-
+a {
+  text-decoration: none;
+  color: black;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 0 30px 0;
+}
+.navbar {
+  padding: 0 40px 0 40px;
+  font-size: 18px;
+}
+.navbar:hover {
+  color: #ea7500;
+}
 .container {
   max-width: 800px;
   margin: 20px auto;
