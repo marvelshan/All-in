@@ -37,12 +37,21 @@ export const changeUserPoint = async (betPoint, userId) => {
 
 export const getUserBetInformation = async (userId) => {
   try {
+    const result = await pool.query('SELECT * FROM bet WHERE member_id = ?;', [
+      userId,
+    ]);
+    console.log(result[0]);
+    return result[0];
+  } catch (error) {
+    console.log(`model getUserBetInformation is error on ${error}`);
+  }
+};
+
+export const getUserBetGameEnd = async (userId) => {
+  try {
     const result = await pool.query(
-      `SELECT bet.*
-      FROM bet
-      JOIN member ON bet.member_id = member.id
-      WHERE bet.member_id = ? AND member.id = ?;`,
-      [userId, userId],
+      'SELECT * FROM bet_for_admin WHERE member_id = ? ORDER BY id DESC;',
+      [userId],
     );
     return result[0];
   } catch (error) {
@@ -63,16 +72,16 @@ export const getUserInformation = async (userId) => {
 
 export const insertUserPerBet = async (userId, id, betPoint, odds, host) => {
   try {
-    const result = await pool.query(
+    const result1 = await pool.query(
       'INSERT INTO bet (member_id, GAME_ID, betting_point, betting_odds, host) VALUES (?,?,?,?,?)',
       [userId, id, betPoint, odds, host],
     );
-    const betResult = await pool.query(
+
+    await pool.query(
       'INSERT INTO bet_for_admin (member_id, GAME_ID, betting_point, betting_odds, host) VALUES (?,?,?,?,?)',
       [userId, id, betPoint, odds, host],
     );
-    console.log(betResult);
-    return result[0][0];
+    return result1[0][0];
   } catch (error) {
     console.log(`model insertUserPerBet is error on ${error}`);
   }
@@ -81,12 +90,24 @@ export const insertUserPerBet = async (userId, id, betPoint, odds, host) => {
 export const updateUserPerBetResult = async (id, host) => {
   try {
     const result = await pool.query(
-      'UPDATE bet SET result = true WHERE GAME_ID = ? AND host = ?',
+      'UPDATE bet_for_admin SET result = 1 WHERE GAME_ID = ? AND host = ?',
       [id, host],
     );
     return result[0][0];
   } catch (error) {
     console.log(`model updateUserPerBetResult is error on ${error}`);
+  }
+};
+
+export const updateLoseBetResult = async (id, host) => {
+  try {
+    const result = await pool.query(
+      'UPDATE bet_for_admin SET result = 2 WHERE GAME_ID = ? AND host = ?',
+      [id, host],
+    );
+    return result[0][0];
+  } catch (error) {
+    console.log(`model updateLoseBetResult is error on ${error}`);
   }
 };
 

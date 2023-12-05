@@ -7,7 +7,7 @@ export const oddsManipulator = async (req, res, next) => {
   const point = parseInt(betPoint, 10);
   req.body.betPoint = point;
   try {
-    console.time('oddsManipulator');
+    // console.time('oddsManipulator');
 
     if (point === 0 || point < 0) {
       return res.status(404).json({
@@ -18,9 +18,9 @@ export const oddsManipulator = async (req, res, next) => {
 
     const lockKey = `lock:${id}`;
     await client.watch(lockKey);
-    console.time('redisGet');
+    // console.time('redisGet');
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
-    console.timeEnd('redisGet');
+    // console.timeEnd('redisGet');
 
     let homeOdds = parseFloat(oddsInformation.home_odds);
     let awayOdds = parseFloat(oddsInformation.away_odds);
@@ -59,11 +59,11 @@ export const oddsManipulator = async (req, res, next) => {
       away_odds: awayOdds.toFixed(2),
       moneyBuffer: oddsInformation.moneyBuffer,
     };
-    console.time('redisMulti');
+    // console.time('redisMulti');
     const multi = await client.multi();
     multi.publish('odds', id);
     multi.set(`odds${id}`, JSON.stringify(data));
-    console.timeEnd('redisMulti');
+    // console.timeEnd('redisMulti');
 
     const execResult = await multi.exec();
     if (!execResult) {
@@ -72,7 +72,7 @@ export const oddsManipulator = async (req, res, next) => {
         message: 'Transaction failed. Try again later.',
       });
     }
-    console.timeEnd('oddsManipulator');
+    // console.timeEnd('oddsManipulator');
     next();
   } catch (error) {
     console.log(`oddsManipulator controller is error on ${error}`);
@@ -93,10 +93,10 @@ export const getOdds = async (req, res) => {
 
 export const changeUserPoint = async (req, res, next) => {
   try {
-    console.time('changeUserPoint');
+    // console.time('changeUserPoint');
     const { userId, betPoint } = req.body;
     await userModel.changeUserPoint(betPoint, userId);
-    console.timeEnd('changeUserPoint');
+    // console.timeEnd('changeUserPoint');
     next();
   } catch (error) {
     console.log(`controller changeUserPoint error on ${error}`);

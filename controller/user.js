@@ -67,7 +67,7 @@ export const signIn = async (req, res, next) => {
 
 export const checkUserPoint = async (req, res, next) => {
   try {
-    console.time('checkUserPoint');
+    // console.time('checkUserPoint');
     const { userId, betPoint } = req.body;
     const userPoint = await model.getUserInformation(userId);
     if (betPoint > userPoint[0].point) {
@@ -76,7 +76,7 @@ export const checkUserPoint = async (req, res, next) => {
         message: 'User do not have enough point',
       });
     }
-    console.timeEnd('checkUserPoint');
+    // console.timeEnd('checkUserPoint');
     next();
   } catch (error) {
     console.log(`controller signIn error on ${error}`);
@@ -95,12 +95,24 @@ export const getUserInfor = async (req, res) => {
   }
 };
 
+export const getUserBetGameEnd = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userInfor = await model.getUserInformation(userId);
+    const betInfor = await model.getUserBetGameEnd(userId);
+    const data = { userInfor, betInfor };
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(`controller signIn error on ${error}`);
+  }
+};
+
 export const recordPerBet = async (req, res) => {
   try {
-    console.time('recordPerBet');
+    // console.time('recordPerBet');
     const { id, betPoint, userId, odds, hosting } = req.body;
     model.insertUserPerBet(userId, id, betPoint, odds, hosting);
-    console.timeEnd('recordPerBet');
+    // console.timeEnd('recordPerBet');
     res
       .status(200)
       .send({ success: true, message: 'User betted successfully' });
