@@ -73,10 +73,12 @@ function getGameEvent(gameId) {
         awayMainTeam.textContent = game.gameTeamName[1].TEAM_ABBR;
         homeMainScore.textContent = game.gameData.hs;
         awayMainScore.textContent = game.gameData.vs;
+
+        setTeamImage(game.gameTeamName[0].TEAM_ABBR, 'homeTeamMark');
+        setTeamImage(game.gameTeamName[1].TEAM_ABBR, 'awayTeamMark');
       }
     });
 }
-getGameEvent(gameValue);
 getGameEvent('22200001');
 getGameEvent('22200002');
 getGameEvent('22200003');
@@ -92,8 +94,11 @@ function betHomeGame() {
   const betPoint = document.querySelector('input[name="homeBet"]').value;
   const userPoint = document.querySelector('.userPoint');
   if (betPoint > parseInt(userPoint.textContent)) {
-    alert('有錢不賭，愧對父母');
+    alert('小賭怡情，大賭傷身');
     window.location.href = `/charge.html`;
+    return;
+  } else if (isNaN(parseInt(betPoint))) {
+    alert('Number is the only way to bet');
     return;
   }
   const id = gameValue;
@@ -129,10 +134,14 @@ function betAwayGame() {
     );
   }
   const betPoint = document.querySelector('input[name="awayBet"]').value;
+  const userPoint = document.querySelector('.userPoint');
   const id = gameValue;
   if (betPoint > parseInt(userPoint.textContent)) {
-    alert('有錢不賭，愧對父母');
+    alert('小賭怡情，大賭傷身');
     window.location.href = `/charge.html`;
+    return;
+  } else if (isNaN(parseInt(betPoint))) {
+    alert('Number is the only way to bet');
     return;
   }
   const hosting = 'away';
@@ -201,3 +210,9 @@ function getUserInfor() {
     });
 }
 getUserInfor();
+
+function setTeamImage(team, elementId) {
+  const imagePath = `/image/${team}.png`;
+  document.getElementById(elementId).style.backgroundImage =
+    `url(${imagePath})`;
+}
