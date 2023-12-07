@@ -1,5 +1,6 @@
 import * as model from '../model/odds.js';
 import { client } from '../utils/cache.js';
+import { io } from '../utils/socket.js';
 
 const oddCalculator = async (req, res, next) => {
   const { id } = req.body;
@@ -20,17 +21,18 @@ const oddCalculator = async (req, res, next) => {
     (parseInt(getHomeTeamRank[0].win, 10) +
       parseInt(getAwayTeamRank[0].lose, 10)) /
     164;
-  const home_odds = (1 / homeWinningRate - 0.3).toFixed(2);
-  const away_odds = (1 / (1 - homeWinningRate) - 0.3).toFixed(2);
+  const homeOdds = (1 / homeWinningRate - 0.3).toFixed(2);
+  const awayOdds = (1 / (1 - homeWinningRate) - 0.3).toFixed(2);
   const moneyBuffer = 1000;
   const gameInitialOdds = {
     id,
-    home_odds,
-    away_odds,
+    homeOdds,
+    awayOdds,
     moneyBuffer,
   };
-  await client.set(`odds${id}`, JSON.stringify(gameInitialOdds));
-  await model.updateOdds(id, home_odds, away_odds, moneyBuffer);
+  io.emit('odds', gameInitialOdds);
+  // await client.set(`odds${id}`, JSON.stringify(gameInitialOdds));
+  await model.updateOdds(id, homeOdds, awayOdds, moneyBuffer);
   next();
 };
 

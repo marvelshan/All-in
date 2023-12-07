@@ -22,8 +22,8 @@ export const oddsManipulator = async (req, res, next) => {
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
     // console.timeEnd('redisGet');
 
-    let homeOdds = parseFloat(oddsInformation.home_odds);
-    let awayOdds = parseFloat(oddsInformation.away_odds);
+    let homeOdds = parseFloat(oddsInformation.homeOdds);
+    let awayOdds = parseFloat(oddsInformation.awayOdds);
     if (hosting === 'home') {
       req.body.odds = homeOdds;
       oddsInformation.moneyBuffer -= point;
@@ -55,8 +55,8 @@ export const oddsManipulator = async (req, res, next) => {
     }
     const data = {
       id: oddsInformation.id,
-      home_odds: homeOdds.toFixed(2),
-      away_odds: awayOdds.toFixed(2),
+      homeOdds: homeOdds.toFixed(2),
+      awayOdds: awayOdds.toFixed(2),
       moneyBuffer: oddsInformation.moneyBuffer,
     };
     // console.time('redisMulti');
