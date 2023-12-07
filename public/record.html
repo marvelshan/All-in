@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="header">
-      <a href="/home.html?game=22200001" class="navbar">Home</a>
+      <a href="/home.html" class="navbar">Home</a>
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
@@ -26,69 +26,5 @@
       <div class="container"></div>
     </div>
   </body>
-  <script>
-    const userEmail = document.querySelector(".userEmail");
-    const userName = document.querySelector(".userName");
-    const userPoint = document.querySelector(".userPoint");
-    const container = document.querySelector(".container");
-    fetch("/user/record", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.errors) {
-          alert("You should sign in first");
-          window.location.href = "/profile.html";
-        }
-        userEmail.textContent = data.userInfor[0].email;
-        userName.textContent = data.userInfor[0].name;
-        userPoint.textContent = data.userInfor[0].point;
-
-        container.innerHTML = "";
-        data.betInfor.forEach((betData) => {
-          if (betData.result === 1) {
-            const element = document.createElement("div");
-            element.classList.add("gamecontainer");
-            const winningPoint = betData.betting_point * betData.betting_odds;
-            element.innerHTML = `
-            <div class="record-title">Betting Record</div>
-            <div class="record-item">GAME ID: ${betData.GAME_ID}</div>
-            <div class="record-item">Bet Point: ${betData.betting_point}</div>
-            <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
-            <div class="record-item">Host: ${betData.host}</div>
-            <div class="winningPoint">Winning point: ${winningPoint}</div>
-        `;
-            container.appendChild(element);
-          } else if (betData.result === 2) {
-            const element = document.createElement("div");
-            element.classList.add("gamecontainer");
-            element.innerHTML = `
-            <div class="record-title">Betting Record</div>
-            <div class="record-item">GAME ID: ${betData.GAME_ID}</div>
-            <div class="record-item">Bet Point: ${betData.betting_point}</div>
-            <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
-            <div class="record-item">Host: ${betData.host}</div>
-            <div class="lose">Sorry you don't get point on this game</div>
-        `;
-            container.appendChild(element);
-          } else if (betData.result === 0) {
-            const element = document.createElement("div");
-            element.classList.add("gamecontainer");
-            element.innerHTML = `
-            <div class="record-title">Betting Record</div>
-            <div class="record-item">GAME ID: ${betData.GAME_ID}</div>
-            <div class="record-item">Bet Point: ${betData.betting_point}</div>
-            <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
-            <div class="record-item">Game is still playing</div>
-        `;
-            container.appendChild(element);
-          }
-        });
-      });
-  </script>
+  <script src="javascript/record.js"></script>
 </html>

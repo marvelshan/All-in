@@ -2,9 +2,10 @@ import pool from '../utils/databasePool.js';
 
 export const getNBAGame = async (id) => {
   try {
-    const result = await pool.query('SELECT * FROM NBA_Game where id = ?', [
-      id,
-    ]);
+    const result = await pool.query(
+      'SELECT * FROM NBA_Game where GAME_ID = ?',
+      [id],
+    );
     return result[0][0];
   } catch (error) {
     console.log(`getNBAGame model is ${error}`);

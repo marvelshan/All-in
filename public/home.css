@@ -19,130 +19,17 @@ a {
   padding: 40px 0 30px 0;
 }
 .left-column {
-  width: 18%;
+  width: 23%;
   float: left;
   margin: 1%;
   box-sizing: border-box;
 }
-.main-column {
-  width: 58%;
-  float: left;
-  margin: 1%;
-}
-
 .navbar {
   padding: 0 40px 0 40px;
   font-size: 18px;
 }
 .navbar:hover {
   color: #ea7500;
-}
-.eventFrame {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.courtFrame {
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  height: 220px;
-  border-radius: 8px;
-  background-color: #e0e0e0;
-}
-
-.homeTeamMark,
-.awayTeamMark {
-  flex: 1;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.mainInformation {
-  height: 50%;
-  flex-direction: column;
-  align-items: center;
-}
-.score {
-  display: flex;
-  flex: 1;
-  font-size: 20px;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-}
-.vs {
-  padding: 50px;
-}
-.scoreBox {
-  display: flex;
-  justify-content: space-between;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.homeMainTeam,
-.awayMainTeam {
-  font-size: 50px;
-  font-weight: bold;
-  text-align: center;
-  padding: 20px 0;
-}
-.homeMainScore,
-.awayMainScore {
-  font-size: 80px;
-  font-weight: bold;
-  text-align: center;
-}
-.eventList {
-  font-size: 30px;
-  text-align: center;
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 8px;
-  margin: 30px 0 20px 0;
-}
-.leftColumnScore {
-  display: flex;
-}
-.homeScore,
-.awayScore {
-  color: #888;
-  flex: 1;
-  border: 1px solid #ddd;
-  padding: 5px;
-  margin: 5px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.homeOdds,
-.awayOdds {
-  padding: 10px 0;
-  font-size: 20px;
-}
-input[type="number"],
-input[type="text"] {
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.homeButton,
-.awayButton {
-  background-color: #ea7500;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 50px;
 }
 .teamGame {
   border: 1px solid #ccc;
@@ -152,7 +39,18 @@ input[type="text"] {
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.3);
 }
-.teamName {
+.container {
+  font-weight: bold;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 88%;
+  margin: 0 6% 0 6%;
+  float: left;
+  box-sizing: border-box;
+}
+.status,
+.note {
   display: flex;
   justify-content: center;
   font-weight: bold;
@@ -161,78 +59,15 @@ input[type="text"] {
 .leftColumnScore {
   display: flex;
 }
-
-.right-column {
-  background-color: #f4f4f4;
-  padding: 20px;
+.homeTeam,
+.awayTeam {
+  color: #888;
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin: 5px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 1%;
-  float: left;
-  width: 18%;
-  box-sizing: border-box;
-}
-.right-column > div {
-  font-size: 18px;
-  font-weight: bold;
-}
-.userName,
-.userEmail,
-.userPoint {
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-.gamecontainer {
-  background-color: #fff;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-.gameId {
-  display: none;
-}
-.betting-record {
-  background-color: #f4f4f4;
-  padding: 10px;
-  margin-bottom: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.record-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.record-item {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-@media (max-width: 768px) {
-  .left-column,
-  .right-column {
-    width: 48%;
-    margin: 1%;
-  }
-
-  .main-column {
-    width: 48%;
-    margin: 1%;
-  }
-
-  .teamGame {
-    width: 100%;
-  }
-}
-
-@media (max-width: 1024px) {
-  .left-column,
-  .main-column,
-  .right-column {
-    width: 30%;
-    margin: 1%;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -8,29 +8,29 @@
   </head>
   <body>
     <div class="header">
-      <a href="/home.html?game=22200001" class="navbar">Home</a>
+      <a href="/home.html" class="navbar">Home</a>
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
     </div>
     <div class="wrapper">
       <h1>All-In</h1>
-      <span>儲值金額:</span>
+      <span>Top-up Amount:</span>
       <input type="number" name="chargeMoney" />
-      點數與現金為1:1
+      Points to Cash 1:1
       <div class="order-container">
-        <div class="order-word">信用卡卡號</div>
+        <div class="order-word">Credit Card Number</div>
         <div class="tpfield" id="card-number"></div>
       </div>
       <div class="order-container">
-        <div class="order-word">有效期限</div>
+        <div class="order-word">Expiration Date</div>
         <div class="tpfield" id="card-expiration-date"></div>
       </div>
       <div class="order-container">
-        <div class="order-word">安全碼</div>
+        <div class="order-word">CVV</div>
         <div class="tpfield" id="card-ccv"></div>
       </div>
-      <button class="pay" onclick="onSubmit()">確認付款</button>
+      <button class="pay" onclick="onSubmit()">Confirm Payment</button>
       <div id="orderNumber"></div>
     </div>
   </body>
@@ -185,7 +185,7 @@
               return alert(data.message);
             }
             alert(data.message);
-            window.location.href = `/home.html?game=22200001`;
+            window.location.href = `/game.html?game=22200001`;
           });
 
         // send prime to your server, to pay with Pay by Prime API .
