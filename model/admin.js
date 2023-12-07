@@ -3,7 +3,20 @@ import pool from '../utils/databasePool.js';
 export const getBetPointOdds = async () => {
   try {
     const result = await pool.query(
-      'SELECT GAME_ID, host, SUM(betting_point * betting_odds) AS sum FROM bet_for_admin GROUP BY GAME_ID, host ORDER By GAME_ID;',
+      `SELECT
+          bet_for_admin.GAME_ID,
+          bet_for_admin.host,
+          SUM(bet_for_admin.betting_point * bet_for_admin.betting_odds) AS sum,
+          NBA_Game.home_team_id,
+          NBA_Game.away_team_id
+      FROM
+          bet_for_admin
+      JOIN
+          NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID
+      GROUP BY
+          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_Game.home_team_id, NBA_Game.away_team_id
+      ORDER BY
+          bet_for_admin.GAME_ID;`,
     );
     return result[0];
   } catch (error) {
@@ -15,7 +28,20 @@ export const getBetPointOdds = async () => {
 export const getBetNumberPerGame = async () => {
   try {
     const result = await pool.query(
-      'SELECT GAME_ID, host, COUNT(GAME_ID) AS count FROM bet_for_admin GROUP BY GAME_ID, host ORDER By GAME_ID;',
+      `SELECT
+        bet_for_admin.GAME_ID,
+        bet_for_admin.host,
+        COUNT(bet_for_admin.GAME_ID) AS count,
+        NBA_Game.home_team_id,
+        NBA_Game.away_team_id
+      FROM
+          bet_for_admin
+      JOIN
+          NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID
+      GROUP BY
+          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_Game.home_team_id, NBA_Game.away_team_id
+      ORDER BY
+          bet_for_admin.GAME_ID;`,
     );
     return result[0];
   } catch (error) {

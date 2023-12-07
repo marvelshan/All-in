@@ -3,37 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="admin.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="admin.css" />
     <title>admin</title>
   </head>
   <body>
     <div class="barChart">
       <canvas id="myChart"></canvas>
     </div>
-    <div class="pieFrame">
-      <div class="pie">
-        <canvas id="pieChart1"></canvas>
-      </div>
-      <div class="pie">
-        <canvas id="pieChart2"></canvas>
-      </div>
-      <div class="pie">
-        <canvas id="pieChart3"></canvas>
-      </div>
-      <div class="pie">
-        <canvas id="pieChart4"></canvas>
-      </div>
-      <div class="pie">
-        <canvas id="pieChart5"></canvas>
-      </div>
-    </div>
+    <div class="pieFrame"></div>
     <h1>Start game</h1>
-    <button onclick="startGame(22200001)" class="button">PHI vs BOS</button>
-    <button onclick="startGame(22200002)" class="button">LAL vs GSW</button>
-    <button onclick="startGame(22200003)" class="button">ORL vs DET</button>
-    <button onclick="startGame(22200004)" class="button">WAS vs IND</button>
-    <button onclick="startGame(22200005)" class="button">ATL vs HOU</button>
+    <div id="buttonContainer"></div>
   </body>
   <script src="javascript/admin.js"></script>
   <script>
@@ -58,5 +38,26 @@
           }
         });
     }
+    const buttonContainer = document.getElementById("buttonContainer");
+    fetch("/game/infor", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((game, i) => {
+          const button = document.createElement("button");
+          button.onclick = function () {
+            startGame(22200001 + i);
+          };
+          button.className = "button";
+          buttonContainer.appendChild(button);
+          button.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
+        });
+      });
   </script>
 </html>
