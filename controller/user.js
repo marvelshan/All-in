@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import * as model from '../model/user.js';
+import { io } from '../utils/socket.js';
 
 export const checkEmailType = async (req, res, next) => {
   try {
@@ -79,7 +80,7 @@ export const checkUserPoint = async (req, res, next) => {
     // console.timeEnd('checkUserPoint');
     next();
   } catch (error) {
-    console.log(`controller signIn error on ${error}`);
+    console.log(`controller checkUserPoint error on ${error}`);
   }
 };
 
@@ -91,7 +92,7 @@ export const getUserInfor = async (req, res) => {
     const data = { userInfor, betInfor };
     res.status(200).json(data);
   } catch (error) {
-    console.log(`controller signIn error on ${error}`);
+    console.log(`controller getUserInfor error on ${error}`);
   }
 };
 
@@ -100,10 +101,11 @@ export const getUserBetGameEnd = async (req, res) => {
     const { userId } = req.body;
     const userInfor = await model.getUserInformation(userId);
     const betInfor = await model.getUserBetGameEnd(userId);
+    console.log(betInfor);
     const data = { userInfor, betInfor };
     res.status(200).json(data);
   } catch (error) {
-    console.log(`controller signIn error on ${error}`);
+    console.log(`controller getUserBetGameEnd error on ${error}`);
   }
 };
 
@@ -118,5 +120,30 @@ export const recordPerBet = async (req, res) => {
       .send({ success: true, message: 'User betted successfully' });
   } catch (error) {
     console.log(`controller recordPerBet error on ${error}`);
+  }
+};
+
+export const insertUserMessage = async (req, res) => {
+  try {
+    const { userId, name, message, id } = req.body;
+    await model.insertUserMessage(userId, name, message, id);
+    const data = { userId, name, message, id };
+    io.emit(`message${id}`, data);
+    res.status(200).json({
+      success: true,
+      message: 'Message is successfully send',
+    });
+  } catch (error) {
+    console.log(`controller insertUserMessage error on ${error}`);
+  }
+};
+
+export const getChatroomMessage = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const allMessage = await model.getChatroomMessage(id);
+    res.status(200).json(allMessage);
+  } catch (error) {
+    console.log(`controller getChatroomMessage error on ${error}`);
   }
 };

@@ -1,13 +1,12 @@
 import { io } from 'socket.io-client';
+
 const socket = io();
 socket.on('connection', () => {
   console.log('connected');
 });
-socket.emit('event');
 let lastEventText = '';
-socket.on('gameEvent', (gamePerEvent) => {
-  const game = JSON.parse(gamePerEvent);
-  if (game.GAME_ID) {
+socket.on('gameEvent', (game) => {
+  if (game.GAME_ID < 22200006) {
     homeScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.hs}`;
     awayScoreElements[(game.GAME_ID % 10) - 1].textContent = `${game.vs}`;
   }
@@ -24,17 +23,31 @@ socket.on('gameEvent', (gamePerEvent) => {
       if (event.children.length > 5) {
         event.removeChild(event.lastChild);
       }
-      homeMainScore.textContent = `${game.hs}`;
-      awayMainScore.textContent = `${game.vs}`;
+      homeMainScore.textContent = game.hs;
+      awayMainScore.textContent = game.vs;
     }
     lastEventText = currentEventText;
   }
 });
 
-socket.on('odds', (oddsFromRedis) => {
-  const odds = JSON.parse(oddsFromRedis);
+socket.on('odds', (odds) => {
   if (odds.id == gameValue) {
     homeOdds.textContent = odds.home_odds;
     awayOdds.textContent = odds.away_odds;
+  }
+});
+
+const messageContainer = document.querySelector('.messageContainer');
+socket.on(`message${gameValue}`, (message) => {
+  const ownElement = document.createElement('div');
+  if (message.name === userName.textContent) {
+    ownElement.className = 'ownElement';
+    ownElement.textContent = message.message;
+    messageContainer.appendChild(ownElement);
+  } else {
+    const element = document.createElement('div');
+    element.className = 'element';
+    element.textContent = `${message.name}: ${message.message}`;
+    messageContainer.appendChild(element);
   }
 });

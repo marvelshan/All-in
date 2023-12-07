@@ -16,7 +16,7 @@ const homeMainScore = document.querySelector('.homeMainScore');
 const awayMainScore = document.querySelector('.awayMainScore');
 const homeMainTeam = document.querySelector('.homeMainTeam');
 const awayMainTeam = document.querySelector('.awayMainTeam');
-
+const userName = document.querySelector('.userName');
 function getOdds() {
   fetch('/odds/getOdds', {
     method: 'POST',
@@ -35,8 +35,8 @@ function getOdds() {
         return alert(data.message);
       }
       const gameEvent = JSON.parse(data);
-      homeOdds.textContent = gameEvent.home_odds;
-      awayOdds.textContent = gameEvent.away_odds;
+      homeOdds.textContent = gameEvent.homeOdds;
+      awayOdds.textContent = gameEvent.awayOdds;
     });
 }
 getOdds();
@@ -58,10 +58,9 @@ function getGameEvent(gameId) {
       if (game.success === false) {
         return alert(game.message);
       }
-      // const game = JSON.parse(data);
-      if (game.gameData.GAME_ID) {
+      if (game.gameData.GAME_ID < 22200006) {
         teamName[(game.gameData.GAME_ID % 10) - 1].textContent =
-          `${game.gameTeamName[0].TEAM_ABBR} v.s ${game.gameTeamName[1].TEAM_ABBR}`;
+          `${game.gameTeamName[0].home_team_id} v.s ${game.gameTeamName[0].away_team_id}`;
         homeScoreElements[(game.gameData.GAME_ID % 10) - 1].textContent =
           ` ${game.gameData.hs}`;
         awayScoreElements[(game.gameData.GAME_ID % 10) - 1].textContent =
@@ -69,16 +68,17 @@ function getGameEvent(gameId) {
       }
       if (game.gameData.GAME_ID == gameValue) {
         event.textContent = `event: ${game.gameData.de}`;
-        homeMainTeam.textContent = game.gameTeamName[0].TEAM_ABBR;
-        awayMainTeam.textContent = game.gameTeamName[1].TEAM_ABBR;
+        homeMainTeam.textContent = game.gameTeamName[0].home_team_id;
+        awayMainTeam.textContent = game.gameTeamName[0].away_team_id;
         homeMainScore.textContent = game.gameData.hs;
         awayMainScore.textContent = game.gameData.vs;
 
-        setTeamImage(game.gameTeamName[0].TEAM_ABBR, 'homeTeamMark');
-        setTeamImage(game.gameTeamName[1].TEAM_ABBR, 'awayTeamMark');
+        setTeamImage(game.gameTeamName[0].home_team_id, 'homeTeamMark');
+        setTeamImage(game.gameTeamName[0].away_team_id, 'awayTeamMark');
       }
     });
 }
+getGameEvent(gameValue);
 getGameEvent('22200001');
 getGameEvent('22200002');
 getGameEvent('22200003');
@@ -195,12 +195,14 @@ function getUserInfor() {
       userPoint.textContent = data.userInfor[0].point;
 
       container.innerHTML = '';
+      console.log(data);
       data.betInfor.forEach((betData) => {
         const element = document.createElement('div');
         element.classList.add('gamecontainer');
+        console.log(betData);
         element.innerHTML = `
         <div class="record-title">Betting Record</div>
-        <div class="record-item">GAME ID: ${betData.GAME_ID}</div>
+        <div class="record-item">GAME: ${betData.home_team_id} v.s ${betData.away_team_id}</div>
         <div class="record-item">Bet Point: ${betData.betting_point}</div>
         <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
         <div class="record-item">Host: ${betData.host}</div>
@@ -215,4 +217,33 @@ function setTeamImage(team, elementId) {
   const imagePath = `/image/${team}.png`;
   document.getElementById(elementId).style.backgroundImage =
     `url(${imagePath})`;
+}
+
+function changeToChatroom() {
+  const rightColumn = document.querySelector('.right-column');
+  const chatroom = document.querySelector('.chatroom');
+  rightColumn.style.display = 'none';
+  chatroom.style.display = 'block';
+}
+function sendMessage() {
+  const message = document.querySelector('input[name="message"]');
+  fetch('/user/message', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: gameValue,
+      message: message.value,
+    }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((game) => {
+      if (game.success === false) {
+        return alert(game.message);
+      }
+    });
+  message.value = '';
 }

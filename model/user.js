@@ -37,10 +37,10 @@ export const changeUserPoint = async (betPoint, userId) => {
 
 export const getUserBetInformation = async (userId) => {
   try {
-    const result = await pool.query('SELECT * FROM bet WHERE member_id = ?;', [
-      userId,
-    ]);
-    console.log(result[0]);
+    const result = await pool.query(
+      'SELECT * FROM bet JOIN NBA_Game ON bet.GAME_ID = NBA_Game.GAME_ID WHERE member_id = ?;',
+      [userId],
+    );
     return result[0];
   } catch (error) {
     console.log(`model getUserBetInformation is error on ${error}`);
@@ -50,7 +50,7 @@ export const getUserBetInformation = async (userId) => {
 export const getUserBetGameEnd = async (userId) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM bet_for_admin WHERE member_id = ? ORDER BY id DESC;',
+      'SELECT * FROM bet_for_admin JOIN NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID WHERE member_id = ? ORDER BY id DESC;',
       [userId],
     );
     return result[0];
@@ -129,5 +129,27 @@ export const deleteBetInfor = async (id) => {
     return result[0];
   } catch (error) {
     console.log(`model deleteBetInfor is error on ${error}`);
+  }
+};
+
+export const insertUserMessage = async (userId, name, message, id) => {
+  try {
+    const result = await pool.query(
+      'INSERT INTO message (member_id, userName, message, GAME_ID) VALUES (?,?,?,?)',
+      [userId, name, message, id],
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`model insertUserMessage is error on ${error}`);
+  }
+};
+export const getChatroomMessage = async (id) => {
+  try {
+    const result = await pool.query('SELECT * FROM message WHERE GAME_ID = ?', [
+      id,
+    ]);
+    return result[0];
+  } catch (error) {
+    console.log(`model getChatroomMessage is error on ${error}`);
   }
 };

@@ -1,0 +1,292 @@
+html {
+  height: 100%;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("./image/background.png");
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 0 30px 0;
+}
+.left-column {
+  width: 18%;
+  float: left;
+  margin: 1%;
+  box-sizing: border-box;
+}
+.navbar {
+  padding: 0 40px 0 40px;
+  font-size: 18px;
+}
+.navbar:hover {
+  color: #ea7500;
+}
+.main-column {
+  width: 58%;
+  float: left;
+  margin: 1%;
+}
+.eventFrame {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.courtFrame {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  height: 220px;
+  border-radius: 8px;
+  background-color: #e0e0e0;
+}
+
+.homeTeamMark,
+.awayTeamMark {
+  flex: 1;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.mainInformation {
+  height: 50%;
+  flex-direction: column;
+  align-items: center;
+}
+.score {
+  display: flex;
+  flex: 1;
+  font-size: 20px;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+.vs {
+  padding: 50px;
+}
+.scoreBox {
+  display: flex;
+  justify-content: space-between;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeMainTeam,
+.awayMainTeam {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0;
+}
+.homeMainScore,
+.awayMainScore {
+  font-size: 80px;
+  font-weight: bold;
+  text-align: center;
+}
+.eventList {
+  font-size: 30px;
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 30px 0 20px 0;
+}
+.leftColumnScore {
+  display: flex;
+}
+.homeScore,
+.awayScore {
+  color: #888;
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.homeOdds,
+.awayOdds {
+  padding: 10px 0;
+  font-size: 20px;
+}
+input[type="number"],
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 4;
+  box-sizing: border-box;
+}
+.homeButton,
+.awayButton {
+  background-color: #ea7500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+.teamGame {
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.teamName {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+.leftColumnScore {
+  display: flex;
+}
+
+.right-column,
+.chatroom {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 1%;
+  float: left;
+  width: 18%;
+  box-sizing: border-box;
+}
+.right-column > div {
+  font-size: 18px;
+  font-weight: bold;
+}
+.chatroom {
+  display: none;
+}
+.messageBox {
+  height: 400px;
+  overflow-y: scroll;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.message {
+  background-color: #e0e0e0;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+
+.input-container {
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+.ownElement {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+.inputFrame {
+  display: flex;
+}
+.messageButton {
+  padding: 8px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1;
+}
+.box {
+  display: flex;
+}
+.chatroomButton {
+  float: right;
+}
+.userName,
+.userEmail,
+.userPoint {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+.gamecontainer {
+  background-color: #fff;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.gameId {
+  display: none;
+}
+.betting-record {
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.record-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.record-item {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+@media (max-width: 768px) {
+  .left-column,
+  .right-column {
+    width: 48%;
+    margin: 1%;
+  }
+
+  .main-column {
+    width: 48%;
+    margin: 1%;
+  }
+
+  .teamGame {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .left-column,
+  .main-column,
+  .right-column {
+    width: 30%;
+    margin: 1%;
+  }
+}

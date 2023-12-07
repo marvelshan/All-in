@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="game.css" />
+  </head>
+  <body>
+    <div class="header">
+      <a href="/home.html" class="navbar">Home</a>
+      <a href="/rank.html" class="navbar">Rank</a>
+      <a href="/charge.html" class="navbar">Top Up</a>
+      <a href="/record.html" class="navbar">Record</a>
+    </div>
+
+    <div class="left-column">
+      <div class="teamGame">
+        <a href="/game.html?game=22200001">
+          <div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div>
+          </div>
+        </a>
+      </div>
+
+      <div class="teamGame">
+        <a href="/game.html?game=22200002"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/game.html?game=22200003"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/game.html?game=22200004"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/game.html?game=22200005"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamName">note: home v.s away</div>
+    </div>
+
+    <div class="main-column">
+      <div class="mainInformation">
+        <div class="eventFrame">
+          <div class="courtFrame">
+            <div class="homeTeamMark" id="homeTeamMark"></div>
+            <div class="awayTeamMark" id="awayTeamMark"></div>
+          </div>
+          <div class="eventList"></div>
+        </div>
+        <div class="scoreBox">
+          <div class="score">
+            <div class="homeMainTeam"></div>
+            <div class="homeMainScore"></div>
+            <div class="homeOdds"></div>
+            <input type="number" name="homeBet" max="1000" />
+            <button class="homeButton" type="submit" onclick="betHomeGame()">
+              bet
+            </button>
+          </div>
+          <img class="vs" src="./image/vs.png" />
+          <div class="score">
+            <div class="awayMainTeam"></div>
+            <div class="awayMainScore"></div>
+            <span class="awayOdds"></span>
+            <input type="number" name="awayBet" />
+            <button class="awayButton" type="submit" onclick="betAwayGame()">
+              bet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gameId"></div>
+    <div class="right-column">
+      <div class="box">
+        <div class="userInfor">user information:</div>
+        <button class="chatroomButton" onclick="changeToChatroom()">
+          chatroom
+        </button>
+      </div>
+      email:
+      <div class="userEmail"></div>
+      name:
+      <div class="userName"></div>
+      point:
+      <div class="userPoint"></div>
+      <div class="container"></div>
+    </div>
+    <div class="chatroom">
+      <div class="messageBox">
+        <div class="messageContainer"></div>
+      </div>
+      <div class="inputFrame">
+        <input type="text" name="message" class="messageInput" />
+        <button class="messageButton" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </body>
+  <script src="javascript/game.js"></script>
+  <script>
+    fetch("/user/chatRoom", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: gameValue,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((game) => {
+        if (game.success === false) {
+          return alert(game.message);
+        }
+        const messageContainer = document.querySelector(".messageContainer");
+        const userNameforCheck = userName.textContent;
+        game.forEach((message) => {
+          const ownElement = document.createElement("div");
+          if (message.userName === userNameforCheck) {
+            ownElement.className = "ownElement";
+            ownElement.textContent = message.message;
+            messageContainer.appendChild(ownElement);
+          } else {
+            const element = document.createElement("div");
+            element.className = "element";
+            element.textContent = `${message.userName}: ${message.message}`;
+            messageContainer.appendChild(element);
+          }
+        });
+      });
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "socket.io-client": "https://cdn.socket.io/4.4.1/socket.io.esm.min.js"
+      }
+    }
+  </script>
+  <script type="module" src="javascript/gamesocket.js"></script>
+</html>
