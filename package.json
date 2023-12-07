@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "start-game": "nodemon ./utils/automaticGame.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "swagger": "node ./swagger.js"
   },
   "dependencies": {
     "argon2": "^0.31.2",
+    "aws-sdk": "^2.1512.0",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "cheerio": "^1.0.0-rc.12",
@@ -21,6 +21,7 @@
     "express": "~4.16.1",
     "ioredis": "^5.3.2",
     "jsonwebtoken": "^9.0.2",
+    "k6": "^0.0.0",
     "mysql2": "^3.6.3",
     "socket.io": "^4.7.2",
     "swagger-autogen": "^2.23.7",
