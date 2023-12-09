@@ -1,0 +1,24 @@
+name: Deploy to EC2 on PR
+on:
+  push:
+    branches:
+      - spring4
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy to ec2
+        uses: appleboy/ssh-action@master
+        env:
+          BRANCH: ${{ github.head_ref }}
+        with:
+          host: "${{ secrets.HOST_DNS }}"
+          username: "${{ secrets.EC2_USERNAME }}"
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: BRANCH
+          script: |
+            echo "Hello from github action, start deploy ${BRANCH} to ec2"
+            cd Personal-Project/
+            git pull origin spring4
+            pm2 restart 0
