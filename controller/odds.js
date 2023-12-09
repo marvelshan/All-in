@@ -1,6 +1,7 @@
 // import * as model from '../model/odds.js';
 import * as userModel from '../model/user.js';
 import { client } from '../utils/cache.js';
+import { io } from '../utils/socket.js';
 
 export const oddsManipulator = async (req, res, next) => {
   const { id, betPoint, hosting } = req.body;
@@ -16,7 +17,7 @@ export const oddsManipulator = async (req, res, next) => {
       });
     }
 
-    const lockKey = `lock:${id}`;
+    const lockKey = `odds${id}`;
     await client.watch(lockKey);
     // console.time('redisGet');
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
@@ -61,8 +62,8 @@ export const oddsManipulator = async (req, res, next) => {
     };
     // console.time('redisMulti');
     const multi = await client.multi();
-    multi.publish('odds', id);
     multi.set(`odds${id}`, JSON.stringify(data));
+    io.emit('odds', data);
     // console.timeEnd('redisMulti');
 
     const execResult = await multi.exec();

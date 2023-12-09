@@ -29,8 +29,8 @@ export const startGameEvent = async (req, res) => {
     const { id } = req.body;
     const gameData = await model.getNBAGameLog(id);
     await model.changeGameStatus(id, 'playing');
-    userModel.insertUserPerBet(21, id, 0, 0, 'home');
-    userModel.insertUserPerBet(21, id, 0, 0, 'away');
+    userModel.insertUserPerBet(66, id, 0, 0, 'home');
+    userModel.insertUserPerBet(66, id, 0, 0, 'away');
     gameData.forEach(async (element) => {
       const timeDiff =
         (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 30;
