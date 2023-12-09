@@ -3,7 +3,7 @@ import pool from '../utils/databasePool.js';
 export const getNBAGameLog = async (id) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM NBA_game_log WHERE GAME_ID = ?',
+      'SELECT * FROM NBA_Game_log WHERE GAME_ID = ?',
       [id],
     );
     return result[0];
@@ -28,7 +28,7 @@ export const insertRealtimeEvent = async (event) => {
 export const getGameTeamName = async (id) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM NBA_Game WHERE GAME_ID = ?;',
+      'SELECT * FROM NBA_game WHERE GAME_ID = ?;',
       [id],
     );
     return result[0];
@@ -40,7 +40,7 @@ export const getGameTeamName = async (id) => {
 
 export const getAllGame = async () => {
   try {
-    const result = await pool.query('SELECT * FROM NBA_Game');
+    const result = await pool.query('SELECT * FROM NBA_game');
     return result[0];
   } catch (error) {
     console.log(`getAllGame model is ${error}`);
@@ -51,7 +51,7 @@ export const getAllGame = async () => {
 export const changeGameStatus = async (id, status) => {
   try {
     const result = await pool.query(
-      'UPDATE NBA_Game SET status = ? WHERE GAME_ID = ?',
+      'UPDATE NBA_game SET status = ? WHERE GAME_ID = ?',
       [status, id],
     );
     return result[0];

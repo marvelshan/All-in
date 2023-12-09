@@ -7,14 +7,14 @@ export const getBetPointOdds = async () => {
           bet_for_admin.GAME_ID,
           bet_for_admin.host,
           SUM(bet_for_admin.betting_point * bet_for_admin.betting_odds) AS sum,
-          NBA_Game.home_team_id,
-          NBA_Game.away_team_id
+          NBA_game.home_team_id,
+          NBA_game.away_team_id
       FROM
           bet_for_admin
       JOIN
-          NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID
+          NBA_game ON bet_for_admin.GAME_ID = NBA_game.GAME_ID
       GROUP BY
-          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_Game.home_team_id, NBA_Game.away_team_id
+          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_game.home_team_id, NBA_game.away_team_id
       ORDER BY
           bet_for_admin.GAME_ID;`,
     );
@@ -32,14 +32,14 @@ export const getBetNumberPerGame = async () => {
         bet_for_admin.GAME_ID,
         bet_for_admin.host,
         COUNT(bet_for_admin.GAME_ID) AS count,
-        NBA_Game.home_team_id,
-        NBA_Game.away_team_id
+        NBA_game.home_team_id,
+        NBA_game.away_team_id
       FROM
           bet_for_admin
       JOIN
-          NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID
+          NBA_game ON bet_for_admin.GAME_ID = NBA_game.GAME_ID
       GROUP BY
-          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_Game.home_team_id, NBA_Game.away_team_id
+          bet_for_admin.GAME_ID, bet_for_admin.host, NBA_game.home_team_id, NBA_game.away_team_id
       ORDER BY
           bet_for_admin.GAME_ID;`,
     );

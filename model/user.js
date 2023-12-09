@@ -38,7 +38,7 @@ export const changeUserPoint = async (betPoint, userId) => {
 export const getUserBetInformation = async (userId) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM bet JOIN NBA_Game ON bet.GAME_ID = NBA_Game.GAME_ID WHERE member_id = ?;',
+      'SELECT * FROM bet JOIN NBA_game ON bet.GAME_ID = NBA_game.GAME_ID WHERE member_id = ?;',
       [userId],
     );
     return result[0];
@@ -50,7 +50,7 @@ export const getUserBetInformation = async (userId) => {
 export const getUserBetGameEnd = async (userId) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM bet_for_admin JOIN NBA_Game ON bet_for_admin.GAME_ID = NBA_Game.GAME_ID WHERE member_id = ? ORDER BY id DESC;',
+      'SELECT * FROM bet_for_admin JOIN NBA_game ON bet_for_admin.GAME_ID = NBA_game.GAME_ID WHERE member_id = ? ORDER BY id DESC;',
       [userId],
     );
     return result[0];

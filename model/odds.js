@@ -3,7 +3,7 @@ import pool from '../utils/databasePool.js';
 export const getNBAGame = async (id) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM NBA_Game where GAME_ID = ?',
+      'SELECT * FROM NBA_game where GAME_ID = ?',
       [id],
     );
     return result[0][0];
@@ -60,7 +60,7 @@ export const getOdds = async (id) => {
 export const getGameId = async () => {
   try {
     const result = await pool.query(
-      'SELECT DISTINCT GAME_ID FROM NBA_game_log',
+      'SELECT DISTINCT GAME_ID FROM NBA_Game_log',
     );
     return result[0];
   } catch (error) {
