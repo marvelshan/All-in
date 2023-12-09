@@ -19,6 +19,5 @@ jobs:
           envs: BRANCH
           script: |
             echo "Hello from github action, start deploy ${BRANCH} to ec2"
-            cd Personal-Project/
             git pull origin spring4
             pm2 restart 0
