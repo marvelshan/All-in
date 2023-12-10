@@ -93,10 +93,81 @@ function createPie(label, data, away, home) {
   });
 }
 
-// function createBar(ctx, label, data) {
-//   const ctx = document.getElementById('myChart').getContext('2d');
-//   window.myChart = new Chart(ctx, {
-//     type: 'bar',
-//     data,
-//   });
-// }
+function scheduleGame(id, time, notifyTime) {
+  fetch('/game/schedule', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id,
+      time,
+      notifyTime,
+    }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success === false) {
+        return alert(data.message);
+      } else if (data.success === true) {
+        return alert(data.message);
+      }
+    });
+}
+
+const buttonContainer = document.getElementById('buttonContainer');
+const schedule = document.querySelector('.schedule');
+fetch('/game/infor', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    data.forEach((game, i) => {
+      const button = document.createElement('button');
+      button.className = 'button';
+      buttonContainer.appendChild(button);
+      button.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
+      button.onclick = function () {
+        schedule.style.display = 'block';
+        const title = document.createElement('div');
+        const id = document.createElement('div');
+        title.className = 'title';
+        id.className = 'gameid';
+        title.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
+        id.textContent = 22200001 + i;
+        schedule.appendChild(title);
+        schedule.appendChild(id);
+      };
+    });
+  });
+
+function closeSchedule() {
+  const title = document.querySelector('.title');
+  schedule.style.display = 'none';
+  schedule.removeChild(title);
+}
+
+function dateTimeToCron(date, time) {
+  const [year, month, day] = date.split('-');
+  const [hours, minutes] = time.split(':');
+  return `${minutes} ${hours} ${day} ${month} *`;
+}
+
+function submitSchedule() {
+  const title = document.querySelector('.title');
+  const timeInput = document.getElementById('appt').value;
+  const dateInput = document.getElementById('start').value;
+  const id = document.querySelector('.gameid').textContent;
+  const time = dateTimeToCron(dateInput, timeInput);
+  const notifyTime = dateTimeToCron(dateInput, timeInput);
+  scheduleGame(id, time, notifyTime);
+  schedule.style.display = 'none';
+  schedule.removeChild(title);
+}

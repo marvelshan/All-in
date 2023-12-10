@@ -3,7 +3,7 @@ import pool from '../utils/databasePool.js';
 export const getNBAGameLog = async (id) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM NBA_Game_log WHERE GAME_ID = ?',
+      'SELECT * FROM NBA_game_log WHERE GAME_ID = ?',
       [id],
     );
     return result[0];

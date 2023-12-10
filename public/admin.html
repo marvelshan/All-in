@@ -14,50 +14,28 @@
     <div class="pieFrame"></div>
     <h1>Start game</h1>
     <div id="buttonContainer"></div>
+    <div class="schedule">
+      <label for="appt">時間：</label>
+      <input
+        type="time"
+        id="appt"
+        name="appt"
+        min="09:00"
+        max="18:00"
+        required
+      />
+      <label for="start">日期：</label>
+      <input
+        type="date"
+        id="start"
+        value="2023-12-10"
+        min="2023-12-01"
+        max="2024-01-31"
+      />
+      <button class="submit-btn" onclick="submitSchedule()">送出</button>
+      <button class="close-btn" onclick="closeSchedule()">關閉</button>
+    </div>
   </body>
   <script src="javascript/admin.js"></script>
-  <script>
-    function startGame(gameId) {
-      fetch("/game/start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: gameId,
-        }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.success === false) {
-            return alert(data.message);
-          } else if (data.success === true) {
-            return alert(data.message);
-          }
-        });
-    }
-    const buttonContainer = document.getElementById("buttonContainer");
-    fetch("/game/infor", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        data.forEach((game, i) => {
-          const button = document.createElement("button");
-          button.onclick = function () {
-            startGame(22200001 + i);
-          };
-          button.className = "button";
-          buttonContainer.appendChild(button);
-          button.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
-        });
-      });
-  </script>
+  <script></script>
 </html>

@@ -1,3 +1,6 @@
+import { CronJob } from 'cron';
+import axios from 'axios';
+import AWS from 'aws-sdk';
 import * as model from '../model/game.js';
 import * as userModel from '../model/user.js';
 import { client } from '../utils/cache.js';
@@ -20,7 +23,67 @@ export const getAllGame = async (req, res) => {
     const gameTeamName = await model.getAllGame();
     res.status(200).json(gameTeamName);
   } catch (error) {
-    console.log(`putGameEventInRedis controller error on ${error}`);
+    console.log(`getAllGame controller error on ${error}`);
+  }
+};
+
+export const schedule = async (req, res) => {
+  try {
+    const autoScaling = new AWS.AutoScaling();
+    const params = {
+      AutoScalingGroupName: 'All-in',
+      DesiredCapacity: 3,
+    };
+    autoScaling.updateAutoScalingGroup(params, (err, AWSdata) => {
+      console.log(AWSdata);
+      if (err) {
+        console.error(`Error triggering Auto Scaling: ${err.message}`);
+      } else {
+        console.log(
+          `Auto Scaling triggered successfully. Desired capacity set to ${3}.`,
+        );
+      }
+    });
+
+    const { notifyTime, time, id } = req.body;
+    const data = { notifyTime, id };
+    const notifyJob = new CronJob(
+      notifyTime,
+      async () => {
+        io.emit('gameNotify', data);
+      },
+      null,
+      false,
+      'Asia/Taipei',
+    );
+
+    const cronJob = new CronJob(
+      time,
+      async () => {
+        try {
+          const response = await axios.post(
+            'http://localhost:3000/game/start',
+            {
+              id,
+            },
+          );
+          console.log(`API request successful. Response: ${response.data}`);
+        } catch (error) {
+          console.error(`Error making API request: ${error.message}`);
+        }
+      },
+      null,
+      false,
+      'Asia/Taipei',
+    );
+    notifyJob.start();
+    cronJob.start();
+    res.status(200).json({
+      success: true,
+      message: 'Successfully put the game into schdule',
+    });
+  } catch (error) {
+    console.log(`schedule controller error on ${error}`);
   }
 };
 
