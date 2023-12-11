@@ -68,7 +68,7 @@ export const schedule = async (req, res) => {
       async () => {
         try {
           const response = await axios.post(
-            'https://www.ygolonhcet.online/game/start',
+            'https://ygolonhcet.online/game/start',
             {
               id,
             },
