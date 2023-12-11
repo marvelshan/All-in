@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" href="game.css" />
+    <link rel="icon" href="/image/logo.png" type="image/png" />
   </head>
   <body>
     <div class="header">
+      <a href="/home.html"><img src="/image/logo.png" class="logo" /></a>
       <a href="/home.html" class="navbar">Home</a>
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
@@ -43,14 +45,6 @@
       </div>
       <div class="teamGame">
         <a href="/game.html?game=22200004"
-          ><div class="teamName"></div>
-          <div class="leftColumnScore">
-            <div class="homeScore"></div>
-            <div class="awayScore"></div></div
-        ></a>
-      </div>
-      <div class="teamGame">
-        <a href="/game.html?game=22200005"
           ><div class="teamName"></div>
           <div class="leftColumnScore">
             <div class="homeScore"></div>
@@ -110,6 +104,9 @@
       <div class="container"></div>
     </div>
     <div class="chatroom">
+      <button class="userButton" onclick="changeToUserInfor()">
+        User information
+      </button>
       <div class="messageBox">
         <div class="messageContainer"></div>
       </div>
@@ -141,6 +138,9 @@
         const userNameforCheck = userName.textContent;
         game.forEach((message) => {
           const ownElement = document.createElement("div");
+          console.log(message.userName === userNameforCheck);
+          console.log(message.userName);
+          console.log(userNameforCheck);
           if (message.userName === userNameforCheck) {
             ownElement.className = "ownElement";
             ownElement.textContent = message.message;

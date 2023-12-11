@@ -58,7 +58,7 @@ function getGameEvent(gameId) {
       if (game.success === false) {
         return alert(game.message);
       }
-      if (game.gameData.GAME_ID < 22200006) {
+      if (game.gameData.GAME_ID < 22200005) {
         teamName[(game.gameData.GAME_ID % 10) - 1].textContent =
           `${game.gameTeamName[0].home_team_id} v.s ${game.gameTeamName[0].away_team_id}`;
         homeScoreElements[(game.gameData.GAME_ID % 10) - 1].textContent =
@@ -67,7 +67,7 @@ function getGameEvent(gameId) {
           ` ${game.gameData.vs}`;
       }
       if (game.gameData.GAME_ID == gameValue) {
-        event.textContent = `event: ${game.gameData.de}`;
+        event.textContent = game.gameData.de;
         homeMainTeam.textContent = game.gameTeamName[0].home_team_id;
         awayMainTeam.textContent = game.gameTeamName[0].away_team_id;
         homeMainScore.textContent = game.gameData.hs;
@@ -195,11 +195,9 @@ function getUserInfor() {
       userPoint.textContent = data.userInfor[0].point;
 
       container.innerHTML = '';
-      console.log(data);
       data.betInfor.forEach((betData) => {
         const element = document.createElement('div');
         element.classList.add('gamecontainer');
-        console.log(betData);
         element.innerHTML = `
         <div class="record-title">Betting Record</div>
         <div class="record-item">GAME: ${betData.home_team_id} v.s ${betData.away_team_id}</div>
@@ -222,8 +220,17 @@ function setTeamImage(team, elementId) {
 function changeToChatroom() {
   const rightColumn = document.querySelector('.right-column');
   const chatroom = document.querySelector('.chatroom');
+  const userButton = document.querySelector('.userButton');
   rightColumn.style.display = 'none';
   chatroom.style.display = 'block';
+  userButton.style.display = 'block';
+}
+function changeToUserInfor() {
+  const rightColumn = document.querySelector('.right-column');
+  const chatroom = document.querySelector('.chatroom');
+  rightColumn.style.display = 'block';
+  chatroom.style.display = 'none';
+  userButton.style.display = 'none';
 }
 function sendMessage() {
   const message = document.querySelector('input[name="message"]');

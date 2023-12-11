@@ -101,7 +101,6 @@ export const getUserBetGameEnd = async (req, res) => {
     const { userId } = req.body;
     const userInfor = await model.getUserInformation(userId);
     const betInfor = await model.getUserBetGameEnd(userId);
-    console.log(betInfor);
     const data = { userInfor, betInfor };
     res.status(200).json(data);
   } catch (error) {

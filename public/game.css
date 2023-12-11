@@ -13,20 +13,30 @@ a {
   color: black;
 }
 .header {
+  position: fixed;
+  background-color: white;
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 40px 0 30px 0;
 }
 .left-column {
+  padding-top: 90px;
   width: 18%;
   float: left;
   margin: 1%;
   box-sizing: border-box;
 }
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 3px;
+}
 .navbar {
-  padding: 0 40px 0 40px;
   font-size: 18px;
+  padding: 10px 40px;
+  margin: 20px 0 20px 0;
+  color: gray;
+  font-weight: bold;
 }
 .navbar:hover {
   color: #ea7500;
@@ -59,9 +69,8 @@ a {
   background-repeat: no-repeat;
 }
 .mainInformation {
+  padding-top: 90px;
   height: 50%;
-  flex-direction: column;
-  align-items: center;
 }
 .score {
   display: flex;
@@ -140,7 +149,7 @@ input[type="text"] {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-bottom: 50px;
+  margin: 20px 0;
 }
 .teamGame {
   border: 1px solid #ccc;
@@ -163,7 +172,7 @@ input[type="text"] {
 .right-column,
 .chatroom {
   background-color: #f4f4f4;
-  padding: 20px;
+  padding: 90px 10px 20px 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 1%;
@@ -184,6 +193,7 @@ input[type="text"] {
   padding: 10px;
   box-sizing: border-box;
   background-color: #fff;
+  border-radius: 8px;
 }
 
 .message {
@@ -202,7 +212,7 @@ input[type="text"] {
 input[type="text"] {
   flex: 1;
   padding: 8px;
-  margin-right: 8px;
+  margin: 10px 8px 0 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
@@ -223,12 +233,32 @@ input[type="text"] {
   border-radius: 5px;
   cursor: pointer;
   flex: 1;
+  margin-top: 10px;
 }
 .box {
   display: flex;
 }
 .chatroomButton {
-  float: right;
+  margin-left: auto;
+  background-color: #ea7500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.userButton {
+  display: none;
+  margin-bottom: 20px;
+  margin-left: auto;
+  background-color: #ea7500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 .userName,
 .userEmail,

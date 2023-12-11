@@ -10,22 +10,31 @@ a {
   color: black;
 }
 .header {
+  position: fixed;
+  background-color: white;
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 40px 0 30px 0;
+}
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 3px;
 }
 .navbar {
-  padding: 0 40px 0 40px;
   font-size: 18px;
+  padding: 10px 40px;
+  margin: 20px 0 20px 0;
+  color: gray;
+  font-weight: bold;
 }
 .navbar:hover {
   color: #ea7500;
 }
 .container {
   max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 100px 20px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;
