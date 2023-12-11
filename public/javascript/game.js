@@ -37,7 +37,6 @@ function getOdds() {
       const gameEvent = JSON.parse(data);
       homeOdds.textContent = gameEvent.homeOdds;
       awayOdds.textContent = gameEvent.awayOdds;
-      chatroom();
     });
 }
 
@@ -202,6 +201,9 @@ function getUserInfor() {
     `;
         container.appendChild(element);
       });
+    })
+    .then(() => {
+      chatroom();
     });
 }
 
@@ -222,13 +224,14 @@ function changeToChatroom() {
 function changeToUserInfor() {
   const rightColumn = document.querySelector('.right-column');
   const chatroom = document.querySelector('.chatroom');
+  const userButton = document.querySelector('.userButton');
   rightColumn.style.display = 'block';
   chatroom.style.display = 'none';
   userButton.style.display = 'none';
 }
 function sendMessage() {
   const message = document.querySelector('input[name="message"]');
-  fetch('/user/message', {
+  fetch('https://ygolonhcet.online/user/message', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -242,6 +245,7 @@ function sendMessage() {
       return response.json();
     })
     .then((game) => {
+      console.log(game);
       if (game.success === false) {
         return alert(game.message);
       }
@@ -268,6 +272,7 @@ function chatroom() {
       const messageContainer = document.querySelector('.messageContainer');
       const userNameforCheck = userName.textContent;
       game.forEach((message) => {
+        console.log(message.userName);
         const ownElement = document.createElement('div');
         if (message.userName === userNameforCheck) {
           ownElement.className = 'ownElement';
