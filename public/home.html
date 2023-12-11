@@ -264,10 +264,11 @@
           if (data.success === false) {
             return alert(data.message);
           }
-          console.log(data);
           const gameEvent = JSON.parse(data);
-          homeOdds[(gameEvent.id % 10) - 1].textContent = gameEvent.homeOdds;
-          awayOdds[(gameEvent.id % 10) - 1].textContent = gameEvent.awayOdds;
+          homeOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
+            gameEvent.homeOdds;
+          awayOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
+            gameEvent.awayOdds;
         });
     }
     function getGameEvent(gameId) {
