@@ -138,9 +138,6 @@
         const userNameforCheck = userName.textContent;
         game.forEach((message) => {
           const ownElement = document.createElement("div");
-          console.log(message.userName === userNameforCheck);
-          console.log(message.userName);
-          console.log(userNameforCheck);
           if (message.userName === userNameforCheck) {
             ownElement.className = "ownElement";
             ownElement.textContent = message.message;
