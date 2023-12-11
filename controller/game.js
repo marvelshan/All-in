@@ -134,10 +134,11 @@ export const startGameEvent = async (req, res) => {
             parseInt(element.GAME_ID, 10) === 22200003 ||
             parseInt(element.GAME_ID, 10) === 22200004
           ) {
-            console.log('axios');
-            await axios.post('/game/start', {
-              id: element.GAME_ID,
-            });
+            setTimeout(async () => {
+              await axios.post('https://ygolonhcet.online/game/start', {
+                id: element.GAME_ID,
+              });
+            }, 1000 * 60);
           }
         }
       }, timeDiff);
