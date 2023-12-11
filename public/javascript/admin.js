@@ -93,7 +93,7 @@ function createPie(label, data, away, home) {
   });
 }
 
-function scheduleGame(id, time, notifyTime) {
+function scheduleGame(id, time) {
   fetch('/game/schedule', {
     method: 'POST',
     headers: {
@@ -102,7 +102,6 @@ function scheduleGame(id, time, notifyTime) {
     body: JSON.stringify({
       id,
       time,
-      notifyTime,
     }),
   })
     .then((response) => {
@@ -164,10 +163,14 @@ function submitSchedule() {
   const title = document.querySelector('.title');
   const timeInput = document.getElementById('appt').value;
   const dateInput = document.getElementById('start').value;
-  const id = document.querySelector('.gameid').textContent;
+  const id = document.querySelector('.gameid');
+  if (timeInput === '') {
+    alert('time can not be empty');
+    return;
+  }
   const time = dateTimeToCron(dateInput, timeInput);
-  const notifyTime = dateTimeToCron(dateInput, timeInput);
-  scheduleGame(id, time, notifyTime);
+  scheduleGame(id.textContent, time);
   schedule.style.display = 'none';
   schedule.removeChild(title);
+  schedule.removeChild(id);
 }

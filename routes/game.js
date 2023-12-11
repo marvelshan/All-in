@@ -6,23 +6,19 @@ import authenticate from '../middleware/authenticate.js';
 
 const router = express.Router();
 
+router.post('/start', oddCalculator, game.startGameEvent);
+
 router.post(
-  '/start',
+  '/schedule',
   authenticate,
   authorizeAdmin,
   oddCalculator,
-  game.startGameEvent,
+  game.cleanGameEvent,
+  game.schedule,
 );
 
-router.post('/schedule', authenticate, authorizeAdmin, game.schedule);
+router.post('/getGameEvent', game.putGameEventInRedis);
 
-router.post(
-  '/getGameEvent',
-  authenticate,
-  authorizeAdmin,
-  game.putGameEventInRedis,
-);
-
-router.get('/infor', authenticate, authorizeAdmin, game.getAllGame);
+router.get('/infor', game.getAllGame);
 
 export default router;

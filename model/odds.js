@@ -39,12 +39,37 @@ export const insertOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
 export const updateOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
   try {
     const result = await pool.query(
-      'UPDATE odds SET home_odds = ?, away_odds = ?, moneyBuffer = ? WHERE id = ?',
-      [homeOdds, awayOdds, moneyBuffer, id],
+      `IF EXISTS (SELECT * FROM odds WHERE id = ?)
+        UPDATE odds SET home_odds = ?, away_odds = ?, moneyBuffer = ? WHERE id = ?;
+      ELSE
+        INSERT INTO odds (id, home_odds, away_odds, moneyBuffer) VALUES (?, ?, ?, ?);`,
+      [
+        id,
+        homeOdds,
+        awayOdds,
+        moneyBuffer,
+        id,
+        id,
+        homeOdds,
+        awayOdds,
+        moneyBuffer,
+      ],
     );
     return result[0];
   } catch (error) {
-    console.log(`insertOdds model is ${error}`);
+    console.log(`updateOdds model is ${error}`);
+  }
+};
+
+export const updateGameOdds = async (id, homeOdds, awayOdds) => {
+  try {
+    const result = await pool.query(
+      'UPDATE NBA_game SET home_odds = ?, away_odds = ? WHERE GAME_ID = ?',
+      [homeOdds, awayOdds, id],
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`updateGameOdds model is ${error}`);
   }
 };
 

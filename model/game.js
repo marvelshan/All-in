@@ -60,3 +60,18 @@ export const changeGameStatus = async (id, status) => {
     return error;
   }
 };
+
+export const insertGameSchedule = async (time, id) => {
+  try {
+    const result = await pool.query(
+      `
+    UPDATE NBA_game SET time = ?, status = 'pending' WHERE GAME_ID = ?
+      `,
+      [time, id],
+    );
+    return result[0];
+  } catch (error) {
+    console.log(`insertGameSchedule model is ${error}`);
+    return error;
+  }
+};

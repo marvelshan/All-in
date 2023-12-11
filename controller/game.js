@@ -18,6 +18,22 @@ export const putGameEventInRedis = async (req, res) => {
   }
 };
 
+export const cleanGameEvent = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const data = {
+      de: 'The competition has not yet started.',
+      hs: 0,
+      vs: 0,
+      GAME_ID: id,
+    };
+    await client.set(`game${id}`, JSON.stringify(data));
+    next();
+  } catch (error) {
+    console.log(`putGameEventInRedis controller error on ${error}`);
+  }
+};
+
 export const getAllGame = async (req, res) => {
   try {
     const gameTeamName = await model.getAllGame();
@@ -45,18 +61,8 @@ export const schedule = async (req, res) => {
       }
     });
 
-    const { notifyTime, time, id } = req.body;
-    const data = { notifyTime, id };
-    const notifyJob = new CronJob(
-      notifyTime,
-      async () => {
-        io.emit('gameNotify', data);
-      },
-      null,
-      false,
-      'Asia/Taipei',
-    );
-
+    const { time, id } = req.body;
+    console.log(time, id);
     const cronJob = new CronJob(
       time,
       async () => {
@@ -76,7 +82,12 @@ export const schedule = async (req, res) => {
       false,
       'Asia/Taipei',
     );
-    notifyJob.start();
+    try {
+      await model.insertGameSchedule(time, id);
+    } catch (error) {
+      console.log(`schedule insert DB controller error on ${error}`);
+    }
+
     cronJob.start();
     res.status(200).json({
       success: true,
@@ -90,10 +101,11 @@ export const schedule = async (req, res) => {
 export const startGameEvent = async (req, res) => {
   try {
     const { id } = req.body;
+    console.log('repeat');
     const gameData = await model.getNBAGameLog(id);
     await model.changeGameStatus(id, 'playing');
-    userModel.insertUserPerBet(66, id, 0, 0, 'home');
-    userModel.insertUserPerBet(66, id, 0, 0, 'away');
+    userModel.insertUserPerBet(21, id, 0, 0, 'home');
+    userModel.insertUserPerBet(21, id, 0, 0, 'away');
     gameData.forEach(async (element) => {
       const timeDiff =
         (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 30;
@@ -114,7 +126,18 @@ export const startGameEvent = async (req, res) => {
               await userModel.changeUserPoint(winningPoint, data.member_id);
             });
             await userModel.deleteBetInfor(id);
-            await model.changeGameStatus(id, 'end');
+            await model.changeGameStatus(id, 'waiting');
+          }
+          if (
+            parseInt(element.GAME_ID, 10) === 22200001 ||
+            parseInt(element.GAME_ID, 10) === 22200002 ||
+            parseInt(element.GAME_ID, 10) === 22200003 ||
+            parseInt(element.GAME_ID, 10) === 22200004
+          ) {
+            console.log('axios');
+            await axios.post('http://localhost:3000/game/start', {
+              id: element.GAME_ID,
+            });
           }
         }
       }, timeDiff);

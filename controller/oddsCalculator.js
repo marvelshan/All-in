@@ -1,5 +1,5 @@
 import * as model from '../model/odds.js';
-import { client } from '../utils/cache.js';
+// import { client } from '../utils/cache.js';
 import { io } from '../utils/socket.js';
 
 const oddCalculator = async (req, res, next) => {
@@ -33,6 +33,7 @@ const oddCalculator = async (req, res, next) => {
   io.emit('odds', gameInitialOdds);
   // await client.set(`odds${id}`, JSON.stringify(gameInitialOdds));
   await model.updateOdds(id, homeOdds, awayOdds, moneyBuffer);
+  await model.updateGameOdds(id, homeOdds, awayOdds);
   next();
 };
 
