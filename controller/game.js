@@ -67,9 +67,12 @@ export const schedule = async (req, res) => {
       time,
       async () => {
         try {
-          const response = await axios.post('/game/start', {
-            id,
-          });
+          const response = await axios.post(
+            'https://www.ygolonhcet.online/game/start',
+            {
+              id,
+            },
+          );
           console.log(`API request successful. Response: ${response.data}`);
         } catch (error) {
           console.error(`Error making API request: ${error.message}`);

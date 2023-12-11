@@ -34,6 +34,7 @@ function getOdds() {
       if (data.success === false) {
         return alert(data.message);
       }
+      console.log(data);
       const gameEvent = JSON.parse(data);
       homeOdds.textContent = gameEvent.homeOdds;
       awayOdds.textContent = gameEvent.awayOdds;
