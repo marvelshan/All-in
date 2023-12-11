@@ -231,7 +231,7 @@ function changeToUserInfor() {
 }
 function sendMessage() {
   const message = document.querySelector('input[name="message"]');
-  fetch('https://ygolonhcet.online/user/message', {
+  fetch('/user/message', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -240,13 +240,11 @@ function sendMessage() {
       id: gameValue,
       message: message.value,
     }),
-    credentials: 'include',
   })
     .then((response) => {
       return response.json();
     })
     .then((game) => {
-      console.log(game);
       if (game.success === false) {
         return alert(game.message);
       }
@@ -273,7 +271,6 @@ function chatroom() {
       const messageContainer = document.querySelector('.messageContainer');
       const userNameforCheck = userName.textContent;
       game.forEach((message) => {
-        console.log(message.userName);
         const ownElement = document.createElement('div');
         if (message.userName === userNameforCheck) {
           ownElement.className = 'ownElement';

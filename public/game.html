@@ -117,40 +117,6 @@
     </div>
   </body>
   <script src="javascript/game.js"></script>
-  <script>
-    fetch("/user/chatRoom", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: gameValue,
-      }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((game) => {
-        if (game.success === false) {
-          return alert(game.message);
-        }
-        const messageContainer = document.querySelector(".messageContainer");
-        const userNameforCheck = userName.textContent;
-        game.forEach((message) => {
-          const ownElement = document.createElement("div");
-          if (message.userName === userNameforCheck) {
-            ownElement.className = "ownElement";
-            ownElement.textContent = message.message;
-            messageContainer.appendChild(ownElement);
-          } else {
-            const element = document.createElement("div");
-            element.className = "element";
-            element.textContent = `${message.userName}: ${message.message}`;
-            messageContainer.appendChild(element);
-          }
-        });
-      });
-  </script>
   <script type="importmap">
     {
       "imports": {
