@@ -67,12 +67,9 @@ export const schedule = async (req, res) => {
       time,
       async () => {
         try {
-          const response = await axios.post(
-            'http://localhost:3000/game/start',
-            {
-              id,
-            },
-          );
+          const response = await axios.post('/game/start', {
+            id,
+          });
           console.log(`API request successful. Response: ${response.data}`);
         } catch (error) {
           console.error(`Error making API request: ${error.message}`);
@@ -104,8 +101,8 @@ export const startGameEvent = async (req, res) => {
     console.log('repeat');
     const gameData = await model.getNBAGameLog(id);
     await model.changeGameStatus(id, 'playing');
-    userModel.insertUserPerBet(21, id, 0, 0, 'home');
-    userModel.insertUserPerBet(21, id, 0, 0, 'away');
+    userModel.insertUserPerBet(66, id, 0, 0, 'home');
+    userModel.insertUserPerBet(66, id, 0, 0, 'away');
     gameData.forEach(async (element) => {
       const timeDiff =
         (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 30;
@@ -135,7 +132,7 @@ export const startGameEvent = async (req, res) => {
             parseInt(element.GAME_ID, 10) === 22200004
           ) {
             console.log('axios');
-            await axios.post('http://localhost:3000/game/start', {
+            await axios.post('/game/start', {
               id: element.GAME_ID,
             });
           }
