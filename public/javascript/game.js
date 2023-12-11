@@ -37,9 +37,10 @@ function getOdds() {
       const gameEvent = JSON.parse(data);
       homeOdds.textContent = gameEvent.homeOdds;
       awayOdds.textContent = gameEvent.awayOdds;
+      chatroom();
     });
 }
-getOdds();
+
 // first get game information
 function getGameEvent(gameId) {
   fetch('/game/getGameEvent', {
@@ -78,12 +79,6 @@ function getGameEvent(gameId) {
       }
     });
 }
-getGameEvent(gameValue);
-getGameEvent('22200001');
-getGameEvent('22200002');
-getGameEvent('22200003');
-getGameEvent('22200004');
-getGameEvent('22200005');
 
 function betHomeGame() {
   if (event.textContent === 'event: Game End') {
@@ -209,7 +204,6 @@ function getUserInfor() {
       });
     });
 }
-getUserInfor();
 
 function setTeamImage(team, elementId) {
   const imagePath = `/image/${team}.png`;
@@ -254,3 +248,45 @@ function sendMessage() {
     });
   message.value = '';
 }
+function chatroom() {
+  fetch('/user/chatRoom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: gameValue,
+    }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((game) => {
+      if (game.success === false) {
+        return alert(game.message);
+      }
+      const messageContainer = document.querySelector('.messageContainer');
+      const userNameforCheck = userName.textContent;
+      game.forEach((message) => {
+        const ownElement = document.createElement('div');
+        if (message.userName === userNameforCheck) {
+          ownElement.className = 'ownElement';
+          ownElement.textContent = message.message;
+          messageContainer.appendChild(ownElement);
+        } else {
+          const element = document.createElement('div');
+          element.className = 'element';
+          element.textContent = `${message.userName}: ${message.message}`;
+          messageContainer.appendChild(element);
+        }
+      });
+    });
+}
+getOdds();
+getGameEvent(gameValue);
+getGameEvent('22200001');
+getGameEvent('22200002');
+getGameEvent('22200003');
+getGameEvent('22200004');
+getGameEvent('22200005');
+getUserInfor();
