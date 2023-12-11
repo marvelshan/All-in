@@ -240,6 +240,7 @@ function sendMessage() {
       id: gameValue,
       message: message.value,
     }),
+    credentials: 'include',
   })
     .then((response) => {
       return response.json();
