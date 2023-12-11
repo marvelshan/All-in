@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io('https://www.ygolonhcet.online/');
+const socket = io('https://ygolonhcet.online/');
 socket.on('connection', () => {
   console.log('connected');
 });

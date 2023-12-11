@@ -39,21 +39,13 @@ export const insertOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
 export const updateOdds = async (id, homeOdds, awayOdds, moneyBuffer) => {
   try {
     const result = await pool.query(
-      `IF EXISTS (SELECT * FROM odds WHERE id = ?)
-        UPDATE odds SET home_odds = ?, away_odds = ?, moneyBuffer = ? WHERE id = ?;
-      ELSE
-        INSERT INTO odds (id, home_odds, away_odds, moneyBuffer) VALUES (?, ?, ?, ?);`,
-      [
-        id,
-        homeOdds,
-        awayOdds,
-        moneyBuffer,
-        id,
-        id,
-        homeOdds,
-        awayOdds,
-        moneyBuffer,
-      ],
+      `INSERT INTO odds (id, home_odds, away_odds, moneyBuffer) 
+      VALUES (?, ?, ?, ?) 
+      ON DUPLICATE KEY UPDATE 
+      home_odds = VALUES(home_odds), 
+      away_odds = VALUES(away_odds), 
+      moneyBuffer = VALUES(moneyBuffer);`,
+      [id, homeOdds, awayOdds, moneyBuffer],
     );
     return result[0];
   } catch (error) {

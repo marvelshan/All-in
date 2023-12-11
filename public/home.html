@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" href="home.css" />
-    <link rel="icon" href="/image/logo.png" type="image/png" />
+    <link rel="icon" href="/image/logoIcon.png" type="image/png" />
   </head>
   <body>
     <div class="header">
@@ -265,10 +265,12 @@
             return alert(data.message);
           }
           const gameEvent = JSON.parse(data);
+          console.log(gameEvent);
           homeOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
             gameEvent.homeOdds;
           awayOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
             gameEvent.awayOdds;
+          console.log(homeOdds);
         });
     }
     function getGameEvent(gameId) {
