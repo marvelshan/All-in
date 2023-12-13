@@ -9,33 +9,81 @@
     <title>admin</title>
   </head>
   <body>
+    <div class="container">
+      <h1>Admin Interface</h1>
+      <div class="typeFrame">
+        <div class="card">
+          <div class="title">Bar Chart</div>
+          <div class="description">Points earned by the winning side.</div>
+          <button class="titleButton" onclick="showBarChart()">Open</button>
+        </div>
+
+        <div class="card">
+          <div class="title">Pie Chart</div>
+          <div class="description">
+            Number of bets on both sides of the competition.
+          </div>
+          <button class="titleButton" onclick="showPieChart()">Open</button>
+        </div>
+
+        <div class="card">
+          <div class="title">Schedule Game System</div>
+          <div class="description">
+            Select the match schedule and set the time; the competition will
+            commence at the scheduled time.
+          </div>
+          <button class="titleButton" onclick="startGameSystem()">Open</button>
+        </div>
+      </div>
+    </div>
+
     <div class="barChart">
       <canvas id="myChart"></canvas>
     </div>
     <div class="pieFrame"></div>
-    <h1>Start game</h1>
-    <div id="buttonContainer"></div>
-    <div class="schedule">
-      <label for="appt">時間：</label>
-      <input
-        type="time"
-        id="appt"
-        name="appt"
-        min="09:00"
-        max="18:00"
-        required
-      />
-      <label for="start">日期：</label>
-      <input
-        type="date"
-        id="start"
-        value="2023-12-10"
-        min="2023-12-01"
-        max="2024-01-31"
-      />
-      <button class="submit-btn" onclick="submitSchedule()">送出</button>
-      <button class="close-btn" onclick="closeSchedule()">關閉</button>
+    <div class="scheduleContainer">
+      <h1>Start game</h1>
+      <div id="buttonContainer"></div>
+      <div class="schedule">
+        <label for="appt">時間：</label>
+        <input
+          type="time"
+          id="appt"
+          name="appt"
+          min="09:00"
+          max="18:00"
+          required
+        />
+        <label for="start">日期：</label>
+        <input
+          type="date"
+          id="start"
+          value="2023-12-10"
+          min="2023-12-01"
+          max="2024-01-31"
+        />
+        <button class="submit-btn" onclick="submitSchedule()">送出</button>
+        <button class="close-btn" onclick="closeSchedule()">關閉</button>
+      </div>
+    </div>
+    <div class="futureGameFrame">
+      <div class="futureTitle">Coming soon</div>
+      <div class="closeButton" onclick="closeFutureGameFrame()">X</div>
     </div>
   </body>
   <script src="javascript/admin.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "socket.io-client": "https://cdn.socket.io/4.4.1/socket.io.esm.min.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import { io } from "socket.io-client";
+    const socket = io("https://ygolonhcet.online/");
+    socket.on("connection", () => {
+      console.log("connected");
+    });
+  </script>
 </html>

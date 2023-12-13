@@ -13,13 +13,23 @@ a {
   position: fixed;
   background-color: white;
   display: flex;
-  justify-content: center;
   width: 100%;
 }
 .logo {
   width: 75px;
   height: 75px;
   margin: 3px;
+}
+.userInfor {
+  align-items: center;
+  padding: 10px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: auto;
+  margin-top: 10px;
+}
+.userName {
+  padding-bottom: 5px;
 }
 .navbar {
   font-size: 18px;

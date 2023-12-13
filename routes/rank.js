@@ -7,6 +7,7 @@ import {
 const router = express.Router();
 
 router.get('/pointRank', getUserPointRank);
+
 router.get('/winningRateRank', getUserWinningRateRank);
 
 export default router;

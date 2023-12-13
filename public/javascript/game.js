@@ -4,10 +4,8 @@ const gameValue = urlParams.get('game');
 document.querySelector('.gameId').textContent = gameValue;
 const homeOdds = document.querySelector('.homeOdds');
 const homeButton = document.querySelector('.homeButton');
-
 const awayOdds = document.querySelector('.awayOdds');
 const awayButton = document.querySelector('.awayButton');
-
 const event = document.querySelector('.eventList');
 const teamName = document.querySelectorAll('.teamName');
 const homeScoreElements = document.querySelectorAll('.homeScore');
@@ -119,6 +117,26 @@ function betHomeGame() {
       getOdds();
       getUserInfor();
     });
+  if (betPoint >= 1000) {
+    fetch('/user/message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: gameValue,
+        betPoint,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((game) => {
+        if (game.success === false) {
+          return alert(game.message);
+        }
+      });
+  }
 }
 
 function betAwayGame() {
@@ -161,6 +179,26 @@ function betAwayGame() {
       getOdds();
       getUserInfor();
     });
+  if (betPoint >= 1000) {
+    fetch('/user/message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: gameValue,
+        betPoint,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((game) => {
+        if (game.success === false) {
+          return alert(game.message);
+        }
+      });
+  }
 }
 
 // member information
@@ -190,16 +228,17 @@ function getUserInfor() {
 
       container.innerHTML = '';
       data.betInfor.forEach((betData) => {
-        const element = document.createElement('div');
-        element.classList.add('gamecontainer');
-        element.innerHTML = `
-        <div class="record-title">Betting Record</div>
+        if (parseInt(betData.GAME_ID) === parseInt(gameValue)) {
+          const element = document.createElement('div');
+          element.classList.add('gamecontainer');
+          element.innerHTML = `
         <div class="record-item">GAME: ${betData.home_team_id} v.s ${betData.away_team_id}</div>
         <div class="record-item">Bet Point: ${betData.betting_point}</div>
         <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
         <div class="record-item">Host: ${betData.host}</div>
     `;
-        container.appendChild(element);
+          container.appendChild(element);
+        }
       });
     })
     .then(() => {
@@ -276,6 +315,11 @@ function chatroom() {
           ownElement.className = 'ownElement';
           ownElement.textContent = message.message;
           messageContainer.appendChild(ownElement);
+        } else if (message.userName === null) {
+          const element = document.createElement('div');
+          element.className = 'announcement';
+          element.textContent = message.message;
+          messageContainer.appendChild(element);
         } else {
           const element = document.createElement('div');
           element.className = 'element';
@@ -285,6 +329,34 @@ function chatroom() {
       });
     });
 }
+
+fetch('/game/status', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id: gameValue,
+  }),
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((game) => {
+    if (game.success === false) {
+      return alert(game.message);
+    }
+    const status = document.querySelector('.status');
+    if (game.status === 'playing') {
+      status.textContent = 'live';
+    } else if (game.status === 'pending') {
+      status.textContent = 'Not started yet';
+      status.style.backgroundColor = 'blue';
+    } else if (game.status === 'waiting') {
+      status.textContent = 'Game End';
+      status.style.backgroundColor = 'gray';
+    }
+  });
 getOdds();
 getGameEvent(gameValue);
 getGameEvent('22200001');

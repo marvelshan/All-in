@@ -29,6 +29,17 @@ a {
   margin: 20px 20px 20px 0;
   margin-left: auto;
 }
+.userInfor {
+  align-items: center;
+  padding: 10px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: auto;
+  margin-top: 10px;
+}
+.userName {
+  padding-bottom: 5px;
+}
 .gameContainer {
   display: flex;
   overflow-x: auto;
@@ -44,7 +55,6 @@ a {
   position: fixed;
   background-color: white;
   display: flex;
-  justify-content: center;
   width: 100%;
 }
 .navbar {

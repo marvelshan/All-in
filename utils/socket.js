@@ -1,5 +1,4 @@
 import { Server } from 'socket.io';
-import cors from 'cors';
 
 let io;
 export async function initializeWebSocket(httpServer) {

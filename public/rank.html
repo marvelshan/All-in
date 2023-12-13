@@ -14,10 +14,12 @@
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
+      <div class="userInfor"></div>
     </div>
     <div class="container" id="rankContainer"></div>
     <script>
       const container = document.getElementById("rankContainer");
+      const userInfor = document.querySelector(".userInfor");
 
       const fetchAndDisplayRanks = async (start, end) => {
         const response = await fetch("/rank/pointRank", {
@@ -65,6 +67,25 @@
       window.addEventListener("scroll", showMoreRanks);
 
       fetchAndDisplayRanks(0, 10);
+      fetch("/user/getUserInfor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const userName = document.createElement("div");
+          const userPoint = document.createElement("div");
+          userName.className = "userName";
+          userPoint.className = "userPoint";
+          userName.textContent = `User: ${data.userInfor[0].name}`;
+          userPoint.textContent = `Point: ${data.userInfor[0].point}`;
+          userInfor.appendChild(userName);
+          userInfor.appendChild(userPoint);
+        });
     </script>
   </body>
 </html>

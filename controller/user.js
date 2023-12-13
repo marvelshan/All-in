@@ -124,8 +124,15 @@ export const recordPerBet = async (req, res) => {
 
 export const insertUserMessage = async (req, res) => {
   try {
-    const { userId, name, message, id } = req.body;
-    await model.insertUserMessage(userId, name, message, id);
+    const { userId, name, message, betPoint, id } = req.body;
+    if (message === undefined) {
+      const betMessage = `${name}下注${betPoint}`;
+      await model.insertUserMessage(userId, null, betMessage, id);
+      console.log(betMessage);
+    } else {
+      await model.insertUserMessage(userId, name, message, id);
+    }
+
     const data = { userId, name, message, id };
     io.emit(`message${id}`, data);
     res.status(200).json({

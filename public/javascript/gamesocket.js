@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 const socket = io('https://ygolonhcet.online/');
-const messageSocket = io('https://www.ygolonhcet.online/');
+const messageSocket = io('https://ygolonhcet.online/');
 socket.on('connection', () => {
   console.log('connected');
 });
@@ -43,12 +43,16 @@ socket.on('odds', (odds) => {
 
 const messageContainer = document.querySelector('.messageContainer');
 messageSocket.on(`message${gameValue}`, (message) => {
-  console.log(message);
   const ownElement = document.createElement('div');
   if (message.name === userName.textContent) {
     ownElement.className = 'ownElement';
     ownElement.textContent = message.message;
     messageContainer.appendChild(ownElement);
+  } else if (message.name === null) {
+    const element = document.createElement('div');
+    element.className = 'element';
+    element.textContent = message.message;
+    messageContainer.appendChild(element);
   } else {
     const element = document.createElement('div');
     element.className = 'element';

@@ -5,7 +5,7 @@ export const options = {
   // Key configurations for spike in this section
   discardResponseBodies: true,
   stages: [
-    { duration: '10s', target: 1500 }, // fast ramp-up to a high point
+    { duration: '10s', target: 1000 }, // fast ramp-up to a high point
     // No plateau
     { duration: '3s', target: 0 }, // quick ramp-down to 0 users
   ],
@@ -15,15 +15,15 @@ export default () => {
   const urlRes = http.post(
     'https://www.ygolonhcet.online/odds/bet',
     JSON.stringify({
-      betPoint: 1,
+      betPoint: 3,
       id: 22200001,
-      hosting: 'home',
+      hosting: 'away',
     }),
     {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6NDUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QDEyMy5jb20ifSwiaWF0IjoxNzAxMjQ4MzA0fQ.GXYwFB6vaZ2yeLRBU-fPgY5AoqD24A1qtv2X4J5zLdM',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6NDUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QDEyMy5jb20ifSwiaWF0IjoxNzAxNjU2MzYyfQ.oUqXX7aXvujPZOz52btnxkP3yfE0n7GmteVf2yCEqtk',
       },
     },
   );

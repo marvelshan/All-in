@@ -16,7 +16,6 @@ a {
   position: fixed;
   background-color: white;
   display: flex;
-  justify-content: center;
   width: 100%;
 }
 .left-column {
@@ -60,7 +59,18 @@ a {
   border-radius: 8px;
   background-color: #e0e0e0;
 }
-
+.status {
+  border-radius: 3px;
+  background-color: #ff004c;
+  font-weight: bold;
+  color: white;
+  margin: 10px 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  height: 20px;
+}
 .homeTeamMark,
 .awayTeamMark {
   flex: 1;
@@ -222,6 +232,9 @@ input[type="text"] {
   flex-direction: column-reverse;
   align-items: flex-end;
 }
+.announcement {
+  color: rgb(255, 149, 0);
+}
 .inputFrame {
   display: flex;
 }
@@ -265,6 +278,12 @@ input[type="text"] {
 .userPoint {
   margin-bottom: 15px;
   font-size: 16px;
+}
+.container {
+  overflow-y: scroll;
+  height: 400px;
+  background-color: #ffffff45;
+  border-radius: 4px;
 }
 .gamecontainer {
   background-color: #fff;

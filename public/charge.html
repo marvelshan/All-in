@@ -14,6 +14,7 @@
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
+      <div class="userInfor"></div>
     </div>
     <div class="wrapper">
       <h1>All-In</h1>
@@ -38,6 +39,26 @@
   </body>
   <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
   <script>
+    const userInfor = document.querySelector(".userInfor");
+    fetch("/user/getUserInfor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const userName = document.createElement("div");
+        const userPoint = document.createElement("div");
+        userName.className = "userName";
+        userPoint.className = "userPoint";
+        userName.textContent = `User: ${data.userInfor[0].name}`;
+        userPoint.textContent = `Point: ${data.userInfor[0].point}`;
+        userInfor.appendChild(userName);
+        userInfor.appendChild(userPoint);
+      });
     TPDirect.setupSDK(
       12348,
       "app_pa1pQcKoY22IlnSXq5m5WP5jFKzoRG58VEXpT7wU62ud7mMbDOGzCYIlzzLF",
@@ -186,8 +207,7 @@
             if (data.success === false) {
               return alert(data.message);
             }
-            alert(data.message);
-            window.location.href = `/game.html?game=22200001`;
+            alert("Successful Top-up");
           });
 
         // send prime to your server, to pay with Pay by Prime API .

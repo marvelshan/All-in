@@ -118,6 +118,68 @@ function scheduleGame(id, time) {
 
 const buttonContainer = document.getElementById('buttonContainer');
 const schedule = document.querySelector('.schedule');
+
+function closeSchedule() {
+  const title = document.querySelector('.gameTitle');
+  const id = document.querySelector('.gameid');
+  schedule.removeChild(title);
+  schedule.removeChild(id);
+  schedule.style.display = 'none';
+}
+
+function dateTimeToCron(date, time) {
+  const [year, month, day] = date.split('-');
+  const [hours, minutes] = time.split(':');
+  return `${minutes} ${hours} ${day} ${month} *`;
+}
+
+function submitSchedule() {
+  const title = document.querySelector('.gameTitle');
+  const timeInput = document.getElementById('appt').value;
+  const dateInput = document.getElementById('start').value;
+  const id = document.querySelector('.gameid');
+  if (timeInput === '') {
+    alert('time can not be empty');
+    return;
+  }
+  const time = dateTimeToCron(dateInput, timeInput);
+  scheduleGame(id.textContent, time);
+  schedule.style.display = 'none';
+  schedule.removeChild(title);
+  schedule.removeChild(id);
+  const futureGameFrame = document.querySelector('.futureGameFrame');
+  futureGameFrame.style.display = 'block';
+}
+const scheduleContainer = document.querySelector('.scheduleContainer');
+const barChart = document.querySelector('.barChart');
+function showBarChart() {
+  barChart.style.display = 'block';
+  scheduleContainer.style.display = 'none';
+  pieFrame.style.display = 'none';
+}
+function showPieChart() {
+  pieFrame.style.display = 'flex';
+  barChart.style.display = 'none';
+  scheduleContainer.style.display = 'none';
+}
+function startGameSystem() {
+  const futureGameFrame = document.querySelector('.futureGameFrame');
+  pieFrame.style.display = 'none';
+  barChart.style.display = 'none';
+  scheduleContainer.style.display = 'block';
+  futureGameFrame.style.display = 'none';
+}
+function cronToDateTime(cronExpression) {
+  const cronParts = cronExpression.split(' ');
+  const [minutes, hours, day, month] = cronParts;
+  const date = `2023/${month}/${day} ${hours}:${minutes}`;
+  return { date };
+}
+function closeFutureGameFrame() {
+  const futureGameFrame = document.querySelector('.futureGameFrame');
+  futureGameFrame.style.display = 'none';
+}
+
 fetch('/game/infor', {
   method: 'GET',
   headers: {
@@ -137,40 +199,51 @@ fetch('/game/infor', {
         schedule.style.display = 'block';
         const title = document.createElement('div');
         const id = document.createElement('div');
-        title.className = 'title';
+        title.className = 'gameTitle';
         id.className = 'gameid';
         title.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
         id.textContent = 22200001 + i;
         schedule.appendChild(title);
         schedule.appendChild(id);
       };
+      if (game.status === 'pending') {
+        const time = game.time;
+        const scheduleTime = document.createElement('div');
+        const futureHomeFrame = document.createElement('div');
+        const futureHomeImage = document.createElement('div');
+        const futureHome = document.createElement('div');
+        const futureAwayFrame = document.createElement('div');
+        const futureAwayImage = document.createElement('div');
+        const futureAway = document.createElement('div');
+        const futureOdds = document.createElement('div');
+        const url = document.createElement('a');
+        const futurGamePerFrame = document.createElement('div');
+        const futureGameFrame = document.querySelector('.futureGameFrame');
+        scheduleTime.className = 'scheduleTime';
+        futureHomeFrame.className = 'futureHomeFrame';
+        futureHomeImage.className = 'futureHomeImage';
+        futureAwayFrame.className = 'futureHomeFrame';
+        futureAwayImage.className = 'futureAwayImage';
+        futureHome.className = 'futurePerGame';
+        futureAway.className = 'futurePerGame';
+        futureOdds.className = 'futureOdds';
+        futurGamePerFrame.className = 'futurGamePerFrame';
+        futureHome.textContent = game.home_team_id;
+        futureAway.textContent = game.away_team_id;
+        futureHomeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
+        futureAwayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+        scheduleTime.textContent = time;
+        url.href = `/game.html?game=${game.GAME_ID}`;
+        futurGamePerFrame.appendChild(scheduleTime);
+        futureHomeFrame.appendChild(futureHomeImage);
+        futureHomeFrame.appendChild(futureHome);
+        futureAwayFrame.appendChild(futureAwayImage);
+        futureAwayFrame.appendChild(futureAway);
+        futurGamePerFrame.appendChild(futureHomeFrame);
+        futurGamePerFrame.appendChild(futureAwayFrame);
+        futurGamePerFrame.appendChild(futureOdds);
+        url.appendChild(futurGamePerFrame);
+        futureGameFrame.appendChild(url);
+      }
     });
   });
-
-function closeSchedule() {
-  const title = document.querySelector('.title');
-  schedule.style.display = 'none';
-  schedule.removeChild(title);
-}
-
-function dateTimeToCron(date, time) {
-  const [year, month, day] = date.split('-');
-  const [hours, minutes] = time.split(':');
-  return `${minutes} ${hours} ${day} ${month} *`;
-}
-
-function submitSchedule() {
-  const title = document.querySelector('.title');
-  const timeInput = document.getElementById('appt').value;
-  const dateInput = document.getElementById('start').value;
-  const id = document.querySelector('.gameid');
-  if (timeInput === '') {
-    alert('time can not be empty');
-    return;
-  }
-  const time = dateTimeToCron(dateInput, timeInput);
-  scheduleGame(id.textContent, time);
-  schedule.style.display = 'none';
-  schedule.removeChild(title);
-  schedule.removeChild(id);
-}

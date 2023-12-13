@@ -1,11 +1,17 @@
 import { CronJob } from 'cron';
 import axios from 'axios';
-import AWS from 'aws-sdk';
 import * as model from '../model/game.js';
 import * as userModel from '../model/user.js';
 import { client } from '../utils/cache.js';
 import { io } from '../utils/socket.js';
+import { closeAutoScaling, describeAutoScaling } from '../utils/aws.js';
 
+function cronToDateTime(cronExpression) {
+  const cronParts = cronExpression.split(' ');
+  const [minutes, hours, day, month] = cronParts;
+  const date = `2023/${month}/${day} ${hours}:${minutes}`;
+  return { date };
+}
 export const putGameEventInRedis = async (req, res) => {
   try {
     const { id } = req.body;
@@ -45,22 +51,6 @@ export const getAllGame = async (req, res) => {
 
 export const schedule = async (req, res) => {
   try {
-    const autoScaling = new AWS.AutoScaling();
-    const params = {
-      AutoScalingGroupName: 'All-in',
-      DesiredCapacity: 3,
-    };
-    autoScaling.updateAutoScalingGroup(params, (err, AWSdata) => {
-      console.log(AWSdata);
-      if (err) {
-        console.error(`Error triggering Auto Scaling: ${err.message}`);
-      } else {
-        console.log(
-          `Auto Scaling triggered successfully. Desired capacity set to ${3}.`,
-        );
-      }
-    });
-
     const { time, id } = req.body;
     console.log(time, id);
     const cronJob = new CronJob(
@@ -82,8 +72,9 @@ export const schedule = async (req, res) => {
       false,
       'Asia/Taipei',
     );
+    const realTime = cronToDateTime(time);
     try {
-      await model.insertGameSchedule(time, id);
+      await model.insertGameSchedule(realTime.date, id);
     } catch (error) {
       console.log(`schedule insert DB controller error on ${error}`);
     }
@@ -101,18 +92,28 @@ export const schedule = async (req, res) => {
 export const startGameEvent = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log('repeat');
     const gameData = await model.getNBAGameLog(id);
     await model.changeGameStatus(id, 'playing');
     userModel.insertUserPerBet(66, id, 0, 0, 'home');
     userModel.insertUserPerBet(66, id, 0, 0, 'away');
     gameData.forEach(async (element) => {
       const timeDiff =
-        (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 30;
+        (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 2;
       setTimeout(async () => {
         io.emit('gameEvent', element);
         await client.set(`game${id}`, JSON.stringify(element));
+        if (
+          element.de === 'Start Period' &&
+          parseInt(element.period, 10) === 4 &&
+          parseInt(element.GAME_ID, 10) === 22200001
+        ) {
+          describeAutoScaling();
+        }
         if (element.de === 'Game End') {
+          if (parseInt(element.GAME_ID, 10) === 22200001) {
+            closeAutoScaling();
+          }
+
           if (element.hs > element.vs) {
             await userModel.updateUserPerBetResult(id, 'home');
             await userModel.updateLoseBetResult(id, 'away');
@@ -149,5 +150,15 @@ export const startGameEvent = async (req, res) => {
       .send({ success: true, message: `Successfully start game${id}` });
   } catch (error) {
     console.log(`startGameEvent controller error on ${error}`);
+  }
+};
+
+export const getGameStatus = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const gameStatus = await model.getGameStatus(id);
+    res.status(200).json(gameStatus);
+  } catch (error) {
+    console.log(`getGameStatus controller error on ${error}`);
   }
 };

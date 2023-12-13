@@ -14,6 +14,7 @@
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
+      <div class="userInfor"></div>
       <a href="/profile.html" class="sign">Join</a>
     </div>
 
@@ -31,105 +32,7 @@
     <div class="specialGame">
       <div class="specialGameTitle">精選賽事</div>
     </div>
-    <div class="gameContainer">
-      <a href="game.html?game=22200001">
-        <div class="gameFrame">
-          <div class="status">Live</div>
-          <div class="teamImage">
-            <div class="homeTeamImage"></div>
-            <div class="vs">v.s</div>
-            <div class="awayTeamImage"></div>
-          </div>
-          <div class="teamName">
-            <div class="teamFrame">
-              <div class="homeTeam"></div>
-              <div class="homeScore"></div>
-            </div>
-            <div class="teamFrame">
-              <div class="awayTeam"></div>
-              <div class="awayScore"></div>
-            </div>
-          </div>
-          <div class="odds">
-            <div class="homeOdds"></div>
-            <div class="awayOdds"></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="game.html?game=22200002">
-        <div class="gameFrame">
-          <div class="status">Live</div>
-          <div class="teamImage">
-            <div class="homeTeamImage"></div>
-            <div class="vs">v.s</div>
-            <div class="awayTeamImage"></div>
-          </div>
-          <div class="teamName">
-            <div class="teamFrame">
-              <div class="homeTeam"></div>
-              <div class="homeScore"></div>
-            </div>
-            <div class="teamFrame">
-              <div class="awayTeam"></div>
-              <div class="awayScore"></div>
-            </div>
-          </div>
-          <div class="odds">
-            <div class="homeOdds"></div>
-            <div class="awayOdds"></div>
-          </div>
-        </div>
-      </a>
-      <a href="game.html?game=22200003">
-        <div class="gameFrame">
-          <div class="status">Live</div>
-          <div class="teamImage">
-            <div class="homeTeamImage"></div>
-            <div class="vs">v.s</div>
-            <div class="awayTeamImage"></div>
-          </div>
-          <div class="teamName">
-            <div class="teamFrame">
-              <div class="homeTeam"></div>
-              <div class="homeScore"></div>
-            </div>
-            <div class="teamFrame">
-              <div class="awayTeam"></div>
-              <div class="awayScore"></div>
-            </div>
-          </div>
-          <div class="odds">
-            <div class="homeOdds"></div>
-            <div class="awayOdds"></div>
-          </div>
-        </div>
-      </a>
-      <a href="game.html?game=22200004">
-        <div class="gameFrame">
-          <div class="status">Live</div>
-          <div class="teamImage">
-            <div class="homeTeamImage"></div>
-            <div class="vs">v.s</div>
-            <div class="awayTeamImage"></div>
-          </div>
-          <div class="teamName">
-            <div class="teamFrame">
-              <div class="homeTeam"></div>
-              <div class="homeScore"></div>
-            </div>
-            <div class="teamFrame">
-              <div class="awayTeam"></div>
-              <div class="awayScore"></div>
-            </div>
-          </div>
-          <div class="odds">
-            <div class="homeOdds"></div>
-            <div class="awayOdds"></div>
-          </div>
-        </div>
-      </a>
-    </div>
+    <div class="gameContainer"></div>
 
     <div class="specialGame">
       <div class="specialGameTitle">未來賽事</div>
@@ -142,18 +45,38 @@
     </div>
   </body>
   <script>
-    const status = document.querySelectorAll(".status");
+    const sign = document.querySelector(".sign");
+    const userInfor = document.querySelector(".userInfor");
     const homeTeamElements = document.querySelectorAll(".homeTeam");
     const awayTeamElements = document.querySelectorAll(".awayTeam");
     const futureGameFrame = document.querySelector(".futureGameFrame");
     const homeTeam = document.querySelectorAll(".homeTeam");
     const awayTeam = document.querySelectorAll(".awayTeam");
-    const homeScore = document.querySelectorAll(".homeScore");
-    const awayScore = document.querySelectorAll(".awayScore");
-    const homeOdds = document.querySelectorAll(".homeOdds");
-    const awayOdds = document.querySelectorAll(".awayOdds");
     const homeTeamImage = document.querySelectorAll(".homeTeamImage");
     const awayTeamImage = document.querySelectorAll(".awayTeamImage");
+    fetch("/user/getUserInfor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        sign.style.display = "none";
+        const userName = document.createElement("div");
+        const userPoint = document.createElement("div");
+        userName.className = "userName";
+        userPoint.className = "userPoint";
+        userName.textContent = `User: ${data.userInfor[0].name}`;
+        userPoint.textContent = `Point: ${data.userInfor[0].point}`;
+        userInfor.appendChild(userName);
+        userInfor.appendChild(userPoint);
+        const signDiscount = document.querySelector(".signDiscount");
+        signDiscount.textContent = "立即開始";
+        signDiscount.href = "game.html?game=22200002";
+      });
 
     fetch("/game/infor", {
       method: "GET",
@@ -167,7 +90,7 @@
       .then((data) => {
         data.forEach((game) => {
           if (game.status === "pending") {
-            const time = cronToDateTime(game.time);
+            const time = game.time;
             const scheduleTime = document.createElement("div");
             const futureHomeFrame = document.createElement("div");
             const futureHomeImage = document.createElement("div");
@@ -197,7 +120,7 @@
             futureAwayOdds.textContent = game.away_odds;
             futureHomeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
             futureAwayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
-            scheduleTime.textContent = time.date;
+            scheduleTime.textContent = time;
             url.href = `/game.html?game=${game.GAME_ID}`;
             futurGamePerFrame.appendChild(scheduleTime);
             futureHomeFrame.appendChild(futureHomeImage);
@@ -211,43 +134,81 @@
             futurGamePerFrame.appendChild(futureOdds);
             url.appendChild(futurGamePerFrame);
             futureGameFrame.appendChild(url);
-          }
-          if (game.GAME_ID === 22200001) {
-            homeTeam[0].textContent = game.home_team_id;
-            awayTeam[0].textContent = game.away_team_id;
-            homeTeamImage[0].style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            awayTeamImage[0].style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
-          } else if (game.GAME_ID === 22200002) {
-            homeTeam[1].textContent = game.home_team_id;
-            awayTeam[1].textContent = game.away_team_id;
-            homeTeamImage[1].style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            awayTeamImage[1].style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
-          } else if (game.GAME_ID === 22200003) {
-            homeTeam[2].textContent = game.home_team_id;
-            awayTeam[2].textContent = game.away_team_id;
-            homeTeamImage[2].style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            awayTeamImage[2].style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
-          } else if (game.GAME_ID === 22200004) {
-            homeTeam[3].textContent = game.home_team_id;
-            awayTeam[3].textContent = game.away_team_id;
-            homeTeamImage[3].style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            awayTeamImage[3].style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+          } else if (game.status === "playing") {
+            const gameContainer = document.querySelector(".gameContainer");
+            const gameURL = document.createElement("a");
+            gameURL.className = "gameURL";
+            gameURL.href = `game.html?game=${game.GAME_ID}`;
+            gameContainer.appendChild(gameURL);
+            const gameFrame = document.createElement("div");
+            gameFrame.className = "gameFrame";
+            gameURL.appendChild(gameFrame);
+            const status = document.createElement("div");
+            status.textContent = "live";
+            status.className = "status";
+            const teamImage = document.createElement("div");
+            teamImage.className = "teamImage";
+            const teamName = document.createElement("div");
+            teamName.className = "teamName";
+            const odds = document.createElement("div");
+            odds.className = "odds";
+            gameFrame.appendChild(status);
+            gameFrame.appendChild(teamImage);
+            gameFrame.appendChild(teamName);
+            gameFrame.appendChild(odds);
+            const homeTeamImage = document.createElement("div");
+            homeTeamImage.className = "homeTeamImage";
+            const vs = document.createElement("div");
+            vs.className = "vs";
+            const awayTeamImage = document.createElement("div");
+            awayTeamImage.className = "awayTeamImage";
+            teamImage.appendChild(homeTeamImage);
+            teamImage.appendChild(vs);
+            teamImage.appendChild(awayTeamImage);
+            const teamFrame1 = document.createElement("div");
+            teamFrame1.className = "teamFrame";
+            teamName.appendChild(teamFrame1);
+            const homeTeam = document.createElement("div");
+            homeTeam.className = "homeTeam";
+            const homeScore = document.createElement("div");
+            homeScore.className = "homeScore";
+            homeScore.id = `homeScore${game.GAME_ID}`;
+            teamFrame1.appendChild(homeTeam);
+            teamFrame1.appendChild(homeScore);
+            const teamFrame2 = document.createElement("div");
+            teamFrame2.className = "teamFrame";
+            teamName.appendChild(teamFrame2);
+            const awayTeam = document.createElement("div");
+            awayTeam.className = "awayTeam";
+            const awayScore = document.createElement("div");
+            awayScore.className = "awayScore";
+            awayScore.id = `awayScore${game.GAME_ID}`;
+            teamFrame2.appendChild(awayTeam);
+            teamFrame2.appendChild(awayScore);
+            const homeOdds = document.createElement("div");
+            homeOdds.className = "homeOdds";
+            homeOdds.id = `homeOdds${game.GAME_ID}`;
+            const awayOdds = document.createElement("div");
+            awayOdds.className = "awayOdds";
+            awayOdds.id = `awayOdds${game.GAME_ID}`;
+            odds.appendChild(homeOdds);
+            odds.appendChild(awayOdds);
+            homeTeam.textContent = game.home_team_id;
+            awayTeam.textContent = game.away_team_id;
+            homeTeamImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
+            awayTeamImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+            getOdds(game.GAME_ID, homeOdds, awayOdds);
+            getGameEvent(game.GAME_ID, homeScore, awayScore);
           }
         });
       });
-    function cronToDateTime(cronExpression) {
-      const cronParts = cronExpression.split(" ");
-      const [minutes, hours, day, month] = cronParts;
-      const date = `2023/${month}/${day} ${hours}:${minutes}`;
-      return { date };
-    }
     function setTeamImage(team, element) {
       const imagePath = `/image/${team}.png`;
       return;
       `url(${imagePath})`;
     }
 
-    function getOdds(GAME_ID) {
+    function getOdds(GAME_ID, homeOdds, awayOdds) {
       fetch("/odds/getOdds", {
         method: "POST",
         headers: {
@@ -265,15 +226,11 @@
             return alert(data.message);
           }
           const gameEvent = JSON.parse(data);
-          console.log(gameEvent);
-          homeOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
-            gameEvent.homeOdds;
-          awayOdds[(parseInt(gameEvent.id, 10) % 10) - 1].textContent =
-            gameEvent.awayOdds;
-          console.log(homeOdds);
+          homeOdds.textContent = gameEvent.homeOdds;
+          awayOdds.textContent = gameEvent.awayOdds;
         });
     }
-    function getGameEvent(gameId) {
+    function getGameEvent(gameId, homeScore, awayScore) {
       fetch("/game/getGameEvent", {
         method: "POST",
         headers: {
@@ -290,20 +247,10 @@
           if (game.success === false) {
             return alert(game.message);
           }
-          homeScore[(game.gameData.GAME_ID % 10) - 1].textContent =
-            game.gameData.hs;
-          awayScore[(game.gameData.GAME_ID % 10) - 1].textContent =
-            game.gameData.vs;
+          homeScore.textContent = game.gameData.hs;
+          awayScore.textContent = game.gameData.vs;
         });
     }
-    getOdds(22200001);
-    getOdds(22200002);
-    getOdds(22200003);
-    getOdds(22200004);
-    getGameEvent(22200001);
-    getGameEvent(22200002);
-    getGameEvent(22200003);
-    getGameEvent(22200004);
   </script>
   <script type="importmap">
     {
@@ -320,33 +267,19 @@
       console.log("connected");
     });
     socket.on("gameEvent", (game) => {
-      if (game.GAME_ID === 22200001) {
-        homeScore[0].textContent = game.hs;
-        awayScore[0].textContent = game.vs;
-      } else if (game.GAME_ID === 22200002) {
-        homeScore[1].textContent = game.hs;
-        awayScore[1].textContent = game.vs;
-      } else if (game.GAME_ID === 22200003) {
-        homeScore[2].textContent = game.hs;
-        awayScore[2].textContent = game.vs;
-      } else if (game.GAME_ID === 22200004) {
-        homeScore[3].textContent = game.hs;
-        awayScore[3].textContent = game.vs;
+      if (game.GAME_ID) {
+        const homeScore = document.getElementById(`homeScore${game.GAME_ID}`);
+        const awayScore = document.getElementById(`awayScore${game.GAME_ID}`);
+        homeScore.textContent = game.hs;
+        awayScore.textContent = game.vs;
       }
     });
     socket.on("odds", (odds) => {
-      if (odds.id === 22200001) {
-        homeOdds[0].textContent = odds.homeOdds;
-        awayOdds[0].textContent = odds.awayOdds;
-      } else if (odds.id === 22200002) {
-        homeOdds[1].textContent = odds.homeOdds;
-        awayOdds[1].textContent = odds.awayOdds;
-      } else if (odds.id === 22200003) {
-        homeOdds[2].textContent = odds.homeOdds;
-        awayOdds[2].textContent = odds.awayOdds;
-      } else if (odds.id === 22200004) {
-        homeOdds[3].textContent = odds.homeOdds;
-        awayOdds[3].textContent = odds.awayOdds;
+      if (odds.id) {
+        const homeOdds = document.getElementById(`homeOdds${odds.id}`);
+        const awayOdds = document.getElementById(`awayOdds${odds.id}`);
+        homeOdds.textContent = odds.homeOdds;
+        awayOdds.textContent = odds.awayOdds;
       }
     });
   </script>

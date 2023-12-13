@@ -21,4 +21,6 @@ router.post('/getGameEvent', game.putGameEventInRedis);
 
 router.get('/infor', game.getAllGame);
 
+router.post('/status', game.getGameStatus);
+
 export default router;
