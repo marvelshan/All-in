@@ -1,6 +1,8 @@
 import express from 'express';
 import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 import oddsRouter from './routes/odds.js';
 import gameRouter from './routes/game.js';
@@ -15,6 +17,13 @@ const httpServer = createServer(app);
 
 app.use(cookieParser());
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  const currentDir = dirname(fileURLToPath(import.meta.url));
+  const adminPagePath = join(currentDir, '.', 'public', 'home.html');
+  res.sendFile(adminPagePath);
+});
+
 app.use('/odds', oddsRouter);
 app.use('/game', gameRouter);
 app.use('/user', userRouter);

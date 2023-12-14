@@ -9,8 +9,8 @@
   </head>
   <body>
     <div class="header">
-      <a href="/home.html"><img src="/image/logo.png" class="logo" /></a>
-      <a href="/home.html" class="navbar">Home</a>
+      <a href="/"><img src="/image/logo.png" class="logo" /></a>
+      <a href="/" class="navbar">Home</a>
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
@@ -64,6 +64,10 @@
         return response.json();
       })
       .then((data) => {
+        if (data.errors === "invalid token") {
+          sign.style.display = "display";
+          return;
+        }
         sign.style.display = "none";
         const userName = document.createElement("div");
         const userPoint = document.createElement("div");

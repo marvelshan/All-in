@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 const socket = io('https://ygolonhcet.online/');
-const messageSocket = io('https://ygolonhcet.online/');
+const messageSocket = io('https://www.ygolonhcet.online/');
 socket.on('connection', () => {
   console.log('connected');
 });

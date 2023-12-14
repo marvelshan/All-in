@@ -11,28 +11,35 @@
   <body>
     <div class="container">
       <h1>Admin Interface</h1>
-      <div class="typeFrame">
-        <div class="card">
+      <div class="tabs">
+        <input
+          type="radio"
+          name="tab"
+          id="tab-1"
+          onclick="showBarChart()"
+          checked
+        />
+        <label for="tab-1">Bar Chart</label>
+        <div class="tab-content">
           <div class="title">Bar Chart</div>
           <div class="description">Points earned by the winning side.</div>
-          <button class="titleButton" onclick="showBarChart()">Open</button>
         </div>
-
-        <div class="card">
+        <input type="radio" name="tab" id="tab-2" onclick="showPieChart()" />
+        <label for="tab-2">Pie Chart</label>
+        <div class="tab-content">
           <div class="title">Pie Chart</div>
           <div class="description">
             Number of bets on both sides of the competition.
           </div>
-          <button class="titleButton" onclick="showPieChart()">Open</button>
         </div>
-
-        <div class="card">
+        <input type="radio" name="tab" id="tab-3" onclick="startGameSystem()" />
+        <label for="tab-3">Schedule Game System</label>
+        <div class="tab-content">
           <div class="title">Schedule Game System</div>
           <div class="description">
             Select the match schedule and set the time; the competition will
             commence at the scheduled time.
           </div>
-          <button class="titleButton" onclick="startGameSystem()">Open</button>
         </div>
       </div>
     </div>
@@ -45,7 +52,8 @@
       <h1>Start game</h1>
       <div id="buttonContainer"></div>
       <div class="schedule">
-        <label for="appt">時間：</label>
+        <div class="setGameTitle">Set Start Time</div>
+        <label for="appt" class="scheduleSubtitle">Time：</label>
         <input
           type="time"
           id="appt"
@@ -54,7 +62,7 @@
           max="18:00"
           required
         />
-        <label for="start">日期：</label>
+        <label for="start" class="scheduleSubtitle">Date：</label>
         <input
           type="date"
           id="start"
@@ -81,7 +89,7 @@
   </script>
   <script type="module">
     import { io } from "socket.io-client";
-    const socket = io("https://ygolonhcet.online/");
+    const socket = io("");
     socket.on("connection", () => {
       console.log("connected");
     });

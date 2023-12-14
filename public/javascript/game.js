@@ -228,14 +228,30 @@ function getUserInfor() {
 
       container.innerHTML = '';
       data.betInfor.forEach((betData) => {
-        if (parseInt(betData.GAME_ID) === parseInt(gameValue)) {
+        if (
+          parseInt(betData.GAME_ID) === parseInt(gameValue) &&
+          betData.host === 'home'
+        ) {
           const element = document.createElement('div');
           element.classList.add('gamecontainer');
           element.innerHTML = `
-        <div class="record-item">GAME: ${betData.home_team_id} v.s ${betData.away_team_id}</div>
-        <div class="record-item">Bet Point: ${betData.betting_point}</div>
-        <div class="record-item">Betting Odds: ${betData.betting_odds}</div>
-        <div class="record-item">Host: ${betData.host}</div>
+        <div class="recordTitle">${betData.home_team_id} v.s ${betData.away_team_id}</div>
+        <div class="recordSubtitle">Bet Point: ${betData.betting_point}</div>
+        <div class="recordSubtitle">Betting Odds: ${betData.betting_odds}</div>
+        <div class="recordSubtitle">Bet team: ${betData.home_team_id}</div>
+    `;
+          container.appendChild(element);
+        } else if (
+          parseInt(betData.GAME_ID) === parseInt(gameValue) &&
+          betData.host === 'away'
+        ) {
+          const element = document.createElement('div');
+          element.classList.add('gamecontainer');
+          element.innerHTML = `
+        <div class="recordTitle">${betData.home_team_id} v.s ${betData.away_team_id}</div>
+        <div class="recordSubtitle">Bet Point: ${betData.betting_point}</div>
+        <div class="recordSubtitle">Betting Odds: ${betData.betting_odds}</div>
+        <div class="recordSubtitle">Bet team: ${betData.away_team_id}</div>
     `;
           container.appendChild(element);
         }

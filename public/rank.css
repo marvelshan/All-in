@@ -4,6 +4,7 @@ body {
   padding: 0;
   background-color: #f8f8f8;
   background-image: url("./image/background.png");
+  background-size: 100%;
 }
 a {
   text-decoration: none;
@@ -14,6 +15,7 @@ a {
   background-color: white;
   display: flex;
   width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .logo {
   width: 75px;

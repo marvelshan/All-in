@@ -5,8 +5,8 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url("./image/background.png");
-  height: 100%;
+  background-image: url(./image/background.png);
+  background-size: 100%;
 }
 a {
   text-decoration: none;
@@ -17,6 +17,7 @@ a {
   background-color: white;
   display: flex;
   width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .left-column {
   padding-top: 90px;
@@ -73,8 +74,8 @@ a {
 }
 .homeTeamMark,
 .awayTeamMark {
+  background-size: 200px;
   flex: 1;
-  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -89,6 +90,10 @@ a {
   justify-content: center;
   text-align: center;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 0 20px;
+  margin: 20px 0;
 }
 .vs {
   padding: 50px;
@@ -103,7 +108,7 @@ a {
 
 .homeMainTeam,
 .awayMainTeam {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
   text-align: center;
   padding: 20px 0;
@@ -115,7 +120,7 @@ a {
   text-align: center;
 }
 .eventList {
-  font-size: 30px;
+  font-size: 25px;
   text-align: center;
   background-color: #f0f0f0;
   padding: 10px;
@@ -140,7 +145,7 @@ a {
 .homeOdds,
 .awayOdds {
   padding: 10px 0;
-  font-size: 20px;
+  font-size: 30px;
 }
 input[type="number"],
 input[type="text"] {
@@ -154,11 +159,11 @@ input[type="text"] {
 .awayButton {
   background-color: #ea7500;
   color: #fff;
-  padding: 10px 20px;
+  padding: 5px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 30px;
   margin: 20px 0;
 }
 .teamGame {
@@ -173,7 +178,7 @@ input[type="text"] {
   display: flex;
   justify-content: center;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
 }
 .leftColumnScore {
   display: flex;
@@ -189,10 +194,6 @@ input[type="text"] {
   float: left;
   width: 18%;
   box-sizing: border-box;
-}
-.right-column > div {
-  font-size: 18px;
-  font-weight: bold;
 }
 .chatroom {
   display: none;
@@ -220,12 +221,12 @@ input[type="text"] {
 }
 
 input[type="text"] {
-  flex: 1;
   padding: 8px;
   margin: 10px 8px 0 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
+  width: 70%;
 }
 .ownElement {
   display: flex;
@@ -245,8 +246,8 @@ input[type="text"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  flex: 1;
   margin-top: 10px;
+  width: 30%;
 }
 .box {
   display: flex;
@@ -255,11 +256,12 @@ input[type="text"] {
   margin-left: auto;
   background-color: #ea7500;
   color: #fff;
-  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  width: 40%;
+  height: 40px;
 }
 .userButton {
   display: none;
@@ -273,11 +275,13 @@ input[type="text"] {
   cursor: pointer;
   font-size: 16px;
 }
+.userInfor,
 .userName,
 .userEmail,
 .userPoint {
+  font-weight: bold;
   margin-bottom: 15px;
-  font-size: 16px;
+  font-size: 20px;
 }
 .container {
   overflow-y: scroll;
@@ -304,15 +308,18 @@ input[type="text"] {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.record-title {
-  font-size: 18px;
+.recordTitle {
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
 }
-
-.record-item {
+.recordSubtitle {
   font-size: 16px;
   margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
 }
 @media (max-width: 768px) {
   .left-column,

@@ -28,7 +28,7 @@ fetch('/admin/payment', {
         {
           label: 'home',
           data: homeData,
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          backgroundColor: 'rgba(220, 220, 100, 0.5)',
         },
         {
           label: 'away',
@@ -86,7 +86,7 @@ function createPie(label, data, away, home) {
         {
           label,
           data,
-          backgroundColor: ['rgb(96, 223, 81)', 'rgb(0, 201, 154)'],
+          backgroundColor: ['rgb(220, 120, 100)', 'rgb(0, 201, 154)'],
         },
       ],
     },
@@ -189,12 +189,64 @@ fetch('/game/infor', {
   .then((response) => {
     return response.json();
   })
-  .then((data) => {
-    data.forEach((game, i) => {
+  .then(async (data) => {
+    const pendingContainer = document.createElement('div');
+    const playingContainer = document.createElement('div');
+    const waitingContainer = document.createElement('div');
+    const pendingTitle = document.createElement('div');
+    const playingTitle = document.createElement('div');
+    const waitingTitle = document.createElement('div');
+    const pendingFrame = document.createElement('div');
+    const playingFrame = document.createElement('div');
+    const waitingFrame = document.createElement('div');
+    pendingTitle.className = 'setGameSubTitle';
+    playingTitle.className = 'setGameSubTitle';
+    waitingTitle.className = 'setGameSubTitle';
+    pendingFrame.className = 'setGameSubFrame';
+    playingFrame.className = 'setGameSubFrame';
+    waitingFrame.className = 'setGameSubFrame';
+    pendingTitle.textContent = 'Scheduled Game';
+    playingTitle.textContent = 'Ongoing Game';
+    waitingTitle.textContent = 'Not scheduled game';
+    await data.forEach((game, i) => {
       const button = document.createElement('button');
-      button.className = 'button';
-      buttonContainer.appendChild(button);
-      button.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
+      const homeFrame = document.createElement('div');
+      const awayFrame = document.createElement('div');
+      const homeImage = document.createElement('div');
+      const awayImage = document.createElement('div');
+      const perHomeGame = document.createElement('div');
+      const perAwayGame = document.createElement('div');
+      const vs = document.createElement('div');
+      button.className = 'startGameButton';
+      homeImage.className = 'homeImage';
+      awayImage.className = 'awayImage';
+      homeFrame.className = 'homeFrame';
+      awayFrame.className = 'awayFrame';
+      perHomeGame.className = 'perHomeGame';
+      perAwayGame.className = 'perAwayGame';
+      pendingContainer.className = 'pendingContainer';
+      playingContainer.className = 'playingContainer';
+      waitingContainer.className = 'waitingContainer';
+      vs.textContent = 'v.s';
+      perHomeGame.textContent = game.away_team_id;
+      perAwayGame.textContent = game.home_team_id;
+      homeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
+      awayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+      homeFrame.appendChild(homeImage);
+      awayFrame.appendChild(awayImage);
+      homeFrame.appendChild(perHomeGame);
+      awayFrame.appendChild(perAwayGame);
+      button.appendChild(homeFrame);
+      button.appendChild(vs);
+      button.appendChild(awayFrame);
+      if (game.status === 'pending') {
+        pendingContainer.appendChild(button);
+      } else if (game.status === 'playing') {
+        playingContainer.appendChild(button);
+      } else if (game.status === 'waiting') {
+        waitingContainer.appendChild(button);
+      }
+
       button.onclick = function () {
         schedule.style.display = 'block';
         const title = document.createElement('div');
@@ -246,4 +298,13 @@ fetch('/game/infor', {
         futureGameFrame.appendChild(url);
       }
     });
+    pendingFrame.appendChild(pendingTitle);
+    pendingFrame.appendChild(pendingContainer);
+    playingFrame.appendChild(playingTitle);
+    playingFrame.appendChild(playingContainer);
+    waitingFrame.appendChild(waitingTitle);
+    waitingFrame.appendChild(waitingContainer);
+    buttonContainer.appendChild(playingFrame);
+    buttonContainer.appendChild(pendingFrame);
+    buttonContainer.appendChild(waitingFrame);
   });

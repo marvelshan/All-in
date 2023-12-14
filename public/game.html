@@ -9,8 +9,8 @@
   </head>
   <body>
     <div class="header">
-      <a href="/home.html"><img src="/image/logo.png" class="logo" /></a>
-      <a href="/home.html" class="navbar">Home</a>
+      <a href="/"><img src="/image/logo.png" class="logo" /></a>
+      <a href="/" class="navbar">Home</a>
       <a href="/rank.html" class="navbar">Rank</a>
       <a href="/charge.html" class="navbar">Top Up</a>
       <a href="/record.html" class="navbar">Record</a>
@@ -70,7 +70,11 @@
             <div class="homeMainTeam"></div>
             <div class="homeMainScore"></div>
             <div class="homeOdds"></div>
-            <input type="number" name="homeBet" max="1000" />
+            <input
+              type="number"
+              name="homeBet"
+              placeholder="Enter bet amount"
+            />
             <button class="homeButton" type="submit" onclick="betHomeGame()">
               bet
             </button>
@@ -80,7 +84,11 @@
             <div class="awayMainTeam"></div>
             <div class="awayMainScore"></div>
             <span class="awayOdds"></span>
-            <input type="number" name="awayBet" />
+            <input
+              type="number"
+              name="awayBet"
+              placeholder="Enter bet amount"
+            />
             <button class="awayButton" type="submit" onclick="betAwayGame()">
               bet
             </button>
@@ -103,7 +111,7 @@
       <div class="userName"></div>
       point:
       <div class="userPoint"></div>
-      <div>Betting Record</div>
+      <div class="userInfor">Betting Record</div>
       <div class="container"></div>
     </div>
     <div class="chatroom">
