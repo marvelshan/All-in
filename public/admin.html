@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" type="text/css" href="admin.css" />
-    <link rel="icon" href="/image/logoIcon.png" type="image/png" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
     <title>admin</title>
   </head>
   <body>
@@ -40,6 +44,17 @@
             Select the match schedule and set the time; the competition will
             commence at the scheduled time.
           </div>
+        </div>
+        <input
+          type="radio"
+          name="tab"
+          id="tab-4"
+          onclick="showScheduledGame()"
+        />
+        <label for="tab-4">Scheduled Competition</label>
+        <div class="tab-content">
+          <div class="title">Scheduled Competition</div>
+          <div class="description">Displaying a Scheduled</div>
         </div>
       </div>
     </div>

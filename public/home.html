@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" href="home.css" />
-    <link rel="icon" href="/image/logoIcon.png" type="image/png" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
   </head>
   <body>
     <div class="header">
-      <a href="/"><img src="/image/logo.png" class="logo" /></a>
+      <a href="/"
+        ><img
+          src="https://d3qptsb2ee7s4x.cloudfront.net/image/logo.png"
+          class="logo"
+      /></a>
       <a href="/" class="navbar">Home</a>
-      <a href="/rank.html" class="navbar">Rank</a>
-      <a href="/charge.html" class="navbar">Top Up</a>
-      <a href="/record.html" class="navbar">Record</a>
+      <a href="/rank" class="navbar">Rank</a>
+      <a href="/charge" class="navbar">Top Up</a>
+      <a href="/record" class="navbar">Record</a>
       <div class="userInfor"></div>
-      <a href="/profile.html" class="sign">Join</a>
+      <a href="/profile" class="sign">Join</a>
     </div>
 
     <div class="discount">
@@ -26,7 +34,7 @@
       <div class="discountSubtitle">首次加入即享5000元，</div>
       <div class="discountSubtitle">立即註冊，體驗無限精彩！</div>
       <div class="signDiscountButton">
-        <a href="/profile.html" class="signDiscount">立即加入</a>
+        <a href="/profile" class="signDiscount">立即加入</a>
       </div>
     </div>
     <div class="specialGame">
@@ -73,13 +81,13 @@
         const userPoint = document.createElement("div");
         userName.className = "userName";
         userPoint.className = "userPoint";
-        userName.textContent = `User: ${data.userInfor[0].name}`;
+        userName.textContent = `${data.userInfor[0].name}`;
         userPoint.textContent = `Point: ${data.userInfor[0].point}`;
         userInfor.appendChild(userName);
         userInfor.appendChild(userPoint);
         const signDiscount = document.querySelector(".signDiscount");
         signDiscount.textContent = "立即開始";
-        signDiscount.href = "game.html?game=22200002";
+        signDiscount.href = "game?game=22200002";
       });
 
     fetch("/game/infor", {
@@ -122,10 +130,10 @@
             futureAway.textContent = game.away_team_id;
             futureHomeOdds.textContent = game.home_odds;
             futureAwayOdds.textContent = game.away_odds;
-            futureHomeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            futureAwayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+            futureHomeImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+            futureAwayImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
             scheduleTime.textContent = time;
-            url.href = `/game.html?game=${game.GAME_ID}`;
+            url.href = `/game?game=${game.GAME_ID}`;
             futurGamePerFrame.appendChild(scheduleTime);
             futureHomeFrame.appendChild(futureHomeImage);
             futureHomeFrame.appendChild(futureHome);
@@ -142,7 +150,7 @@
             const gameContainer = document.querySelector(".gameContainer");
             const gameURL = document.createElement("a");
             gameURL.className = "gameURL";
-            gameURL.href = `game.html?game=${game.GAME_ID}`;
+            gameURL.href = `game?game=${game.GAME_ID}`;
             gameContainer.appendChild(gameURL);
             const gameFrame = document.createElement("div");
             gameFrame.className = "gameFrame";
@@ -199,15 +207,15 @@
             odds.appendChild(awayOdds);
             homeTeam.textContent = game.home_team_id;
             awayTeam.textContent = game.away_team_id;
-            homeTeamImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-            awayTeamImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+            homeTeamImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+            awayTeamImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
             getOdds(game.GAME_ID, homeOdds, awayOdds);
             getGameEvent(game.GAME_ID, homeScore, awayScore);
           }
         });
       });
     function setTeamImage(team, element) {
-      const imagePath = `/image/${team}.png`;
+      const imagePath = `https://d3qptsb2ee7s4x.cloudfront.net/image/${team}.png`;
       return;
       `url(${imagePath})`;
     }

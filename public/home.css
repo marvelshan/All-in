@@ -5,7 +5,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url(./image/background.png);
+  background-image: url(https://d3qptsb2ee7s4x.cloudfront.net/image/background.png);
   background-size: 100%;
 }
 a {
@@ -30,15 +30,17 @@ a {
   margin-left: auto;
 }
 .userInfor {
+  display: flex;
   align-items: center;
   padding: 10px 40px;
   font-weight: bold;
   font-size: 15px;
   margin-left: auto;
-  margin-top: 10px;
 }
-.userName {
-  padding-bottom: 5px;
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
 }
 .gameContainer {
   display: flex;
@@ -69,7 +71,7 @@ a {
   color: #ea7500;
 }
 .specialGame {
-  background-image: url("./image/specialGame.png");
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/specialGame.png");
   width: 262px;
   height: 50px;
   margin: 30px 0 30px 0;
@@ -165,7 +167,7 @@ a {
   margin-right: 20px;
 }
 .discountTitle {
-  background-image: url(./image/specialGame.png);
+  background-image: url(https://d3qptsb2ee7s4x.cloudfront.net/image/specialGame.png);
   width: 262px;
   height: 50px;
   padding-top: 80px;
@@ -182,7 +184,7 @@ a {
   margin: 20px 0 0 150px;
 }
 .discount {
-  background-image: url("./image/discount.jpg");
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/discount.jpg");
   height: 500px;
   background-size: contain;
   background-position: center center;

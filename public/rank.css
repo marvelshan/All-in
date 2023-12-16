@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f8f8f8;
-  background-image: url("./image/background.png");
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/background.png");
   background-size: 100%;
 }
 a {
@@ -23,15 +23,17 @@ a {
   margin: 3px;
 }
 .userInfor {
+  display: flex;
   align-items: center;
   padding: 10px 40px;
   font-weight: bold;
   font-size: 15px;
   margin-left: auto;
-  margin-top: 10px;
 }
-.userName {
-  padding-bottom: 5px;
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
 }
 .navbar {
   font-size: 18px;

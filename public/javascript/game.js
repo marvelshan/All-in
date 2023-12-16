@@ -87,7 +87,7 @@ function betHomeGame() {
   const userPoint = document.querySelector('.userPoint');
   if (betPoint > parseInt(userPoint.textContent)) {
     alert('小賭怡情，大賭傷身');
-    window.location.href = `/charge.html`;
+    window.location.href = `/charge`;
     return;
   } else if (isNaN(parseInt(betPoint))) {
     alert('Number is the only way to bet');
@@ -150,7 +150,7 @@ function betAwayGame() {
   const id = gameValue;
   if (betPoint > parseInt(userPoint.textContent)) {
     alert('小賭怡情，大賭傷身');
-    window.location.href = `/charge.html`;
+    window.location.href = `/charge`;
     return;
   } else if (isNaN(parseInt(betPoint))) {
     alert('Number is the only way to bet');
@@ -220,7 +220,7 @@ function getUserInfor() {
     .then((data) => {
       if (data.errors) {
         alert('You should sign in first');
-        window.location.href = '/profile.html';
+        window.location.href = '/profile';
       }
       userEmail.textContent = data.userInfor[0].email;
       userName.textContent = data.userInfor[0].name;
@@ -263,7 +263,7 @@ function getUserInfor() {
 }
 
 function setTeamImage(team, elementId) {
-  const imagePath = `/image/${team}.png`;
+  const imagePath = `https://d3qptsb2ee7s4x.cloudfront.net/image/${team}.png`;
   document.getElementById(elementId).style.backgroundImage =
     `url(${imagePath})`;
 }

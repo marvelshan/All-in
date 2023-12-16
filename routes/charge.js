@@ -4,6 +4,6 @@ import authenticate from '../middleware/authenticate.js';
 
 const router = express.Router();
 
-router.post('/', authenticate, sendTappay);
+router.post('/page', authenticate, sendTappay);
 
 export default router;

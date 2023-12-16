@@ -3,7 +3,7 @@ body {
   background-color: #f4f4f4;
   margin: 0;
   text-align: center;
-  background-image: url("./image/background.png");
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/background.png");
   background-size: 100%;
 }
 a {
@@ -23,15 +23,17 @@ a {
   margin: 3px;
 }
 .userInfor {
+  display: flex;
   align-items: center;
   padding: 10px 40px;
   font-weight: bold;
   font-size: 15px;
   margin-left: auto;
-  margin-top: 10px;
 }
-.userName {
-  padding-bottom: 5px;
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
 }
 .navbar {
   font-size: 18px;
@@ -67,6 +69,7 @@ input[type="number"] {
   margin: 5px 0;
   box-sizing: border-box;
   font-size: 16px;
+  border-radius: 8px;
 }
 
 .order-container {
@@ -90,6 +93,7 @@ input[type="number"] {
   margin: 10px 0;
   box-sizing: border-box;
   font-size: 16px;
+  border-radius: 8px;
 }
 
 .pay {

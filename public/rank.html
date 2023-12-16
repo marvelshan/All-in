@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rank</title>
     <link rel="stylesheet" type="text/css" href="rank.css" />
-    <link rel="icon" href="/image/logoIcon.png" type="image/png" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
   </head>
   <body>
     <div class="header">
-      <a href="/"><img src="/image/logo.png" class="logo" /></a>
+      <a href="/"
+        ><img
+          src="https://d3qptsb2ee7s4x.cloudfront.net/image/logo.png"
+          class="logo"
+      /></a>
       <a href="/" class="navbar">Home</a>
-      <a href="/rank.html" class="navbar">Rank</a>
-      <a href="/charge.html" class="navbar">Top Up</a>
-      <a href="/record.html" class="navbar">Record</a>
+      <a href="/rank" class="navbar">Rank</a>
+      <a href="/charge" class="navbar">Top Up</a>
+      <a href="/record" class="navbar">Record</a>
       <div class="userInfor"></div>
     </div>
     <div class="container" id="rankContainer"></div>
@@ -81,7 +89,7 @@
           const userPoint = document.createElement("div");
           userName.className = "userName";
           userPoint.className = "userPoint";
-          userName.textContent = `User: ${data.userInfor[0].name}`;
+          userName.textContent = `${data.userInfor[0].name}`;
           userPoint.textContent = `Point: ${data.userInfor[0].point}`;
           userInfor.appendChild(userName);
           userInfor.appendChild(userPoint);

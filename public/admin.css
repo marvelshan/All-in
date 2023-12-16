@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url("./image/adminbackground.png");
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/adminbackground.png");
   height: 100%;
 }
 a {
@@ -152,6 +152,7 @@ input[type="radio"]:checked + label + .tab-content {
   cursor: pointer;
   border-radius: 5px;
   border: none;
+  background-color: #ffffff69;
   margin-bottom: 30px;
 }
 .gameid {
@@ -197,11 +198,19 @@ input {
   border-radius: 3px;
 }
 .scheduleContainer,
-.barChart,
 .pieFrame {
   display: none;
 }
+.barChart {
+  display: flex;
+  height: 20vw;
+  justify-content: center;
+}
+#myChart {
+  width: 100%;
+}
 .futureGameFrame {
+  display: none;
   position: relative;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

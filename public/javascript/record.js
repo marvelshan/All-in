@@ -19,7 +19,7 @@ fetch('/user/getUserInfor', {
     const userPoint = document.createElement('div');
     userName.className = 'userName';
     userPoint.className = 'userPoint';
-    userName.textContent = `User: ${data.userInfor[0].name}`;
+    userName.textContent = `${data.userInfor[0].name}`;
     userPoint.textContent = `Point: ${data.userInfor[0].point}`;
     userInfor.appendChild(userName);
     userInfor.appendChild(userPoint);
@@ -36,7 +36,7 @@ fetch('/user/record', {
   .then((data) => {
     if (data.errors) {
       alert('You should sign in first');
-      window.location.href = '/profile.html';
+      window.location.href = '/profile';
     }
     userEmail.textContent = data.userInfor[0].email;
     userName.textContent = data.userInfor[0].name;

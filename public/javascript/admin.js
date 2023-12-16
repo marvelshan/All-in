@@ -37,7 +37,6 @@ fetch('/admin/payment', {
         },
       ],
     };
-
     const ctx = document.getElementById('myChart').getContext('2d');
     window.myChart = new Chart(ctx, {
       type: 'bar',
@@ -147,27 +146,33 @@ function submitSchedule() {
   schedule.style.display = 'none';
   schedule.removeChild(title);
   schedule.removeChild(id);
-  const futureGameFrame = document.querySelector('.futureGameFrame');
-  futureGameFrame.style.display = 'block';
 }
+const futureGameFrame = document.querySelector('.futureGameFrame');
 const scheduleContainer = document.querySelector('.scheduleContainer');
 const barChart = document.querySelector('.barChart');
 function showBarChart() {
-  barChart.style.display = 'block';
+  barChart.style.display = 'flex';
   scheduleContainer.style.display = 'none';
   pieFrame.style.display = 'none';
+  futureGameFrame.style.display = 'none';
 }
 function showPieChart() {
   pieFrame.style.display = 'flex';
   barChart.style.display = 'none';
   scheduleContainer.style.display = 'none';
+  futureGameFrame.style.display = 'none';
 }
 function startGameSystem() {
-  const futureGameFrame = document.querySelector('.futureGameFrame');
   pieFrame.style.display = 'none';
   barChart.style.display = 'none';
   scheduleContainer.style.display = 'block';
   futureGameFrame.style.display = 'none';
+}
+function showScheduledGame() {
+  pieFrame.style.display = 'none';
+  barChart.style.display = 'none';
+  scheduleContainer.style.display = 'none';
+  futureGameFrame.style.display = 'block';
 }
 function cronToDateTime(cronExpression) {
   const cronParts = cronExpression.split(' ');
@@ -230,8 +235,8 @@ fetch('/game/infor', {
       vs.textContent = 'v.s';
       perHomeGame.textContent = game.away_team_id;
       perAwayGame.textContent = game.home_team_id;
-      homeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-      awayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+      homeImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+      awayImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
       homeFrame.appendChild(homeImage);
       awayFrame.appendChild(awayImage);
       homeFrame.appendChild(perHomeGame);
@@ -282,10 +287,10 @@ fetch('/game/infor', {
         futurGamePerFrame.className = 'futurGamePerFrame';
         futureHome.textContent = game.home_team_id;
         futureAway.textContent = game.away_team_id;
-        futureHomeImage.style.backgroundImage = `url(/image/${game.home_team_id}.png)`;
-        futureAwayImage.style.backgroundImage = `url(/image/${game.away_team_id}.png)`;
+        futureHomeImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+        futureAwayImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
         scheduleTime.textContent = time;
-        url.href = `/game.html?game=${game.GAME_ID}`;
+        url.href = `/game?game=${game.GAME_ID}`;
         futurGamePerFrame.appendChild(scheduleTime);
         futureHomeFrame.appendChild(futureHomeImage);
         futureHomeFrame.appendChild(futureHome);
