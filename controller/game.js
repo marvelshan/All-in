@@ -12,6 +12,7 @@ function cronToDateTime(cronExpression) {
   const date = `2023/${month}/${day} ${hours}:${minutes}`;
   return { date };
 }
+
 export const putGameEventInRedis = async (req, res) => {
   try {
     const { id } = req.body;

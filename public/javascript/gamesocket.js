@@ -48,9 +48,9 @@ messageSocket.on(`message${gameValue}`, (message) => {
     ownElement.className = 'ownElement';
     ownElement.textContent = message.message;
     messageContainer.appendChild(ownElement);
-  } else if (message.name === null) {
+  } else if (message.name === undefined) {
     const element = document.createElement('div');
-    element.className = 'element';
+    element.className = 'announcement';
     element.textContent = message.message;
     messageContainer.appendChild(element);
   } else {

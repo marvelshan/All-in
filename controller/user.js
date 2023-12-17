@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import * as model from '../model/user.js';
+import { getBetPointOdds } from '../model/admin.js';
 import { io } from '../utils/socket.js';
 
 export const checkEmailType = async (req, res, next) => {
@@ -108,17 +109,25 @@ export const getUserBetGameEnd = async (req, res) => {
   }
 };
 
-export const recordPerBet = async (req, res) => {
+export const recordPerBet = async (req, res, next) => {
   try {
     // console.time('recordPerBet');
     const { id, betPoint, userId, odds, hosting } = req.body;
     model.insertUserPerBet(userId, id, betPoint, odds, hosting);
     // console.timeEnd('recordPerBet');
-    res
-      .status(200)
-      .send({ success: true, message: 'User betted successfully' });
+    next();
   } catch (error) {
     console.log(`controller recordPerBet error on ${error}`);
+  }
+};
+
+export const sendLatestInfor = async (req, res) => {
+  try {
+    const barInfor = await getBetPointOdds();
+    io.emit('barChart', barInfor);
+    res.status(200).send({ success: true, message: 'Betted successfully' });
+  } catch (error) {
+    console.log(`controller sendLatestInfor error on ${error}`);
   }
 };
 
@@ -128,13 +137,13 @@ export const insertUserMessage = async (req, res) => {
     if (message === undefined) {
       const betMessage = `${name}下注${betPoint}`;
       await model.insertUserMessage(userId, null, betMessage, id);
-      console.log(betMessage);
+      const data = { userId, message: betMessage, id };
+      io.emit(`message${id}`, data);
     } else {
       await model.insertUserMessage(userId, name, message, id);
+      const data = { userId, name, message, id };
+      io.emit(`message${id}`, data);
     }
-
-    const data = { userId, name, message, id };
-    io.emit(`message${id}`, data);
     res.status(200).json({
       success: true,
       message: 'Message is successfully send',
