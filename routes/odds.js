@@ -12,6 +12,7 @@ router.post(
   odds.oddsManipulator,
   odds.changeUserPoint,
   user.recordPerBet,
+  user.sendLatestInfor,
 );
 
 router.post('/getOdds', odds.getOdds);
