@@ -37,10 +37,36 @@ fetch('/admin/payment', {
         },
       ],
     };
+    const options = {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Total Payouts for Each Team',
+          font: {
+            size: 16,
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Teams',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Total Payout (Amount * Odds)',
+          },
+        },
+      },
+    };
     const ctx = document.getElementById('myChart').getContext('2d');
     window.myChart = new Chart(ctx, {
       type: 'bar',
       data,
+      options,
     });
   })
   .catch((error) => {
@@ -70,6 +96,36 @@ fetch('/admin/number', {
       }
     });
   });
+function updateBarChart(betData) {
+  const game = [];
+  const awayData = [];
+  const homeData = [];
+  betData.forEach((data, i) => {
+    if (i % 2 === 0) {
+      game.push(`${betData[i].home_team_id} v.s ${betData[i].away_team_id}`);
+      awayData.push(betData[i].sum);
+    } else if (i % 2 === 1) {
+      homeData.push(betData[i].sum);
+    }
+  });
+  const data = {
+    labels: game,
+    datasets: [
+      {
+        label: 'home',
+        data: homeData,
+        backgroundColor: 'rgba(220, 220, 100, 0.5)',
+      },
+      {
+        label: 'away',
+        data: awayData,
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+      },
+    ],
+  };
+  window.myChart.data = data;
+  window.myChart.update();
+}
 
 const pieFrame = document.querySelector('.pieFrame');
 function createPie(label, data, away, home) {
@@ -80,7 +136,7 @@ function createPie(label, data, away, home) {
   return new Chart(pieChart, {
     type: 'pie',
     data: {
-      labels: [away, home],
+      labels: [`${away} Bets on Away Team`, `${home} Bets on Home Team`],
       datasets: [
         {
           label,
@@ -88,6 +144,27 @@ function createPie(label, data, away, home) {
           backgroundColor: ['rgb(220, 120, 100)', 'rgb(0, 201, 154)'],
         },
       ],
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: label,
+          font: {
+            size: 16,
+          },
+        },
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            const label = data.labels[tooltipItem.index];
+            const value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return `${label}: ${value} bets`;
+          },
+        },
+      },
     },
   });
 }
