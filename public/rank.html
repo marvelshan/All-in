@@ -47,11 +47,27 @@
           const element = document.createElement("div");
           element.classList.add("rankcontainer");
           element.innerHTML = `
-            <div class="rank-number">Rank: ${i + start + 1}</div>
-            <div class="rank-details">
+            <div>
+              <div class="rank-number">Rank: ${i + start + 1}</div>
+              <div class="rank-details">
               <span>Name:</span> ${rankInfor.name}<br>
               <span>Points:</span> ${rankInfor.point}
+              </div>
             </div>`;
+          console.log(rankInfor);
+          if (rankInfor.newRank - rankInfor.oldRank < 0) {
+            const rank = document.createElement("div");
+            rank.className = "rankIncrease";
+            element.appendChild(rank);
+          } else if (rankInfor.newRank - rankInfor.oldRank === 0) {
+            const rank = document.createElement("div");
+            rank.className = "rankSame";
+            element.appendChild(rank);
+          } else if (rankInfor.newRank - rankInfor.oldRank > 0) {
+            const rank = document.createElement("div");
+            rank.className = "rankdecrease";
+            element.appendChild(rank);
+          }
           container.appendChild(element);
         });
       };
