@@ -92,6 +92,20 @@ function createPie(label, data, away, home) {
   });
 }
 
+function updatepieChart(betData) {
+  console.log(window.pieChart);
+  betData.forEach((element, i) => {
+    if (i % 2 === 0) {
+      let data = [betData[i].count, betData[i + 1].count];
+      let label = element.GAME_ID;
+      let away = betData[i].away_team_id;
+      let home = betData[i].home_team_id;
+    }
+  });
+  window.pieChart.data = data;
+  window.pieChart.update();
+}
+
 function scheduleGame(id, time) {
   fetch('/game/schedule', {
     method: 'POST',

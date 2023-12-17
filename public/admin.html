@@ -108,5 +108,8 @@
     socket.on("connection", () => {
       console.log("connected");
     });
+    socket.on("barChart", (data) => {
+      updateBarChart(data);
+    });
   </script>
 </html>
