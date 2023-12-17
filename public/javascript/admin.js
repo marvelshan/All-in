@@ -233,8 +233,8 @@ fetch('/game/infor', {
       playingContainer.className = 'playingContainer';
       waitingContainer.className = 'waitingContainer';
       vs.textContent = 'v.s';
-      perHomeGame.textContent = game.away_team_id;
-      perAwayGame.textContent = game.home_team_id;
+      perAwayGame.textContent = game.away_team_id;
+      perHomeGame.textContent = game.home_team_id;
       homeImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
       awayImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
       homeFrame.appendChild(homeImage);
