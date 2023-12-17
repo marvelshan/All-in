@@ -92,20 +92,6 @@ function createPie(label, data, away, home) {
   });
 }
 
-function updatepieChart(betData) {
-  console.log(window.pieChart);
-  betData.forEach((element, i) => {
-    if (i % 2 === 0) {
-      let data = [betData[i].count, betData[i + 1].count];
-      let label = element.GAME_ID;
-      let away = betData[i].away_team_id;
-      let home = betData[i].home_team_id;
-    }
-  });
-  window.pieChart.data = data;
-  window.pieChart.update();
-}
-
 function scheduleGame(id, time) {
   fetch('/game/schedule', {
     method: 'POST',
@@ -265,7 +251,6 @@ fetch('/game/infor', {
       } else if (game.status === 'waiting') {
         waitingContainer.appendChild(button);
       }
-
       button.onclick = function () {
         schedule.style.display = 'block';
         const title = document.createElement('div');
@@ -273,7 +258,7 @@ fetch('/game/infor', {
         title.className = 'gameTitle';
         id.className = 'gameid';
         title.textContent = `${game.away_team_id} v.s ${game.home_team_id}`;
-        id.textContent = 22200001 + i;
+        id.textContent = game.GAME_ID;
         schedule.appendChild(title);
         schedule.appendChild(id);
       };
