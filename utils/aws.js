@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk';
 
 AWS.config.update({
-  accessKeyId: 'AKIAVLJTHKBVZ76XY4WT',
-  secretAccessKey: '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',
-  region: 'ap-northeast-1',
+  accessKeyId: process.env.AWS_ACCESSKEYID,
+  secretAccessKey: process.env.AWS_SECRETACCESSKEY,
+  region: process.env.AWS_REGION,
 });
 const autoScaling = new AWS.AutoScaling();
 const AutoScalingGroupName = 'All-inVersion3';
