@@ -324,6 +324,7 @@ function chatroom() {
         return alert(game.message);
       }
       const messageContainer = document.querySelector('.messageContainer');
+      messageContainer.innerHTML = '';
       const userNameforCheck = userName.textContent;
       game.forEach((message) => {
         const ownElement = document.createElement('div');

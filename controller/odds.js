@@ -1,15 +1,21 @@
-// import * as model from '../model/odds.js';
-import * as userModel from '../model/user.js';
+import {
+  changeUserPoint,
+  getUserInformation,
+  insertUserPerBet,
+} from '../model/user.js';
+import { getBetPointOdds } from '../model/admin.js';
 import { client } from '../utils/cache.js';
 import { io } from '../utils/socket.js';
 
-export const oddsManipulator = async (req, res, next) => {
-  const { id, betPoint, hosting } = req.body;
+export const oddsManipulator = async (id, betPoint, hosting, req, res) => {
+  const maxOdds = 4;
+  const minOdds = 0.1;
+  const resetBuffer = 1000;
+  const oddsChangeRange = 0.01;
   const point = parseInt(betPoint, 10);
   req.body.betPoint = point;
-  try {
-    // console.time('oddsManipulator');
 
+  try {
     if (point === 0 || point < 0) {
       return res.status(404).json({
         success: false,
@@ -19,9 +25,7 @@ export const oddsManipulator = async (req, res, next) => {
 
     const lockKey = `odds${id}`;
     await client.watch(lockKey);
-    // console.time('redisGet');
     const oddsInformation = JSON.parse(await client.get(`odds${id}`));
-    // console.timeEnd('redisGet');
 
     let homeOdds = parseFloat(oddsInformation.homeOdds);
     let awayOdds = parseFloat(oddsInformation.awayOdds);
@@ -30,28 +34,28 @@ export const oddsManipulator = async (req, res, next) => {
       oddsInformation.moneyBuffer -= point;
       if (
         oddsInformation.moneyBuffer <= 0 &&
-        homeOdds <= 4 &&
-        homeOdds > 0 &&
-        awayOdds <= 4 &&
-        awayOdds > 0
+        homeOdds <= maxOdds &&
+        homeOdds > minOdds &&
+        awayOdds <= maxOdds &&
+        awayOdds > minOdds
       ) {
-        oddsInformation.moneyBuffer += 1000;
-        homeOdds -= 0.01;
-        awayOdds += 0.01;
+        oddsInformation.moneyBuffer += resetBuffer;
+        homeOdds -= oddsChangeRange;
+        awayOdds += oddsChangeRange;
       }
     } else {
       req.body.odds = awayOdds;
       oddsInformation.moneyBuffer += point;
       if (
-        oddsInformation.moneyBuffer >= 1000 &&
-        homeOdds <= 4 &&
-        homeOdds > 0 &&
-        awayOdds <= 4 &&
-        awayOdds > 0
+        oddsInformation.moneyBuffer >= resetBuffer &&
+        homeOdds <= maxOdds &&
+        homeOdds > minOdds &&
+        awayOdds <= maxOdds &&
+        awayOdds > minOdds
       ) {
-        oddsInformation.moneyBuffer -= 1000;
-        homeOdds += 0.01;
-        awayOdds -= 0.01;
+        oddsInformation.moneyBuffer -= resetBuffer;
+        homeOdds += oddsChangeRange;
+        awayOdds -= oddsChangeRange;
       }
     }
     const data = {
@@ -60,11 +64,10 @@ export const oddsManipulator = async (req, res, next) => {
       awayOdds: awayOdds.toFixed(2),
       moneyBuffer: oddsInformation.moneyBuffer,
     };
-    // console.time('redisMulti');
+
     const multi = await client.multi();
     multi.set(`odds${id}`, JSON.stringify(data));
     io.emit('odds', data);
-    // console.timeEnd('redisMulti');
 
     const execResult = await multi.exec();
     if (!execResult) {
@@ -73,8 +76,6 @@ export const oddsManipulator = async (req, res, next) => {
         message: 'Transaction failed. Try again later.',
       });
     }
-    // console.timeEnd('oddsManipulator');
-    next();
   } catch (error) {
     console.log(`oddsManipulator controller is error on ${error}`);
   } finally {
@@ -92,14 +93,23 @@ export const getOdds = async (req, res) => {
   }
 };
 
-export const changeUserPoint = async (req, res, next) => {
+export const recordUserBet = async (req, res) => {
   try {
-    // console.time('changeUserPoint');
-    const { userId, betPoint } = req.body;
-    await userModel.changeUserPoint(betPoint, userId);
-    // console.timeEnd('changeUserPoint');
-    next();
+    const { id, betPoint, userId, odds, hosting } = req.body;
+    await oddsManipulator(id, betPoint, hosting, req, res);
+    const userPoint = await getUserInformation(userId);
+    if (betPoint > userPoint[0].point) {
+      return res.status(404).json({
+        success: false,
+        message: 'User do not have enough point',
+      });
+    }
+    await changeUserPoint(betPoint, userId);
+    await insertUserPerBet(userId, id, betPoint, odds, hosting);
+    const barInfor = await getBetPointOdds();
+    io.emit('barChart', barInfor);
+    res.status(200).send({ success: true, message: 'Betted successfully' });
   } catch (error) {
-    console.log(`controller changeUserPoint error on ${error}`);
+    console.log(`controller recordUserBet error on ${error}`);
   }
 };

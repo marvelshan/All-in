@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 
-const jwtoperator = async (req, res) => {
+const jwtoperator = async (userId, name, email, res) => {
   try {
-    const { userId, name, email } = req.body;
     const user = { userId, name, email };
     const privateKey = process.env.JWT_KEY;
     const accessExpired = 60;

@@ -1,10 +1,10 @@
 import { CronJob } from 'cron';
-import axios from 'axios';
 import * as model from '../model/game.js';
 import * as userModel from '../model/user.js';
 import { client } from '../utils/cache.js';
 import { io } from '../utils/socket.js';
 import { closeAutoScaling, describeAutoScaling } from '../utils/aws.js';
+import oddCalculator from '../utils/oddsCalculator.js';
 
 function cronToDateTime(cronExpression) {
   const cronParts = cronExpression.split(' ');
@@ -25,9 +25,8 @@ export const putGameEventInRedis = async (req, res) => {
   }
 };
 
-export const cleanGameEvent = async (req, res, next) => {
+export const cleanGameEvent = async (id) => {
   try {
-    const { id } = req.body;
     const data = {
       de: 'The competition has not yet started.',
       hs: 0,
@@ -35,7 +34,6 @@ export const cleanGameEvent = async (req, res, next) => {
       GAME_ID: id,
     };
     await client.set(`game${id}`, JSON.stringify(data));
-    next();
   } catch (error) {
     console.log(`putGameEventInRedis controller error on ${error}`);
   }
@@ -50,23 +48,85 @@ export const getAllGame = async (req, res) => {
   }
 };
 
+export const startGameEvent = async (req, res) => {
+  try {
+    const adminIdInSQL = 66;
+    const openAutoScalingGameId = 22200001;
+    const repeatGameIds = [22200001, 22200002, 22200003, 22200004];
+    const openAutoScalingPeriod = 4;
+    const timeRatioOfGame = 2;
+    const { id } = req.body;
+
+    await oddCalculator(id);
+    const gameData = await model.getNBAGameLog(id);
+    await model.changeGameStatus(id, 'playing');
+    userModel.insertUserPerBet(adminIdInSQL, id, 0, 0, 'home');
+    userModel.insertUserPerBet(adminIdInSQL, id, 0, 0, 'away');
+
+    gameData.forEach(async (element) => {
+      const timeDiff =
+        (new Date(element.wallclk) - new Date(gameData[0].wallclk)) /
+        timeRatioOfGame;
+      setTimeout(async () => {
+        io.emit('gameEvent', element);
+        await client.set(`game${id}`, JSON.stringify(element));
+        if (
+          element.de === 'Start Period' &&
+          parseInt(element.period, 10) === openAutoScalingPeriod &&
+          parseInt(element.GAME_ID, 10) === openAutoScalingGameId
+        ) {
+          describeAutoScaling();
+        }
+        if (element.de === 'Game End') {
+          if (parseInt(element.GAME_ID, 10) === openAutoScalingGameId) {
+            closeAutoScaling();
+          }
+
+          if (element.hs > element.vs) {
+            await userModel.updateUserPerBetResult(id, 'home');
+            await userModel.updateLoseBetResult(id, 'away');
+          } else if (element.hs < element.vs) {
+            await userModel.updateUserPerBetResult(id, 'away');
+            await userModel.updateLoseBetResult(id, 'home');
+            const winUserInfor = await userModel.selectWinUser(id);
+            winUserInfor.forEach(async (data) => {
+              const winningPoint =
+                data.betting_point * parseFloat(data.betting_odds) * -1;
+              await userModel.changeUserPoint(winningPoint, data.member_id);
+            });
+            await userModel.deleteBetInfor(id);
+            await model.changeGameStatus(id, 'waiting');
+          }
+          if (repeatGameIds.includes(parseInt(element.GAME_ID, 10))) {
+            setTimeout(async () => {
+              oddCalculator();
+              startGameEvent();
+            }, 1000 * 60);
+          }
+        }
+      }, timeDiff);
+    });
+
+    res
+      .status(200)
+      .send({ success: true, message: `Successfully start game${id}` });
+  } catch (error) {
+    console.log(`startGameEvent controller error on ${error}`);
+  }
+};
+
 export const schedule = async (req, res) => {
   try {
     const { time, id } = req.body;
-    console.log(time, id);
+    await cleanGameEvent(id);
     const cronJob = new CronJob(
       time,
       async () => {
         try {
-          const response = await axios.post(
-            'https://ygolonhcet.online/game/start',
-            {
-              id,
-            },
-          );
-          console.log(`API request successful. Response: ${response.data}`);
+          oddCalculator();
+          startGameEvent();
         } catch (error) {
-          console.error(`Error making API request: ${error.message}`);
+          console.error(`Error making schedule request: ${error.message}`);
         }
       },
       null,
@@ -87,70 +147,6 @@ export const schedule = async (req, res) => {
     });
   } catch (error) {
     console.log(`schedule controller error on ${error}`);
-  }
-};
-
-export const startGameEvent = async (req, res) => {
-  try {
-    const { id } = req.body;
-    const gameData = await model.getNBAGameLog(id);
-    await model.changeGameStatus(id, 'playing');
-    userModel.insertUserPerBet(66, id, 0, 0, 'home');
-    userModel.insertUserPerBet(66, id, 0, 0, 'away');
-    gameData.forEach(async (element) => {
-      const timeDiff =
-        (new Date(element.wallclk) - new Date(gameData[0].wallclk)) / 2;
-      setTimeout(async () => {
-        io.emit('gameEvent', element);
-        await client.set(`game${id}`, JSON.stringify(element));
-        if (
-          element.de === 'Start Period' &&
-          parseInt(element.period, 10) === 4 &&
-          parseInt(element.GAME_ID, 10) === 22200001
-        ) {
-          describeAutoScaling();
-        }
-        if (element.de === 'Game End') {
-          if (parseInt(element.GAME_ID, 10) === 22200001) {
-            closeAutoScaling();
-          }
-
-          if (element.hs > element.vs) {
-            await userModel.updateUserPerBetResult(id, 'home');
-            await userModel.updateLoseBetResult(id, 'away');
-          } else if (element.hs < element.vs) {
-            await userModel.updateUserPerBetResult(id, 'away');
-            await userModel.updateLoseBetResult(id, 'home');
-            const winUserInfor = await userModel.selectWinUser(id);
-            winUserInfor.forEach(async (data) => {
-              const winningPoint =
-                data.betting_point * parseFloat(data.betting_odds) * -1;
-              await userModel.changeUserPoint(winningPoint, data.member_id);
-            });
-            await userModel.deleteBetInfor(id);
-            await model.changeGameStatus(id, 'waiting');
-          }
-          if (
-            parseInt(element.GAME_ID, 10) === 22200001 ||
-            parseInt(element.GAME_ID, 10) === 22200002 ||
-            parseInt(element.GAME_ID, 10) === 22200003 ||
-            parseInt(element.GAME_ID, 10) === 22200004
-          ) {
-            setTimeout(async () => {
-              await axios.post('https://ygolonhcet.online/game/start', {
-                id: element.GAME_ID,
-              });
-            }, 1000 * 60);
-          }
-        }
-      }, timeDiff);
-    });
-
-    res
-      .status(200)
-      .send({ success: true, message: `Successfully start game${id}` });
-  } catch (error) {
-    console.log(`startGameEvent controller error on ${error}`);
   }
 };
 

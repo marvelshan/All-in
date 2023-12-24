@@ -16,7 +16,6 @@ const httpServer = createServer(app);
 
 app.use(cookieParser());
 app.use(express.json());
-
 app.use('', pageRouter);
 app.use('/odds', oddsRouter);
 app.use('/game', gameRouter);

@@ -1,15 +1,8 @@
 import * as model from '../model/odds.js';
-import { client } from '../utils/cache.js';
-import { io } from '../utils/socket.js';
+import { client } from './cache.js';
+import { io } from './socket.js';
 
-const oddCalculator = async (req, res, next) => {
-  const { id } = req.body;
-  // const checkGame = JSON.parse(await client.get(`game${id}`));
-  // if (parseInt(checkGame.period, 10) !== 4) {
-  //   return res
-  //     .status(404)
-  //     .json({ success: false, message: 'Game is not fininshed yet' });
-  // }
+const oddCalculator = async (id) => {
   const gameInformation = await model.getNBAGame(id);
   const getHomeTeamRank = await model.getNBAStandings(
     gameInformation.home_team_id,
@@ -34,7 +27,6 @@ const oddCalculator = async (req, res, next) => {
   await client.set(`odds${id}`, JSON.stringify(gameInitialOdds));
   await model.updateOdds(id, homeOdds, awayOdds, moneyBuffer);
   await model.updateGameOdds(id, homeOdds, awayOdds);
-  next();
 };
 
 export default oddCalculator;

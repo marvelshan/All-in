@@ -38,7 +38,7 @@ export const sendTappay = async (req, res) => {
       await topUpPoint(chargeMoney, userId);
       res.status(200).json({ success: true, message: 'Successfully top up' });
     } else {
-      res.status(404).json({
+      res.status(400).json({
         success: false,
         message: 'Your payment is error',
       });
