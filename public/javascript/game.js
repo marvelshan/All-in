@@ -103,7 +103,7 @@ function betHomeGame() {
     body: JSON.stringify({ id, betPoint, hosting }),
   })
     .then((response) => {
-      if (response.status === 404) {
+      if (response.status >= 400) {
         alert('You dont have any point');
       } else if (response.status === 200) {
         alert('User betted successfully');
@@ -165,7 +165,7 @@ function betAwayGame() {
     body: JSON.stringify({ id, betPoint, hosting }),
   })
     .then((response) => {
-      if (response.status === 404) {
+      if (response.status >= 400) {
         alert('You dont have any point');
       } else if (response.status === 200) {
         alert('User betted successfully');

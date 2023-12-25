@@ -64,6 +64,7 @@ export const startGameEvent = async (req, res) => {
     userModel.insertUserPerBet(adminIdInSQL, id, 0, 0, 'away');
 
     gameData.forEach(async (element) => {
+      const gameEvent = element.de;
       const timeDiff =
         (new Date(element.wallclk) - new Date(gameData[0].wallclk)) /
         timeRatioOfGame;
@@ -71,13 +72,13 @@ export const startGameEvent = async (req, res) => {
         io.emit('gameEvent', element);
         await client.set(`game${id}`, JSON.stringify(element));
         if (
-          element.de === 'Start Period' &&
+          gameEvent === 'Start Period' &&
           parseInt(element.period, 10) === openAutoScalingPeriod &&
           parseInt(element.GAME_ID, 10) === openAutoScalingGameId
         ) {
           describeAutoScaling();
         }
-        if (element.de === 'Game End') {
+        if (gameEvent === 'Game End') {
           if (parseInt(element.GAME_ID, 10) === openAutoScalingGameId) {
             closeAutoScaling();
           }

@@ -8,7 +8,7 @@ export const checkEmailType = async (email, res) => {
     const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const mailFormat = /\S+@\S+\.\S+/;
     if (!email.match(mailFormat) || !pattern.test(email)) {
-      return res.status(404).json({
+      return res.status(400).json({
         success: false,
         message: 'User type error email',
       });
@@ -25,7 +25,7 @@ export const signUp = async (req, res) => {
     await checkEmailType(email, res);
     const checkUser = await model.findUser(email);
     if (checkUser !== undefined) {
-      return res.status(404).json({
+      return res.status(400).json({
         success: false,
         message: 'This account already sign up before',
       });
@@ -46,7 +46,7 @@ export const signIn = async (req, res) => {
     const { email, password } = req.body;
     const checkUser = await model.findUser(email);
     if (checkUser === undefined) {
-      return res.status(404).json({
+      return res.status(400).json({
         success: false,
         message: 'User does not sign up',
       });
