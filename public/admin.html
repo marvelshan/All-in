@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="admin.css" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
+    <title>admin</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Admin Interface</h1>
+      <div class="tabs">
+        <input
+          type="radio"
+          name="tab"
+          id="tab-1"
+          onclick="showBarChart()"
+          checked
+        />
+        <label for="tab-1">Bar Chart</label>
+        <div class="tab-content">
+          <div class="title">Bar Chart</div>
+          <div class="description">Points earned by the winning side.</div>
+        </div>
+        <input type="radio" name="tab" id="tab-2" onclick="showPieChart()" />
+        <label for="tab-2">Pie Chart</label>
+        <div class="tab-content">
+          <div class="title">Pie Chart</div>
+          <div class="description">
+            Number of bets on both sides of the competition.
+          </div>
+        </div>
+        <input type="radio" name="tab" id="tab-3" onclick="startGameSystem()" />
+        <label for="tab-3">Schedule Game System</label>
+        <div class="tab-content">
+          <div class="title">Schedule Game System</div>
+          <div class="description">
+            Select the match schedule and set the time; the competition will
+            commence at the scheduled time.
+          </div>
+        </div>
+        <input
+          type="radio"
+          name="tab"
+          id="tab-4"
+          onclick="showScheduledGame()"
+        />
+        <label for="tab-4">Scheduled Competition</label>
+        <div class="tab-content">
+          <div class="title">Scheduled Competition</div>
+          <div class="description">Displaying a Scheduled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="barChart">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class="pieFrame"></div>
+    <div class="scheduleContainer">
+      <h1>Start game</h1>
+      <div id="buttonContainer"></div>
+      <div class="schedule">
+        <div class="setGameTitle">Set Start Time</div>
+        <label for="appt" class="scheduleSubtitle">Time：</label>
+        <input
+          type="time"
+          id="appt"
+          name="appt"
+          min="09:00"
+          max="18:00"
+          required
+        />
+        <label for="start" class="scheduleSubtitle">Date：</label>
+        <input
+          type="date"
+          id="start"
+          value="2023-12-10"
+          min="2023-12-01"
+          max="2024-01-31"
+        />
+        <button class="submit-btn" onclick="submitSchedule()">送出</button>
+        <button class="close-btn" onclick="closeSchedule()">關閉</button>
+      </div>
+    </div>
+    <div class="futureGameFrame">
+      <div class="futureTitle">Coming soon</div>
+      <div class="closeButton" onclick="closeFutureGameFrame()">X</div>
+    </div>
+  </body>
+  <script src="javascript/admin.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "socket.io-client": "https://cdn.socket.io/4.4.1/socket.io.esm.min.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import { io } from "socket.io-client";
+    const socket = io("https://www.ygolonhcet.online");
+    socket.on("connection", () => {
+      console.log("connected");
+    });
+    socket.on("barChart", (data) => {
+      updateBarChart(data);
+    });
+  </script>
+</html>

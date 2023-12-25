@@ -1,0 +1,113 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  text-align: center;
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/background.png");
+  background-size: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.header {
+  position: fixed;
+  background-color: white;
+  display: flex;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 3px;
+}
+.userInfor {
+  display: flex;
+  align-items: center;
+  padding: 10px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: auto;
+}
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
+}
+.navbar {
+  font-size: 18px;
+  padding: 10px 40px;
+  margin: 20px 0 20px 0;
+  color: gray;
+  font-weight: bold;
+}
+.navbar:hover {
+  color: #ea7500;
+}
+.wrapper {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 500px;
+  padding-top: 90px;
+}
+h1 {
+  color: #333;
+}
+
+span {
+  font-weight: bold;
+}
+
+input[type="number"] {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.order-word {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.tpfield {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.pay {
+  background-color: #ea7500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#orderNumber {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #4caf50;
+}

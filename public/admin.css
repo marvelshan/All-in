@@ -1,0 +1,285 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/adminbackground.png");
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.container {
+  max-width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff69;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 50px;
+}
+
+.typeFrame {
+  display: flex;
+  justify-content: space-between;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 5px;
+  margin: 2.5em auto;
+  max-width: 80%;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  padding: 0.5em 0.75em;
+  color: #000000;
+  border: 2px solid #ccc;
+  border-bottom: unset;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  cursor: pointer;
+  order: 0;
+  transition: all 0.3s ease;
+}
+
+input[type="radio"]:checked + label {
+  font-size: 20px;
+  color: black;
+  background-color: white;
+  transform: translateY(1px);
+}
+
+.tab-content {
+  display: none;
+  padding: 1em;
+  width: 100%;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+
+  order: 1;
+}
+input[type="radio"]:checked + label + .tab-content {
+  display: block;
+}
+
+.titleButton {
+  display: none;
+}
+.card {
+  width: 30%;
+  padding: 20px;
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.title,
+.gameTitle,
+.setGameTitle {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.gameTitle,
+.setGameTitle {
+  display: flex;
+  justify-content: center;
+}
+
+.setGameTitle {
+  font-size: 30px;
+}
+.setGameSubFrame {
+  flex-wrap: wrap;
+}
+.setGameSubTitle {
+  padding: 20px 0 10px 0;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+}
+.description {
+  margin: 10px;
+}
+.playingContainer,
+.pendingContainer,
+.waitingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.titleButton {
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.titleButton:hover {
+  background-color: #45a049;
+}
+.pieFrame {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 190px;
+}
+.pie {
+  width: 20%;
+  margin-bottom: 30px;
+}
+
+.startGameButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #ffffff69;
+  margin-bottom: 30px;
+}
+.gameid {
+  display: none;
+}
+.button:hover {
+  background-color: #45a049;
+}
+.schedule {
+  display: none;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.scheduleSubtitle {
+  border: none;
+}
+.close-btn,
+.submit-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+.submit-btn {
+  background-color: #27ae60;
+  margin-left: 10px;
+}
+input {
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.scheduleContainer,
+.pieFrame {
+  display: none;
+}
+.barChart {
+  display: flex;
+  height: 30vw;
+  justify-content: center;
+}
+#myChart {
+  width: 100%;
+}
+.futureGameFrame {
+  display: none;
+  position: relative;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 800px;
+  margin: auto;
+  padding-bottom: 10px;
+}
+.scheduleTime {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0 50px;
+}
+.futureHomeImage,
+.futureAwayImage,
+.homeImage,
+.awayImage {
+  margin: 0 10px;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.futureHomeFrame,
+.futureAwayFrame,
+.homeFrame,
+.awayFrame {
+  display: flex;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 5px;
+  align-items: center;
+}
+.futurePerGame {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.futureOdds {
+  margin-left: auto;
+  display: flex;
+}
+.futureHomeOdds,
+.futureAwayOdds {
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 5px;
+}
+.futureTitle {
+  color: black;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 30px;
+  margin: 0 40px;
+  border-bottom: 2px solid gray;
+}
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+.futurGamePerFrame {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 10px 40px;
+  padding: 15px;
+}

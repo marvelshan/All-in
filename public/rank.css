@@ -1,0 +1,105 @@
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/background.png");
+  background-size: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.header {
+  position: fixed;
+  background-color: white;
+  display: flex;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 3px;
+}
+.userInfor {
+  display: flex;
+  align-items: center;
+  padding: 10px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: auto;
+}
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
+}
+.navbar {
+  font-size: 18px;
+  padding: 10px 40px;
+  margin: 20px 0 20px 0;
+  color: gray;
+  font-weight: bold;
+}
+.navbar:hover {
+  color: #ea7500;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  background-color: transparent;
+}
+
+.rankcontainer {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+}
+
+.rank-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.rank-details {
+  margin-top: 20px;
+  color: #555;
+}
+
+.rank-details span {
+  font-weight: bold;
+  color: #333;
+}
+.rankIncrease {
+  margin-left: auto;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 30px solid red;
+}
+.rankdecrease {
+  margin-left: auto;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 30px solid green;
+}
+.rankSame {
+  margin-left: auto;
+  width: 30px;
+  height: 5px;
+  background-color: grey;
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="game.css" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <a href="/"
+        ><img
+          src="https://d3qptsb2ee7s4x.cloudfront.net/image/logo.png"
+          class="logo"
+      /></a>
+      <a href="/" class="navbar">Home</a>
+      <a href="/rank" class="navbar">Rank</a>
+      <a href="/charge" class="navbar">Top Up</a>
+      <a href="/record" class="navbar">Record</a>
+      <div class="userInfor"></div>
+    </div>
+
+    <div class="left-column">
+      <div class="teamGame">
+        <a href="/game?game=22200001">
+          <div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div>
+          </div>
+        </a>
+      </div>
+
+      <div class="teamGame">
+        <a href="/game?game=22200002"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/game?game=22200003"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamGame">
+        <a href="/game?game=22200004"
+          ><div class="teamName"></div>
+          <div class="leftColumnScore">
+            <div class="homeScore"></div>
+            <div class="awayScore"></div></div
+        ></a>
+      </div>
+      <div class="teamName">note: home v.s away</div>
+    </div>
+
+    <div class="main-column">
+      <div class="mainInformation">
+        <div class="eventFrame">
+          <div class="courtFrame">
+            <div class="status"></div>
+            <div class="homeTeamMark" id="homeTeamMark"></div>
+            <div class="awayTeamMark" id="awayTeamMark"></div>
+          </div>
+          <div class="eventList"></div>
+        </div>
+        <div class="scoreBox">
+          <div class="score">
+            <div class="homeMainTeam"></div>
+            <div class="homeMainScore"></div>
+            <div class="homeOdds"></div>
+            <input
+              type="number"
+              name="homeBet"
+              placeholder="Enter bet amount"
+            />
+            <button class="homeButton" type="submit" onclick="betHomeGame()">
+              bet
+            </button>
+          </div>
+          <img
+            class="vs"
+            src="https://d3qptsb2ee7s4x.cloudfront.net/image/vs.png"
+          />
+          <div class="score">
+            <div class="awayMainTeam"></div>
+            <div class="awayMainScore"></div>
+            <span class="awayOdds"></span>
+            <input
+              type="number"
+              name="awayBet"
+              placeholder="Enter bet amount"
+            />
+            <button class="awayButton" type="submit" onclick="betAwayGame()">
+              bet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gameId"></div>
+    <div class="right-column">
+      <div class="box">
+        <div class="userInfor">User information:</div>
+        <button class="chatroomButton" onclick="changeToChatroom()">
+          chatroom
+        </button>
+      </div>
+      email:
+      <div class="userEmail"></div>
+      name:
+      <div class="userName"></div>
+      point:
+      <div class="userPoint"></div>
+      <div class="userInfor">Betting Record</div>
+      <div class="container"></div>
+    </div>
+    <div class="chatroom">
+      <button class="userButton" onclick="changeToUserInfor()">
+        User information
+      </button>
+      <div class="messageBox">
+        <div class="messageContainer"></div>
+      </div>
+      <div class="inputFrame">
+        <input type="text" name="message" class="messageInput" />
+        <button class="messageButton" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </body>
+  <script src="javascript/game.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "socket.io-client": "https://cdn.socket.io/4.4.1/socket.io.esm.min.js"
+      }
+    }
+  </script>
+  <script type="module" src="javascript/gamesocket.js"></script>
+</html>

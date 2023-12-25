@@ -1,8 +1,30 @@
 import { client } from './cache.js';
+import * as userModel from '../model/user.js';
 
 const games = [];
 const startTime = [];
 const number = [];
+
+async function gameEnd(event, id) {
+  if (event.de === 'Game End') {
+    if (event.hs > event.vs) {
+      const host = 'home';
+      await userModel.updateUserPerBetResult(id, host);
+      await userModel.updateLoseBetResult(id, 'away');
+    } else if (event.hs < event.vs) {
+      const host = 'away';
+      await userModel.updateUserPerBetResult(id, host);
+      await userModel.updateLoseBetResult(id, 'home');
+    }
+    const winUserInfor = await userModel.selectWinUser(id);
+    winUserInfor.forEach(async (data) => {
+      const winningPoint =
+        data.betting_point * parseFloat(data.betting_odds) * -1;
+      await userModel.changeUserPoint(winningPoint, data.member_id);
+    });
+    await userModel.deleteBetInfor(id);
+  }
+}
 
 function gameSetTimeOut(id) {
   for (let i = 1; i < number[games.indexOf(id)]; i += 1) {
@@ -14,25 +36,30 @@ async function gamePopFromRedis() {
   const id = await client.lpop('game');
   const startTimeInRedis = await client.lpop('startTime');
   const numberInRedis = await client.lpop('number');
-  games.push(id);
-  startTime.push(startTimeInRedis);
-  number.push(numberInRedis);
+  if (!games.includes(id)) {
+    games.push(id);
+    startTime.push(startTimeInRedis);
+    number.push(numberInRedis);
+  }
   gameSetTimeOut(id);
 }
 
 async function putGameEventIntoRedis(id) {
   const gameEvent = await client.lpop(`gameRedis${id}`);
   const event = JSON.parse(gameEvent);
-  const timeDiff =
-    (new Date(event.wallclk) - new Date(startTime[games.indexOf(id)])) / 20;
-  setTimeout(async () => {
-    await client.publish('game', id);
-    await client.set(`game${id}`, JSON.stringify(event));
-    const nextGameId = await client.lindex('game', 0);
-    if (nextGameId !== null) {
-      gamePopFromRedis();
-    }
-  }, timeDiff);
+  if (event !== null) {
+    const timeDiff =
+      (new Date(event.wallclk) - new Date(startTime[games.indexOf(id)])) / 100;
+    setTimeout(async () => {
+      await client.publish('game', id);
+      await client.set(`game${id}`, JSON.stringify(event));
+      const nextGameId = await client.lindex('game', 0);
+      if (nextGameId !== null) {
+        gamePopFromRedis();
+      }
+      gameEnd(event, id);
+    }, timeDiff);
+  }
 }
 
 gamePopFromRedis();

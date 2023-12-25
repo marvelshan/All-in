@@ -8,3 +8,4 @@ yarn.lock
 crawdler/
 model/crawdler.js
 swagger-output.json
+public/image

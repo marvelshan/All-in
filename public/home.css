@@ -1,0 +1,279 @@
+html {
+  height: 100%;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url(https://d3qptsb2ee7s4x.cloudfront.net/image/background.png);
+  background-size: 100%;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 3px;
+}
+.sign {
+  align-items: center;
+  display: flex;
+  border-radius: 8px;
+  background-color: #ea7500;
+  font-weight: bold;
+  color: white;
+  padding: 10px 40px;
+  font-size: 18px;
+  margin: 20px 20px 20px 0;
+  margin-left: auto;
+}
+.userInfor {
+  display: flex;
+  align-items: center;
+  padding: 10px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: auto;
+}
+.userName,
+.userPoint {
+  padding: 0 20px;
+  font-size: 18px;
+}
+.gameContainer {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.left-column {
+  width: 23%;
+  float: left;
+  margin: 1%;
+  box-sizing: border-box;
+}
+.header {
+  position: fixed;
+  background-color: white;
+  display: flex;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.navbar {
+  font-size: 18px;
+  padding: 10px 40px;
+  margin: 20px 0 20px 0;
+  color: gray;
+  font-weight: bold;
+}
+.navbar:hover {
+  color: #ea7500;
+}
+.specialGame {
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/specialGame.png");
+  width: 262px;
+  height: 50px;
+  margin: 30px 0 30px 0;
+}
+.specialGameTitle {
+  color: white;
+  padding: 10px 62px;
+  letter-spacing: 3px;
+  font-weight: bolder;
+  font-size: 23px;
+}
+.gameFrame {
+  background-color: white;
+  border-radius: 8px;
+  width: 370px;
+  height: 314px;
+  margin: 0 20px 0 20px;
+  padding-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.status {
+  border-radius: 3px;
+  background-color: #ff004c;
+  font-weight: bold;
+  color: white;
+  margin: 10px 20px 20px;
+  display: flex;
+  justify-content: center;
+  width: 40px;
+}
+.teamImage {
+  display: flex;
+}
+.vs {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+.homeTeamImage {
+  flex: 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 10px;
+  height: 110px;
+}
+.awayTeamImage {
+  flex: 1;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 10px;
+  height: 110px;
+}
+.teamGame {
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.teamFrame {
+  display: flex;
+  margin: 10px 20px;
+}
+.homeTeam,
+.awayTeam {
+  flex: 1;
+}
+.homeScore,
+.awayScore {
+  margin-left: auto;
+}
+.odds {
+  display: flex;
+}
+.homeOdds,
+.awayOdds {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 5px;
+}
+.homeOdds {
+  margin-left: 20px;
+}
+.awayOdds {
+  margin-right: 20px;
+}
+.discountTitle {
+  background-image: url(https://d3qptsb2ee7s4x.cloudfront.net/image/specialGame.png);
+  width: 262px;
+  height: 50px;
+  padding-top: 80px;
+}
+.signDiscount {
+  border-radius: 8px;
+  background-color: #ea7500;
+  font-weight: bold;
+  color: white;
+  padding: 10px 40px;
+  font-size: 18px;
+}
+.signDiscountButton {
+  margin: 20px 0 0 150px;
+}
+.discount {
+  background-image: url("https://d3qptsb2ee7s4x.cloudfront.net/image/discount.jpg");
+  height: 500px;
+  background-size: contain;
+  background-position: center center;
+}
+.subtitle {
+  color: #f4f4f4;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 50px 0 0 150px;
+}
+.discountSubtitle {
+  color: #f4f4f4;
+  font-weight: bold;
+  font-size: 50px;
+  padding-left: 130px;
+}
+.futureGameFrame {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 0 20px 0 20px;
+  padding-bottom: 10px;
+}
+.scheduleTime {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0 50px;
+}
+.futureHomeImage,
+.futureAwayImage {
+  margin: 0 10px;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.futureHomeFrame,
+.futureAwayFrame {
+  display: flex;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 5px;
+  align-items: center;
+}
+.futurePerGame {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.futureOdds {
+  margin-left: auto;
+  display: flex;
+}
+.futureHomeOdds,
+.futureAwayOdds {
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 5px;
+}
+.futureTitle {
+  color: black;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 30px;
+  margin: 0 40px;
+  border-bottom: 2px solid gray;
+}
+.futurGamePerFrame {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 10px 40px;
+  padding: 15px;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 80px;
+  background: #313538;
+  margin-top: 20px;
+}
+.brand-right {
+  font-size: 20px;
+  color: #828282;
+  margin: 0 20px 0 0;
+  margin-left: auto;
+}

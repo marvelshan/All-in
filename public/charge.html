@@ -3,28 +3,70 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>topUp</title>
+    <title>top up page</title>
+    <link rel="stylesheet" type="text/css" href="charge.css" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
   </head>
   <body>
-    <div class="pay-information">付款資料</div>
-    <div class="order-box">
-      <div class="order-word">信用卡卡號</div>
-      <div class="tpfield" id="card-number"></div>
+    <div class="header">
+      <a href="/"
+        ><img
+          src="https://d3qptsb2ee7s4x.cloudfront.net/image/logo.png"
+          class="logo"
+      /></a>
+      <a href="/" class="navbar">Home</a>
+      <a href="/rank" class="navbar">Rank</a>
+      <a href="/charge" class="navbar">Top Up</a>
+      <a href="/record" class="navbar">Record</a>
+      <div class="userInfor"></div>
     </div>
-    <div class="order-box">
-      <div class="order-word">有效期限</div>
-      <div class="tpfield" id="card-expiration-date"></div>
+    <div class="wrapper">
+      <h1>All-In</h1>
+      <span>Top-up Amount:</span>
+      <input type="number" name="chargeMoney" />
+      Points to Cash 1:1
+      <div class="order-container">
+        <div class="order-word">Credit Card Number</div>
+        <div class="tpfield" id="card-number"></div>
+      </div>
+      <div class="order-container">
+        <div class="order-word">Expiration Date</div>
+        <div class="tpfield" id="card-expiration-date"></div>
+      </div>
+      <div class="order-container">
+        <div class="order-word">CVV</div>
+        <div class="tpfield" id="card-ccv"></div>
+      </div>
+      <button class="pay" onclick="onSubmit()">Confirm Payment</button>
+      <div id="orderNumber"></div>
     </div>
-    <div class="order-box">
-      <div class="order-word">安全碼</div>
-      <div class="tpfield" id="card-ccv"></div>
-    </div>
-    <button class="pay" onclick="onSubmit()">確認付款</button>
-    <div id="orderNumber"></div>
   </body>
   <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
   <script>
-    const productURL = window.location.search;
+    const userInfor = document.querySelector(".userInfor");
+    fetch("/user/getUserInfor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const userName = document.createElement("div");
+        const userPoint = document.createElement("div");
+        userName.className = "userName";
+        userPoint.className = "userPoint";
+        userName.textContent = `${data.userInfor[0].name}`;
+        userPoint.textContent = `Point: ${data.userInfor[0].point}`;
+        userInfor.appendChild(userName);
+        userInfor.appendChild(userPoint);
+      });
     TPDirect.setupSDK(
       12348,
       "app_pa1pQcKoY22IlnSXq5m5WP5jFKzoRG58VEXpT7wU62ud7mMbDOGzCYIlzzLF",
@@ -136,11 +178,6 @@
       }
     });
     function onSubmit(event) {
-      //   if (localStorage.access_token === "undefined") {
-      //     alert("你尚未登入");
-      //     window.location.href = "/profile.html";
-      //     return;
-      //   }
       // 取得 TapPay Fields 的 status
       const tappayStatus = TPDirect.card.getTappayFieldsStatus();
 
@@ -156,21 +193,36 @@
           alert("get prime error " + result.msg);
           return;
         }
-        console.log(localStorage.access_token);
         const prime = result.card.prime;
-        console.log(prime);
-        const total = localStorage.price;
-        fetch("/topUp", {
+        const chargeMoney = document.querySelector(
+          'input[name="chargeMoney"]',
+        ).value;
+        if (chargeMoney > 100000000) {
+          alert("小賭怡情，大賭要命");
+          return;
+        } else if (chargeMoney < 0) {
+          alert("Cannot be a negative number.");
+          return;
+        } else if (chargeMoney == 0) {
+          alert("Cannot be filled with zero");
+          return;
+        }
+
+        fetch("/topUp/charge", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.access_token}`,
           },
-          body: JSON.stringify({ total, prime }),
+          body: JSON.stringify({ chargeMoney, prime }),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            return response.json();
+          })
           .then((data) => {
-            console.log(data.data);
+            if (data.success === false) {
+              return alert(data.message);
+            }
+            alert("Successful Top-up");
           });
 
         // send prime to your server, to pay with Pay by Prime API .

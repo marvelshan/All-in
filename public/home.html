@@ -3,115 +3,246 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="home.css" />
+    <link
+      rel="icon"
+      href="https://d3qptsb2ee7s4x.cloudfront.net/image/logoIcon.png"
+      type="image/png"
+    />
   </head>
-  <style>
-    a {
-      text-decoration: none;
-      color: black;
-    }
-  </style>
   <body>
-    <h1>Live Event Update</h1>
-    <div class="gameId"></div>
-    <div class="eventList"></div>
+    <div class="header">
+      <a href="/"
+        ><img
+          src="https://d3qptsb2ee7s4x.cloudfront.net/image/logo.png"
+          class="logo"
+      /></a>
+      <a href="/" class="navbar">Home</a>
+      <a href="/rank" class="navbar">Rank</a>
+      <a href="/charge" class="navbar">Top Up</a>
+      <a href="/record" class="navbar">Record</a>
+      <div class="userInfor"></div>
+      <a href="/profile" class="sign">Join</a>
+    </div>
 
-    homeRate:
-    <span class="homeOdds"></span>
-    <br />
-    homeBet: <input type="number" name="homeBet" max="1000" />
-    <button class="homeButton" type="submit" onclick="betHomeGame()">
-      bet
-    </button>
-    <br />
-    <h1 class="homeMainScore"></h1>
-    awayRate:
-    <span class="awayOdds"></span>
-    <br />
-    awayBet: <input type="text" name="awayBet" />
-    <button class="awayButton" type="submit" onclick="betAwayGame()">
-      bet
-    </button>
-    <br />
-    <h1 class="awayMainScore"></h1>
-    <h1>user information:</h1>
-    email:
-    <h2 class="userEmail"></h2>
-    name:
-    <h2 class="userName"></h2>
-    point:
-    <h2 class="userPoint"></h2>
+    <div class="discount">
+      <div class="discountTitle">
+        <div class="specialGameTitle">優惠項目</div>
+      </div>
+      <div class="subtitle">新玩家優惠</div>
+      <div class="discountSubtitle">首次加入即享5000元，</div>
+      <div class="discountSubtitle">立即註冊，體驗無限精彩！</div>
+      <div class="signDiscountButton">
+        <a href="/profile" class="signDiscount">立即加入</a>
+      </div>
+    </div>
+    <div class="specialGame">
+      <div class="specialGameTitle">精選賽事</div>
+    </div>
+    <div class="gameContainer"></div>
 
-    <br />
-    Game:22200001
-    <a href="/home.html?game=22200001">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200002
-    <a href="/home.html?game=22200002"
-      ><h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200003
-    <a href="/home.html?game=22200003"
-      ><h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200004
-    <a href="/home.html?game=22200004">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
-
-    Game:22200005
-    <a href="/home.html?game=22200005">
-      <h1 class="homeScore"></h1>
-      <h1 class="awayScore"></h1
-    ></a>
+    <div class="specialGame">
+      <div class="specialGameTitle">未來賽事</div>
+    </div>
+    <div class="futureGameFrame">
+      <div class="futureTitle">Coming soon</div>
+    </div>
+    <div class="footer">
+      <div class="brand-right">© 2023. All rights reserved.</div>
+    </div>
   </body>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const gameValue = urlParams.get("game");
+    const sign = document.querySelector(".sign");
+    const userInfor = document.querySelector(".userInfor");
+    const homeTeamElements = document.querySelectorAll(".homeTeam");
+    const awayTeamElements = document.querySelectorAll(".awayTeam");
+    const futureGameFrame = document.querySelector(".futureGameFrame");
+    const homeTeam = document.querySelectorAll(".homeTeam");
+    const awayTeam = document.querySelectorAll(".awayTeam");
+    const homeTeamImage = document.querySelectorAll(".homeTeamImage");
+    const awayTeamImage = document.querySelectorAll(".awayTeamImage");
+    fetch("/user/getUserInfor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.errors === "invalid token") {
+          sign.style.display = "display";
+          return;
+        }
+        sign.style.display = "none";
+        const userName = document.createElement("div");
+        const userPoint = document.createElement("div");
+        userName.className = "userName";
+        userPoint.className = "userPoint";
+        userName.textContent = `${data.userInfor[0].name}`;
+        userPoint.textContent = `Point: ${data.userInfor[0].point}`;
+        userInfor.appendChild(userName);
+        userInfor.appendChild(userPoint);
+        const signDiscount = document.querySelector(".signDiscount");
+        signDiscount.textContent = "立即開始";
+        signDiscount.href = "game?game=22200002";
+      });
 
-    document.querySelector(".gameId").textContent = gameValue;
-    const homeOdds = document.querySelector(".homeOdds");
-    const homeButton = document.querySelector(".homeButton");
+    fetch("/game/infor", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((game) => {
+          if (game.status === "pending") {
+            const time = game.time;
+            const scheduleTime = document.createElement("div");
+            const futureHomeFrame = document.createElement("div");
+            const futureHomeImage = document.createElement("div");
+            const futureHome = document.createElement("div");
+            const futureAwayFrame = document.createElement("div");
+            const futureAwayImage = document.createElement("div");
+            const futureAway = document.createElement("div");
+            const futureHomeOdds = document.createElement("div");
+            const futureAwayOdds = document.createElement("div");
+            const futureOdds = document.createElement("div");
+            const url = document.createElement("a");
+            const futurGamePerFrame = document.createElement("div");
+            scheduleTime.className = "scheduleTime";
+            futureHomeFrame.className = "futureHomeFrame";
+            futureHomeImage.className = "futureHomeImage";
+            futureAwayFrame.className = "futureHomeFrame";
+            futureAwayImage.className = "futureAwayImage";
+            futureHome.className = "futurePerGame";
+            futureAway.className = "futurePerGame";
+            futureHomeOdds.className = "futureHomeOdds";
+            futureAwayOdds.className = "futureAwayOdds";
+            futureOdds.className = "futureOdds";
+            futurGamePerFrame.className = "futurGamePerFrame";
+            futureHome.textContent = game.home_team_id;
+            futureAway.textContent = game.away_team_id;
+            futureHomeOdds.textContent = game.home_odds;
+            futureAwayOdds.textContent = game.away_odds;
+            futureHomeImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+            futureAwayImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
+            scheduleTime.textContent = time;
+            url.href = `/game?game=${game.GAME_ID}`;
+            futurGamePerFrame.appendChild(scheduleTime);
+            futureHomeFrame.appendChild(futureHomeImage);
+            futureHomeFrame.appendChild(futureHome);
+            futureAwayFrame.appendChild(futureAwayImage);
+            futureAwayFrame.appendChild(futureAway);
+            futureOdds.appendChild(futureHomeOdds);
+            futureOdds.appendChild(futureAwayOdds);
+            futurGamePerFrame.appendChild(futureHomeFrame);
+            futurGamePerFrame.appendChild(futureAwayFrame);
+            futurGamePerFrame.appendChild(futureOdds);
+            url.appendChild(futurGamePerFrame);
+            futureGameFrame.appendChild(url);
+          } else if (game.status === "playing") {
+            const gameContainer = document.querySelector(".gameContainer");
+            const gameURL = document.createElement("a");
+            gameURL.className = "gameURL";
+            gameURL.href = `game?game=${game.GAME_ID}`;
+            gameContainer.appendChild(gameURL);
+            const gameFrame = document.createElement("div");
+            gameFrame.className = "gameFrame";
+            gameURL.appendChild(gameFrame);
+            const status = document.createElement("div");
+            status.textContent = "live";
+            status.className = "status";
+            const teamImage = document.createElement("div");
+            teamImage.className = "teamImage";
+            const teamName = document.createElement("div");
+            teamName.className = "teamName";
+            const odds = document.createElement("div");
+            odds.className = "odds";
+            gameFrame.appendChild(status);
+            gameFrame.appendChild(teamImage);
+            gameFrame.appendChild(teamName);
+            gameFrame.appendChild(odds);
+            const homeTeamImage = document.createElement("div");
+            homeTeamImage.className = "homeTeamImage";
+            const vs = document.createElement("div");
+            vs.className = "vs";
+            const awayTeamImage = document.createElement("div");
+            awayTeamImage.className = "awayTeamImage";
+            teamImage.appendChild(homeTeamImage);
+            teamImage.appendChild(vs);
+            teamImage.appendChild(awayTeamImage);
+            const teamFrame1 = document.createElement("div");
+            teamFrame1.className = "teamFrame";
+            teamName.appendChild(teamFrame1);
+            const homeTeam = document.createElement("div");
+            homeTeam.className = "homeTeam";
+            const homeScore = document.createElement("div");
+            homeScore.className = "homeScore";
+            homeScore.id = `homeScore${game.GAME_ID}`;
+            teamFrame1.appendChild(homeTeam);
+            teamFrame1.appendChild(homeScore);
+            const teamFrame2 = document.createElement("div");
+            teamFrame2.className = "teamFrame";
+            teamName.appendChild(teamFrame2);
+            const awayTeam = document.createElement("div");
+            awayTeam.className = "awayTeam";
+            const awayScore = document.createElement("div");
+            awayScore.className = "awayScore";
+            awayScore.id = `awayScore${game.GAME_ID}`;
+            teamFrame2.appendChild(awayTeam);
+            teamFrame2.appendChild(awayScore);
+            const homeOdds = document.createElement("div");
+            homeOdds.className = "homeOdds";
+            homeOdds.id = `homeOdds${game.GAME_ID}`;
+            const awayOdds = document.createElement("div");
+            awayOdds.className = "awayOdds";
+            awayOdds.id = `awayOdds${game.GAME_ID}`;
+            odds.appendChild(homeOdds);
+            odds.appendChild(awayOdds);
+            homeTeam.textContent = game.home_team_id;
+            awayTeam.textContent = game.away_team_id;
+            homeTeamImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.home_team_id}.png)`;
+            awayTeamImage.style.backgroundImage = `url(https://d3qptsb2ee7s4x.cloudfront.net/image/${game.away_team_id}.png)`;
+            getOdds(game.GAME_ID, homeOdds, awayOdds);
+            getGameEvent(game.GAME_ID, homeScore, awayScore);
+          }
+        });
+      });
+    function setTeamImage(team, element) {
+      const imagePath = `https://d3qptsb2ee7s4x.cloudfront.net/image/${team}.png`;
+      return;
+      `url(${imagePath})`;
+    }
 
-    const awayOdds = document.querySelector(".awayOdds");
-    const awayButton = document.querySelector(".awayButton");
-
-    const event = document.querySelector(".eventList");
-    const homeScoreElements = document.querySelectorAll(".homeScore");
-    const awayScoreElements = document.querySelectorAll(".awayScore");
-    const homeMainScore = document.querySelector(".homeMainScore");
-    const awayMainScore = document.querySelector(".awayMainScore");
-
-    function getOdds() {
+    function getOdds(GAME_ID, homeOdds, awayOdds) {
       fetch("/odds/getOdds", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: gameValue,
+          id: GAME_ID,
         }),
       })
         .then((response) => {
           return response.json();
         })
         .then((data) => {
+          if (data.success === false) {
+            return alert(data.message);
+          }
           const gameEvent = JSON.parse(data);
-          homeOdds.textContent = gameEvent.home_odds;
-          awayOdds.textContent = gameEvent.away_odds;
+          homeOdds.textContent = gameEvent.homeOdds;
+          awayOdds.textContent = gameEvent.awayOdds;
         });
     }
-    getOdds();
-    // first get game information
-    function getGameEvent(gameId) {
+    function getGameEvent(gameId, homeScore, awayScore) {
       fetch("/game/getGameEvent", {
         method: "POST",
         headers: {
@@ -124,81 +255,12 @@
         .then((response) => {
           return response.json();
         })
-        .then((data) => {
-          const game = JSON.parse(data);
-          if (game.GAME_ID) {
-            homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
-              `home score: ${game.hs}`;
-            awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
-              `away score: ${game.vs}`;
+        .then((game) => {
+          if (game.success === false) {
+            return alert(game.message);
           }
-          if (game.GAME_ID == gameValue) {
-            event.textContent = `event: ${game.de}`;
-            homeMainScore.textContent = `home score: ${game.hs}`;
-            awayMainScore.textContent = `away score: ${game.vs}`;
-          }
-        });
-    }
-    getGameEvent(gameValue);
-    getGameEvent("22200001");
-    getGameEvent("22200002");
-    getGameEvent("22200003");
-    getGameEvent("22200004");
-    getGameEvent("22200005");
-
-    function betHomeGame() {
-      if (event.textContent === "event: Game End") {
-        return alert(
-          "The competition has concluded, and betting is no longer available.",
-        );
-      }
-      const betPoint = document.querySelector('input[name="homeBet"]').value;
-      const id = gameValue;
-      const hosting = "home";
-      fetch("/odds/bet", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, betPoint, hosting }),
-      })
-        .then((response) => {
-          if (response.status === 404) {
-            alert("You dont have any point");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          getOdds();
-          getUserInfor();
-        });
-    }
-
-    function betAwayGame() {
-      if (event.textContent === "event: End Period") {
-        return alert(
-          "The competition has concluded, and betting is no longer available.",
-        );
-      }
-      const betPoint = document.querySelector('input[name="awayBet"]').value;
-      const id = gameValue;
-      const hosting = "away";
-      fetch("/odds/bet", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, betPoint, hosting }),
-      })
-        .then((response) => {
-          if (response.status === 404) {
-            alert("You dont have any point");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          getOdds();
-          getUserInfor();
+          homeScore.textContent = game.gameData.hs;
+          awayScore.textContent = game.gameData.vs;
         });
     }
   </script>
@@ -211,56 +273,26 @@
   </script>
   <script type="module">
     import { io } from "socket.io-client";
-    const socket = io();
+
+    const socket = io("https://ygolonhcet.online/");
     socket.on("connection", () => {
       console.log("connected");
     });
-    socket.emit("event");
-
-    socket.on("gameEvent", (gamePerEvent) => {
-      const game = JSON.parse(gamePerEvent);
+    socket.on("gameEvent", (game) => {
       if (game.GAME_ID) {
-        homeScoreElements[(game.GAME_ID % 10) - 1].textContent =
-          `home score: ${game.hs}`;
-        awayScoreElements[(game.GAME_ID % 10) - 1].textContent =
-          `away score: ${game.vs}`;
-      }
-      if (game.GAME_ID == gameValue) {
-        event.textContent = `event: ${game.de}`;
-        homeMainScore.textContent = `home score: ${game.hs}`;
-        awayMainScore.textContent = `away score: ${game.vs}`;
+        const homeScore = document.getElementById(`homeScore${game.GAME_ID}`);
+        const awayScore = document.getElementById(`awayScore${game.GAME_ID}`);
+        homeScore.textContent = game.hs;
+        awayScore.textContent = game.vs;
       }
     });
-
-    socket.on("odds", (oddsFromRedis) => {
-      const odds = JSON.parse(oddsFromRedis);
-      if (odds.id == gameValue) {
-        homeOdds.textContent = odds.home_odds;
-        awayOdds.textContent = odds.away_odds;
+    socket.on("odds", (odds) => {
+      if (odds.id) {
+        const homeOdds = document.getElementById(`homeOdds${odds.id}`);
+        const awayOdds = document.getElementById(`awayOdds${odds.id}`);
+        homeOdds.textContent = odds.homeOdds;
+        awayOdds.textContent = odds.awayOdds;
       }
     });
-  </script>
-  <script>
-    // member information
-    function getUserInfor() {
-      const userEmail = document.querySelector(".userEmail");
-      const userName = document.querySelector(".userName");
-      const userPoint = document.querySelector(".userPoint");
-      fetch("/user/getUserInfor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          userEmail.textContent = data.email;
-          userName.textContent = data.name;
-          userPoint.textContent = data.point;
-        });
-    }
-    getUserInfor();
   </script>
 </html>
