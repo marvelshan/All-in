@@ -134,6 +134,13 @@ The homepage is divided into three main sections:
 
 ## Platform Insights
 
+[Sign in first](https://ygolonhcet.online/admin.html)
+
+Email: admin@admin.com <br>
+password: admin
+
+[All-in admin page](https://ygolonhcet.online/admin.html)
+
 A crucial aspect of the platform involves insights for platform administrators. Notably, a bar chart visualizes the total amount the platform must pay out, calculated by multiplying user bets by the corresponding odds.
 
 ![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/adminbar.png)
