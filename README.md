@@ -134,7 +134,7 @@ The homepage is divided into three main sections:
 
 ## Platform Insights
 
-[Sign in first](https://ygolonhcet.online/admin.html)
+[Sign in first](https://ygolonhcet.online/profile.html)
 
 Email: admin@admin.com <br>
 password: admin
