@@ -55,6 +55,24 @@ Visit [All-in](https://www.ygolonhcet.online/) to experience the platform.
 - Systematically gathered and presented NBA game information on the platform.
   ![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/architecture.png)
 
+## Workflow Description
+
+The workflow performs the following steps:
+
+1. **Checkout Code:**
+
+   - Checks out the code from the repository.
+
+2. **Deploy to EC2:**
+   - Utilizes the [appleboy/ssh-action](https://github.com/appleboy/ssh-action) to connect to the specified EC2 instance.
+   - Sets up necessary environment variables and runs a script to deploy the changes.
+   - The script performs the following actions:
+     - Prints a message indicating the start of the deployment.
+     - Navigates to the project directory on the EC2 instance (`/home/ubuntu/Personal-Project`).
+     - Pulls the latest changes from the specified branch (`spring4`).
+     - Checks the location of `pm2`.
+     - Restarts the PM2 process.
+
 ## Testing result
 
 To ensure optimal performance under high traffic loads, we've implemented a strategic server scaling plan. Three T2 micro instances are scheduled to be activated during peak traffic periods, allowing the platform to handle a maximum of 669 requests per second (RPS). This proactive approach is particularly crucial during game endings, where traffic tends to surge.
