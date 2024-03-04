@@ -93,8 +93,8 @@ The cost of this scalable infrastructure has been meticulously assessed. The pro
 
 | Name       | Cost   | RPS    | Success rate |
 | ---------- | ------ | ------ | ------------ |
-| t2micro\*1 | 0.0152 | 457.60 | 34           |
-| t2micro\*2 | 0.0304 | 672.28 | 94           |
+| t2micro\*1 | 0.0152 | 305.58 | 100          |
+| t2micro\*2 | 0.0304 | 531.94 | 100          |
 | t2micro\*3 | 0.0456 | 669.89 | 100          |
 
 ![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/scalingOut.png)
@@ -103,16 +103,16 @@ The cost of this scalable infrastructure has been meticulously assessed. The pro
 
 | name        | cost   | RPS    | Success rate |
 | ----------- | ------ | ------ | ------------ |
-| t2micro\*1  | 0.0152 | 457.60 | 34           |
-| t2small\*1  | 0.0304 | 592.69 | 53           |
-| t2medium\*1 | 0.0608 | 670.38 | 85           |
-| t2large\*1  | 0.1216 | 742.85 | 94           |
-| t2xlarge\*1 | 0.2432 | 686.09 | 98.8         |
-| t3micro\*1  | 0.0136 | 556.99 | 85           |
-| t3small\*1  | 0.0272 | 492.28 | 90           |
-| t3medium\*1 | 0.0544 | 557.21 | 93           |
-| t3large\*1  | 0.1088 | 656.60 | 95           |
-| t3xlarge\*1 | 0.2176 | 609.82 | 98.9         |
+| t2micro\*1  | 0.0152 | 305.58 | 100          |
+| t2small\*1  | 0.0304 | 314.12 | 100          |
+| t2medium\*1 | 0.0608 | 569.82 | 100          |
+| t2large\*1  | 0.1216 | 677.85 | 100          |
+| t2xlarge\*1 | 0.2432 | 698.27 | 100          |
+| t3micro\*1  | 0.0136 | 443.05 | 100          |
+| t3small\*1  | 0.0272 | 473.44 | 100          |
+| t3medium\*1 | 0.0544 | 518.20 | 100          |
+| t3large\*1  | 0.1088 | 603.11 | 100          |
+| t3xlarge\*1 | 0.2176 | 623.77 | 100          |
 
 ![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/scalingUp.png)
 
