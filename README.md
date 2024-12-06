@@ -8,7 +8,7 @@ All-in is a high-traffic-capacity online sports betting platform developed to pr
 
 ## Project Address
 
-Visit [All-in](https://www.ygolonhcet.online/) to experience the platform.
+[All-in](https://www.ygolonhcet.online/) was officially closed in January 2024.
 
 ## Key Features
 
@@ -54,6 +54,19 @@ Visit [All-in](https://www.ygolonhcet.online/) to experience the platform.
 - Developed a web crawler using the NPM package Cheerio.
 - Systematically gathered and presented NBA game information on the platform.
   ![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/architecture.png)
+  
+### Infrastructure Overview
+
+This platform's infrastructure is designed with scalability and performance in mind. Key components include:
+
+- **Load Balancer**: Handles incoming traffic and distributes it to the server instances.
+- **Server (Node.js)**: Hosted on Amazon EC2 instances with auto-scaling enabled. Supports real-time communication using Socket.IO.
+- **Cache Layer**: Utilizes AWS ElastiCache with Redis for fast data retrieval.
+- **Database**: Amazon RDS running MySQL for reliable data storage.
+- **Testing**: Implements unit testing using Chai and Mocha, and performance testing with k6.
+- **CI/CD**: Managed through GitHub Actions for streamlined integration and deployment workflows.
+<img width="973" alt="Archecture" src="https://github.com/user-attachments/assets/66997c87-d450-4a69-8edf-31c0eb191857">
+
 
 ## Workflow Description
 
@@ -114,41 +127,16 @@ The cost of this scalable infrastructure has been meticulously assessed. The pro
 | t3large\*1  | 0.1088 | 603.11 | 100          |
 | t3xlarge\*1 | 0.2176 | 623.77 | 100          |
 
-![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/scalingUp.png)
+<img width="1097" alt="Pressure testing" src="https://github.com/user-attachments/assets/2c1299bb-ec1f-4daf-9f1e-debf5a0a8cda">
 
-# Wrbsite Introduction
+
+# Website Introduction
 
 ## Homepage Overview
 
 The homepage is divided into three main sections:
 
-**Prominent Advertisements:** Engaging advertisements that capture the attention of users.
-
-![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/readmepart1.png)
-
-**Live Events:** Information about ongoing sports events.
-
-![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/readmepart2.png)
-
-**Upcoming Matches:** Details about upcoming matches.
-
-![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/readmepart3.png)
-
-## Betting Interface
-
-**Center Section:** This area facilitates the betting process, providing odds for users to make informed decisions.
-
-![](https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/gamePage.png)
-
-**Right Section:** Presents the user's betting history and personal information. Additionally, there is a button to seamlessly switch to the chat room.
-
-- **user information**
-
-<img src="https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/userInfor.png" width="200"/>
-
-- **chatroom**
-
-<img src="https://d3qptsb2ee7s4x.cloudfront.net/ReadMeImage/chatroom.png" width="200"/>
+<img width="496" alt="homepage image" src="https://github.com/user-attachments/assets/dde8157c-e8a4-4916-a280-1f8ac35e9a37">
 
 ## Platform Insights
 
@@ -158,6 +146,7 @@ Email: admin@admin.com <br>
 password: admin
 
 [All-in admin page](https://ygolonhcet.online/admin.html)
+**This platform has been closed.**
 
 A crucial aspect of the platform involves insights for platform administrators. Notably, a bar chart visualizes the total amount the platform must pay out, calculated by multiplying user bets by the corresponding odds.
 
